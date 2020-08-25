@@ -1,0 +1,6 @@
+{
+  "jwt": {
+    "expiresIn": "604800s",
+    "secret": "shopmaxsecret"
+  }
+}
