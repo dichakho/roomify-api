@@ -16,7 +16,7 @@ import { Crud, CrudController, ParsedBody, Override } from '@nestjsx/crud';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RolesGuard } from '@src/common/guards/roles.guard';
 import { Methods } from '@src/common/decorators/methods.decorator';
-import { JwtAuthGuard } from '@src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
 import { ModulesName } from '@src/common/enums/modules.enum';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { AuthGuard } from '@nestjs/passport';
@@ -24,7 +24,7 @@ import { HttpExceptionFilter } from '@src/common/exception-filter/http-exception
 import { ValidationPipe } from '@src/common/pipes/validation.pipe';
 import { CategoryService } from './category.service';
 import { CategoryRepository } from './category.repository';
-import { createSlug } from '../core/utils/helper';
+import { createSlug } from '../../core/utils/helper';
 
 @Crud({
   model: {

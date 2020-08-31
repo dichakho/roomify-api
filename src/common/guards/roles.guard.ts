@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRepository } from '@src/user/user.repository';
+import { UserRepository } from '@src/app/user/user.repository';
 import _ from 'lodash';
 
 type TPermissions = {
@@ -20,7 +20,11 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const methods = this.reflector.get<string[]>('methods', context.getHandler());
+    console.log('METHODS ---->', methods);
+
     const modules = this.reflector.get<string[]>('modules', context.getClass());
+    console.log('MODULES ---->', modules);
+
     const requirePermissions = [`${modules[0]}_${methods[0]}`];
     const request = context.switchToHttp().getRequest();
     const { user } = request;

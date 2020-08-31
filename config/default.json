@@ -1,6 +1,6 @@
 {
   "jwt": {
-    "expiresIn": "604800s",
-    "secret": "shopmaxsecret"
+    "expiresIn": "7200s",
+    "secret": "roomifySecret"
   }
 }

@@ -2,7 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import config from 'config';
-import { UserRepository } from '@src/user/user.repository';
+import { UserRepository } from '@src/app/user/user.repository';
 import _ from 'lodash';
 
 @Injectable()
@@ -26,6 +26,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         permissions.push(`${p.module.name}_${p.method.name}`);
       });
     });
-    return { id: payload.id, username: payload.username, permissions };
+    userPermissions.password = undefined;
+    userPermissions.createdAt = undefined;
+    userPermissions.updatedAt = undefined;
+    userPermissions.deletedAt = undefined;
+    return { ...userPermissions, permissions };
+
   }
 }

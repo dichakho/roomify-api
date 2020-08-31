@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ManyToMany, JoinTable, BeforeInsert, BeforeUpdate, Entity, Column } from 'typeorm';
-
+import { ManyToMany, JoinTable, Entity, Column, IsNull } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber } from 'class-validator';
 import { CrudValidationGroups } from '@nestjsx/crud';
@@ -8,7 +7,6 @@ import { BaseEntity } from './base.entity';
 import { Role } from './roles.entity';
 import { UserStatus } from '../common/enums/userStatus.enum';
 import { enumToArray } from '../core/utils/helper';
-import Bcrypt from '../plugins/bcrypt.plugin';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('users')
@@ -21,7 +19,7 @@ export class User extends BaseEntity {
   fullName: string;
 
   @ApiProperty({ example: 'admin' })
-  @IsOptional({ groups: [UPDATE] })
+  @IsOptional({ groups: [UPDATE, CREATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsString()
   @Column()
@@ -31,7 +29,7 @@ export class User extends BaseEntity {
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsEmail()
-  @Column()
+  @Column({ nullable: true })
   email: string;
 
   @ApiProperty({ example: 'admin' })
@@ -46,7 +44,7 @@ export class User extends BaseEntity {
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsString()
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
   @ApiProperty({
@@ -79,19 +77,20 @@ export class User extends BaseEntity {
   @IsNumber({}, { each: true })
   roleIds: Array<number>;
 
-  @ManyToMany(
-    type => Role,
-    role => role.users
-  )
+  // @ManyToMany(
+  //   type => Role,
+  //   role => role.users,
+  // )
+  @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
   @JoinTable({ name: 'user_roles' })
   roles: Role[];
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  async hashPassword() {
-    const userRepository = User.getRepository();
-    // const dbCurrentUser = await userRepository.findOne(this.id);
-    // if (this.password && this.password !== dbCurrentUser.password)
-    this.password = await Bcrypt.hash(this.password);
-  }
+  // @BeforeInsert()
+  // @BeforeUpdate()
+  // async hashPassword() {
+  //   const userRepository = User.getRepository();
+  //   // const dbCurrentUser = await userRepository.findOne(this.id);
+  //   // if (this.password && this.password !== dbCurrentUser.password)
+  //   this.password = await Bcrypt.hash(this.password);
+  // }
 }

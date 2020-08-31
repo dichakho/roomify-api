@@ -4,7 +4,7 @@
 
 import { applyDecorators, UseGuards, SetMetadata } from '@nestjs/common';
 import { ApiBearerAuth, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 
 export function Methods(...method: string[]) {

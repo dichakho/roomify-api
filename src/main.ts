@@ -6,11 +6,14 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/exception-filter/http-exception.filter';
 import { ValidationPipe } from './common/pipes/validation.pipe';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { useContainer } from 'class-validator';
+import { ValidatorModule } from './validators/validator.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe());
+  useContainer(app.select(ValidatorModule), { fallbackOnErrors: true })
   app.useGlobalFilters(new HttpExceptionFilter());
   // app.useGlobalInterceptors(new TransformInterceptor());
 

@@ -18,7 +18,7 @@ import { UserService } from './user.service';
   query: {
     exclude: ['password'],
     join: {
-      role: {
+      roles: {
         allow: ['name'],
         eager: true
       }
@@ -32,7 +32,7 @@ import { UserService } from './user.service';
   }
 })
 @ApiTags('v1/users')
-@Controller('user')
+@Controller('users')
 export class UserController implements CrudController<User> {
   constructor(public service: UserService) {}
 

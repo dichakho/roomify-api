@@ -2,7 +2,7 @@ import { Controller, UsePipes } from '@nestjs/common';
 import { Crud, CrudController, Override, ParsedBody } from '@nestjsx/crud';
 import { Product } from 'src/entities/product.entity';
 import { ApiTags } from '@nestjs/swagger';
-import { ValidationPipe } from '../common/pipes/validation.pipe';
+import { ValidationPipe } from '../../common/pipes/validation.pipe';
 import { ProductService } from './product.service';
 @Crud({
   model: {
