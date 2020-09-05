@@ -2,11 +2,10 @@ import { Injectable, InternalServerErrorException, HttpStatus, HttpException, Ba
 import { UserService } from '@src/app/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import Bcrypt from '@src/plugins/bcrypt.plugin';
-import { RegisterDto } from '@src/models/auth/auth-register.dto';
+import { RegisterDto } from '@src/models/auth/auth-register.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@src/entities/user.entity';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { Role } from '@src/entities/roles.entity';
 
 @Injectable()
 export class AuthService extends TypeOrmCrudService<User>{
@@ -58,21 +57,5 @@ export class AuthService extends TypeOrmCrudService<User>{
       console.log('SERVICE_AUTHEN_REGISTER', error);
       throw new InternalServerErrorException();
     }
-  }
-
-  async test() {
-    const test = [
-      {
-        name: 'asdasd'
-      },
-      {
-        name: ' alolaloalo'
-      },
-      {
-        name: 'aaaaaaaa'
-      }
-    ];
-    console.log(test[0]);
-
   }
 }

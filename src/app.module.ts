@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConnectionService } from './database/database-connection.service';
-import { ProductModule } from './app/product/product.module';
 import { CategoryModule } from './app/category/category.module';
 import { UserModule } from './app/user/user.module';
 import { AuthModule } from './app/auth/auth.module';
@@ -12,7 +11,6 @@ import { ValidatorModule } from './validators/validator.module';
     TypeOrmModule.forRootAsync({
       useClass: DatabaseConnectionService
     }),
-    ProductModule,
     CategoryModule,
     UserModule,
     AuthModule,

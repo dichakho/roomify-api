@@ -1,11 +1,8 @@
 export default class Permissions {
   public modules = [
     { name: 'USER', description: 'CRUD user' },
-    { name: 'PRODUCT', description: 'CRUD product' },
+    { name: 'DESTINATION', description: 'CRUD destination' },
     { name: 'CATEGORY', description: 'CRUD category' },
-    { name: 'METHOD', description: 'CRUD method' },
-    { name: 'MODULE', description: 'CRUD module' },
-    { name: 'PERMISSION', description: 'CRUD permission' },
     { name: 'ROLE', description: 'CRUD role' }
   ];
 
@@ -14,7 +11,9 @@ export default class Permissions {
     { name: 'POST', description: 'Create object' },
     { name: 'PUT', description: 'Replace object' },
     { name: 'DELETE', description: 'Delete object' },
-    { name: 'PATCH', description: 'Update object' }
+    { name: 'PATCH', description: 'Update object' },
+    { name: 'GETLIST', description: 'Get list information' }
+
   ];
 
   public roles = [
@@ -23,11 +22,11 @@ export default class Permissions {
       description: 'Admin has all the permissions'
     },
     {
-      name: 'MANAGER',
+      name: 'MODERATOR',
       description: 'manage goods'
     },
     {
-      name: 'REVIEWER',
+      name: 'OWNER',
       description: 'review order'
     },
     {
@@ -67,7 +66,7 @@ export default class Permissions {
       permissions: this.admin_role_permission
     },
     {
-      role: 'MANAGER',
+      role: 'MODERATOR',
       permissions: this.manager_role_permission
     }
   ]

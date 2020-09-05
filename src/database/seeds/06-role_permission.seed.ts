@@ -1,8 +1,5 @@
 import { Seeder, Factory } from 'typeorm-seeding';
 import { Connection, getConnection } from 'typeorm';
-import { forIn } from 'lodash';
-import { Permission } from '../../entities/permission.entity';
-import { Module } from '../../entities/module.entity';
 import Permissions from '../permissions-seed.constant';
 
 export default class CreateRolePermission implements Seeder {

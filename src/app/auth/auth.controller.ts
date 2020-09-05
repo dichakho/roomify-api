@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginDTO } from '@src/models/auth/auth-login.model';
-import { RegisterDto } from '@src/models/auth/auth-register.dto';
+import { RegisterDto } from '@src/models/auth/auth-register.model';
 import { Methods } from '@src/common/decorators/methods.decorator';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { LocalAuthGuard } from '../../common/guards/local-auth.guard';

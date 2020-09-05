@@ -1,5 +1,5 @@
 export enum ModulesName {
   CATEGORY = 'CATEGORY',
-  PRODUCT = 'PRODUCT',
+  DESTINATION = 'DESTINATION',
   USER = 'USER',
 }

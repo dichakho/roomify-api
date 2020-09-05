@@ -3,6 +3,8 @@ import { Controller } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from '@src/entities/user.entity';
 import { UserService } from './user.service';
+import { Modules } from '@src/common/decorators/modules.decorator';
+import { Methods } from '@src/common/decorators/methods.decorator';
 
 @Crud({
   model: {
@@ -22,15 +24,21 @@ import { UserService } from './user.service';
         allow: ['name'],
         eager: true
       }
-      // 'role.permissions': {
-      //   eager: true,
-      // },
     },
     limit: 10,
     maxLimit: 50,
-    alwaysPaginate: true
+    alwaysPaginate: false
+  },
+  routes: {
+    getOneBase: {
+      decorators: [Methods('GET')]
+    },
+    getManyBase: {
+      decorators: [Methods('GET')]
+    }
   }
 })
+@Modules('USER')
 @ApiTags('v1/users')
 @Controller('users')
 export class UserController implements CrudController<User> {

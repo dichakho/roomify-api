@@ -4,7 +4,7 @@ import { Category } from '../../entities/category.entity';
 
 export default class CreateCategories implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
-    const categoryRepository = connection.getTreeRepository(Category);
+    // const categoryRepository = connection.getTreeRepository(Category);
     /**
      * Parent category
      */
@@ -13,8 +13,7 @@ export default class CreateCategories implements Seeder {
     await factory(Category)({ payload: { name: 'Nhà nguyên căn' } }).create();
     await factory(Category)({ payload: { name: 'Căn hộ' } }).create();
 
-
-    const roots = await categoryRepository.findRoots();
+    // const roots = await categoryRepository.findRoots();
 
     /**
      * Child category

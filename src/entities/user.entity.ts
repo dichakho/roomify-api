@@ -77,20 +77,8 @@ export class User extends BaseEntity {
   @IsNumber({}, { each: true })
   roleIds: Array<number>;
 
-  // @ManyToMany(
-  //   type => Role,
-  //   role => role.users,
-  // )
+
   @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
   @JoinTable({ name: 'user_roles' })
   roles: Role[];
-
-  // @BeforeInsert()
-  // @BeforeUpdate()
-  // async hashPassword() {
-  //   const userRepository = User.getRepository();
-  //   // const dbCurrentUser = await userRepository.findOne(this.id);
-  //   // if (this.password && this.password !== dbCurrentUser.password)
-  //   this.password = await Bcrypt.hash(this.password);
-  // }
 }
