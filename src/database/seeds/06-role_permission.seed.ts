@@ -1,6 +1,6 @@
 import { Seeder, Factory } from 'typeorm-seeding';
 import { Connection, getConnection } from 'typeorm';
-import Permissions from '../permissions-seed.constant';
+import Permissions from '../../constant/permissions-seed.constant';
 
 export default class CreateRolePermission implements Seeder {
   private rolePermission = [];

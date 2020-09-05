@@ -1,7 +1,7 @@
 import { Seeder, Factory } from 'typeorm-seeding';
 import { Connection } from 'typeorm';
 import { Permission } from '../../entities/permission.entity';
-import Permissions from '../permissions-seed.constant';
+import Permissions from '../../constant/permissions-seed.constant';
 
 export default class CreatePermissions implements Seeder {
 

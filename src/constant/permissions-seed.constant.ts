@@ -3,7 +3,6 @@ export default class Permissions {
     { name: 'USER', description: 'CRUD user' },
     { name: 'DESTINATION', description: 'CRUD destination' },
     { name: 'CATEGORY', description: 'CRUD category' },
-    { name: 'ROLE', description: 'CRUD role' }
   ];
 
   public methods = [
@@ -12,7 +11,9 @@ export default class Permissions {
     { name: 'PUT', description: 'Replace object' },
     { name: 'DELETE', description: 'Delete object' },
     { name: 'PATCH', description: 'Update object' },
-    { name: 'GETLIST', description: 'Get list information' }
+    { name: 'GETLIST', description: 'Get list information' },
+    { name: 'MANAGEROLE', description: 'Change role of user' },
+    { name: 'DELETESOFT', description: 'Delete object but already exist' }
 
   ];
 
