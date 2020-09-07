@@ -44,7 +44,8 @@ export class AuthService extends TypeOrmCrudService<User>{
       email: result.email,
       phone: result.phone,
       avatar: result.avatar,
-      status: result.status
+      status: result.status,
+      role: result.roles
     };
   }
 

@@ -30,6 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     userPermissions.createdAt = undefined;
     userPermissions.updatedAt = undefined;
     userPermissions.deletedAt = undefined;
+    userPermissions.roles[0].permissions = undefined;
     return { ...userPermissions, permissions };
 
   }

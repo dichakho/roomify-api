@@ -8,14 +8,14 @@ export class UsersSubscriber implements EntitySubscriberInterface<User> {
   /**
      * Indicates that this subscriber only listen to Post events.
      */
-  listenTo() : any {
+  listenTo(): any {
     return User;
   }
 
   /**
      * Called before post insertion.
      */
-  async beforeInsert(event: InsertEvent<User>) : Promise<void> {
+  async beforeInsert(event: InsertEvent<User>): Promise<void> {
     // const userRepository = User.getRepository();
     // const dbCurrentUser = await userRepository.findOne(this.id);
     // if (this.password && this.password !== dbCurrentUser.password)
@@ -23,7 +23,10 @@ export class UsersSubscriber implements EntitySubscriberInterface<User> {
     event.entity.password = await Bcrypt.hash(password);
   }
 
-  async beforeUpdate(event: InsertEvent<User>) : Promise<void> {
-    event.entity.password = await Bcrypt.hash(event.entity.password);
+  async beforeUpdate(event: InsertEvent<User>): Promise<void> {
+    if (event.entity.password) {
+      event.entity.password = await Bcrypt.hash(event.entity.password);
+    }
+
   }
 }

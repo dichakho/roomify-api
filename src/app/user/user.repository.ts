@@ -5,4 +5,5 @@ export class UserRepository extends Repository<User> {
   async findOneById(id: number): Promise<User> {
     return this.findOne(id);
   }
+
 }

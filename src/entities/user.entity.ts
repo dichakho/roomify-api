@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ManyToMany, JoinTable, Entity, Column, IsNull } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber } from 'class-validator';
+import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber, IsMobilePhone } from 'class-validator';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { BaseEntity } from './base.entity';
 import { Role } from './roles.entity';
@@ -44,6 +44,7 @@ export class User extends BaseEntity {
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsString()
+  @IsMobilePhone('vi-VN')
   @Column({ nullable: true })
   phone: string;
 
@@ -76,7 +77,6 @@ export class User extends BaseEntity {
   @ApiProperty({ example: [4] })
   @IsNumber({}, { each: true })
   roleIds: Array<number>;
-
 
   @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
   @JoinTable({ name: 'user_roles' })
