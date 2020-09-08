@@ -17,4 +17,4 @@ import { ValidatorModule } from './validators/validator.module';
     ValidatorModule
   ]
 })
-export class AppModule {}
+export class AppModule { }

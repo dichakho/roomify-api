@@ -1,5 +1,5 @@
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { Controller, Get, UseGuards, Request, Patch, Body } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request, Patch, Body, Post } from '@nestjs/common';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { User } from '@src/entities/user.entity';
 import { Modules } from '@src/common/decorators/modules.decorator';

@@ -6,6 +6,7 @@ import { RegisterDto } from '@src/models/auth/auth-register.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@src/entities/user.entity';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
+import { LoginDTO } from '@src/models/auth/auth-login.model';
 
 @Injectable()
 export class AuthService extends TypeOrmCrudService<User>{
@@ -32,7 +33,7 @@ export class AuthService extends TypeOrmCrudService<User>{
     }
   }
 
-  async login(user: any) {
+  async login(user: LoginDTO) {
     const result = await this.validateUser(user.username, user.password);
     const payload = { username: result.username, id: result.id };
     const token = this.jwtService.sign(payload);
