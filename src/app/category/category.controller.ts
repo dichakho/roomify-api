@@ -24,7 +24,7 @@ import { HttpExceptionFilter } from '@src/common/exception-filter/http-exception
 import { ValidationPipe } from '@src/common/pipes/validation.pipe';
 import { CategoryService } from './category.service';
 import { CategoryRepository } from './category.repository';
-import { createSlug } from '../../core/utils/helper';
+import { createSlug } from '../../utils/helper';
 
 @Crud({
   model: {

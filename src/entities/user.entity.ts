@@ -6,7 +6,7 @@ import { CrudValidationGroups } from '@nestjsx/crud';
 import { BaseEntity } from './base.entity';
 import { Role } from './roles.entity';
 import { UserStatus } from '../common/enums/userStatus.enum';
-import { enumToArray } from '../core/utils/helper';
+import { enumToArray } from '../utils/helper';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('users')

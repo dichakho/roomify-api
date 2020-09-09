@@ -3,7 +3,7 @@ import { IsString, IsNotEmpty, IsOptional, IsNumber, IsIn } from 'class-validato
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { RoomStatus } from '../common/enums/roomStatus.enum';
-import { enumToArray } from '../core/utils/helper';
+import { enumToArray } from '../utils/helper';
 import { Property } from './property.entity';
 import { Category } from './category.entity';
 

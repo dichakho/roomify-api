@@ -1,14 +1,15 @@
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { Controller, Get, UseGuards, Request, Patch, Body, Post } from '@nestjs/common';
-import { Crud, CrudController, Override } from '@nestjsx/crud';
+import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from '@src/entities/user.entity';
 import { Modules } from '@src/common/decorators/modules.decorator';
-import { UserService } from './user.service';
-import { ModulesName } from '../../common/enums/modules.enum';
-import { method } from '../../constant/method-crud.constant';
 import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
 import { UpdateMyUser } from '@src/models/users/update-my-user.model';
 import { UserRequest } from '@src/models/users/user-request.model';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { method } from '../../constant/method-crud.constant';
+import { ModulesName } from '../../common/enums/modules.enum';
+import { UserService } from './user.service';
 @Crud({
   model: {
     type: User
@@ -57,6 +58,14 @@ export class UserController implements CrudController<User> {
   async updateMe(@Request() req: UserRequest, @Body() body: UpdateMyUser) {
     return this.service.updateMyInformation(req.user, body);
   }
+
+  // @Patch('avatar')
+  // @UseInterceptors(FileInterceptor('avatar'))
+  // async uploadAvatar(@UploadedFile() file) {
+  //   console.log('FILE ---->', file);
+
+  //   // this.service.uploadImage(file);
+  // }
 
   get base(): CrudController<User> {
     return this;

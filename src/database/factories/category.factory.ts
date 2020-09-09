@@ -1,7 +1,7 @@
 import { define } from 'typeorm-seeding';
 import * as Faker from 'faker';
 import _ from 'lodash';
-import { createSlug } from '../../core/utils/helper';
+import { createSlug } from '../../utils/helper';
 import { Category } from '../../entities/category.entity';
 
 define(Category, (

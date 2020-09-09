@@ -1,8 +1,7 @@
-import { EntityId } from 'typeorm/repository/EntityId'
-import { DeleteResult } from 'typeorm'
-
 export interface IBaseService<T> {
   index(): Promise<T[]>
+
+  uploadImage(path : string): Promise<string>
 
   // findById(id: EntityId): Promise<T>
 
