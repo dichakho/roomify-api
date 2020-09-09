@@ -21,15 +21,15 @@ export class AuthService extends TypeOrmCrudService<User>{
   async validateUser(username: string, password: string): Promise<any> {
     try {
       const user = await this.userService.findOneByUsername(username);
-      if (!user) throw new HttpException('Username is not existed', HttpStatus.BAD_REQUEST);
+      if (!user) throw new BadRequestException('Wrong credentials provided');
       const isPasswordMatching = await Bcrypt.compare(password, user.password);
       if (!isPasswordMatching) {
-        throw new HttpException('Password is wrong', HttpStatus.BAD_REQUEST);
+        throw new BadRequestException('Wrong credentials provided');
       }
       return user;
     } catch (error) {
       console.log('LOGIN_SERVICE_ERROR', error);
-      throw new BadRequestException('Wrong credentials provided');
+      throw error;
     }
   }
 

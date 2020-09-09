@@ -26,4 +26,5 @@ export class UpdateMyUser {
   @IsOptional()
   @IsString()
   avatar: string;
+
 }
