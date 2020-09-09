@@ -16,11 +16,11 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> extends 
     return this.repository.find();
   }
 
-  async uploadImage(file: any): Promise<string> {
-    const image = await uploads(file);
+  async uploadImage(path: string, folder: string): Promise<string> {
+    const image = await uploads(path, folder);
     console.log('IMAGE --->', image);
-    await unlinkSync(file.path);
-    return '';
+    await unlinkSync(path);
+    return image;
   }
 
 }

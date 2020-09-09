@@ -10,6 +10,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { method } from '../../constant/method-crud.constant';
 import { ModulesName } from '../../common/enums/modules.enum';
 import { UserService } from './user.service';
+import { imageFileFilter } from '@src/utils/file-upload';
 @Crud({
   model: {
     type: User
@@ -60,11 +61,15 @@ export class UserController implements CrudController<User> {
   }
 
   @Patch('avatar')
-  @UseInterceptors(FileInterceptor('avatar'))
-  async uploadAvatar(@UploadedFile() file) {
-    console.log('FILE ---->', file);
-
-    // this.service.uploadImage(file);
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('avatar',
+  {
+    dest: 'uploads',
+    preservePath: true,
+    fileFilter: imageFileFilter
+  }))
+  async uploadAvatar(@UploadedFile() file, @Request() req: UserRequest) {
+    return this.service.updateAvatar(file.path, req);
   }
 
   get base(): CrudController<User> {

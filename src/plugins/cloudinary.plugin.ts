@@ -26,20 +26,18 @@ cloudinary.v2.config({
 //     });
 //   });
 // }
-export const uploads = async (file: any): Promise<string> => {
-  console.log('FILE ---->', file);
+export const uploads = async (path: string, folder: string): Promise<string> => {
   const uniqueFilename = new Date().toISOString();
 
   const result = await new Promise(async (resolve, reject) =>
 
-    createReadStream(file.path)
+    createReadStream(path)
       .pipe(
         cloudinary.v2.uploader.upload_stream(
           {
-            folder: 'chnirt',
-            public_id: uniqueFilename,
-            tags: 'chnirt'
-          }, // directory and tags are optional
+            folder,
+            public_id: uniqueFilename
+          },
           (err, image) => {
             if (err) {
               reject(err);

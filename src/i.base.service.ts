@@ -1,7 +1,7 @@
 export interface IBaseService<T> {
   index(): Promise<T[]>
 
-  uploadImage(path : string): Promise<string>
+  uploadImage(path : string, folder: string): Promise<string>
 
   // findById(id: EntityId): Promise<T>
 
