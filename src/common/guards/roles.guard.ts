@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRepository } from '@src/user/user.repository';
+import { UserRepository } from '@src/app/user/user.repository';
 import _ from 'lodash';
 
 type TPermissions = {

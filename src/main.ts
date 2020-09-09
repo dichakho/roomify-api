@@ -6,17 +6,20 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/exception-filter/http-exception.filter';
 import { ValidationPipe } from './common/pipes/validation.pipe';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { useContainer } from 'class-validator';
+import { ValidatorModule } from './validators/validator.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe());
+  useContainer(app.select(ValidatorModule), { fallbackOnErrors: true });
   app.useGlobalFilters(new HttpExceptionFilter());
   // app.useGlobalInterceptors(new TransformInterceptor());
 
   const swaggerOptions = new DocumentBuilder()
-    .setTitle('Shop Max API Documentation')
-    .setDescription('This is a Shop Max API documentation.')
+    .setTitle('Roomify API Documentation')
+    .setDescription('This is a Roomify API documentation.')
     .setVersion('1.0.0')
     .addBearerAuth()
     .build();

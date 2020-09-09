@@ -1,10 +1,10 @@
-import { Entity, Column, TreeChildren, TreeParent, BeforeInsert, Tree, Unique, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, TreeChildren, TreeParent, Tree, Unique, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsEmpty, IsNotEmpty } from 'class-validator';
 import slug from 'slug';
 import { CrudValidationGroups } from '@nestjsx/crud';
-import { Product } from './product.entity';
 import { TreeBase } from './treebase.entity';
+import { Room } from './room.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('categories')
@@ -33,11 +33,11 @@ export class Category extends TreeBase {
   @TreeParent()
   parent: Category;
 
-  @ManyToMany(
-    type => Product,
-    product => product.category
+  @OneToMany(
+    type => Room,
+    room => room.category
   )
-  products: Product[];
+  rooms: Room[];
 
   // @BeforeInsert()
   // generateSlug() {

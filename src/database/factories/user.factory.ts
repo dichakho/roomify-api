@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Faker from 'faker';
 import { define } from 'typeorm-seeding';
-import { enumToArray } from '../../core/utils/helper';
+import { enumToArray } from '../../utils/helper';
 import { User } from '../../entities/user.entity';
 import { UserStatus } from '../../common/enums/userStatus.enum';
 
