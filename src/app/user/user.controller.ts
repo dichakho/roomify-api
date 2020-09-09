@@ -59,13 +59,13 @@ export class UserController implements CrudController<User> {
     return this.service.updateMyInformation(req.user, body);
   }
 
-  // @Patch('avatar')
-  // @UseInterceptors(FileInterceptor('avatar'))
-  // async uploadAvatar(@UploadedFile() file) {
-  //   console.log('FILE ---->', file);
+  @Patch('avatar')
+  @UseInterceptors(FileInterceptor('avatar'))
+  async uploadAvatar(@UploadedFile() file) {
+    console.log('FILE ---->', file);
 
-  //   // this.service.uploadImage(file);
-  // }
+    // this.service.uploadImage(file);
+  }
 
   get base(): CrudController<User> {
     return this;
