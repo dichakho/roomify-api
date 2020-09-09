@@ -16,7 +16,7 @@ export class DatabaseConnectionService implements TypeOrmOptionsFactory {
       dropSchema: false,
       logging: true,
       entities: ['dist/**/*.entity{.ts,.js}'],
-      subscribers: ['dist/src/entities/**/*.subscriber.{ts,js}']
+      subscribers: ['dist/**/subscribers/*.subscriber.{ts,js}']
     };
   }
 }

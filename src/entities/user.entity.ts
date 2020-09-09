@@ -27,7 +27,7 @@ export class User extends BaseEntity {
 
   @ApiProperty({ example: 'member@gmail.com' })
   @IsOptional({ groups: [UPDATE] })
-  @IsNotEmpty({ groups: [CREATE] })
+  // @IsNotEmpty({ groups: [CREATE] })
   @IsEmail()
   @Column({ nullable: true })
   email: string;
@@ -42,7 +42,7 @@ export class User extends BaseEntity {
 
   @ApiProperty({ example: '0981234899' })
   @IsOptional({ groups: [UPDATE] })
-  @IsNotEmpty({ groups: [CREATE] })
+  // @IsNotEmpty({ groups: [CREATE] })
   @IsString()
   @IsMobilePhone('vi-VN')
   @Column({ nullable: true })
@@ -53,7 +53,7 @@ export class User extends BaseEntity {
       'https://microhealth.com/assets/images/illustrations/personal-user-illustration-@2x.png'
   })
   @IsOptional({ groups: [UPDATE] })
-  @IsNotEmpty({ groups: [CREATE] })
+  // @IsNotEmpty({ groups: [CREATE] })
   @IsString()
   @Column({
     default:
@@ -64,7 +64,7 @@ export class User extends BaseEntity {
 
   @ApiProperty({ example: 'ACTIVE' })
   @IsOptional({ groups: [UPDATE] })
-  @IsNotEmpty({ groups: [CREATE] })
+  // @IsNotEmpty({ groups: [CREATE] })
   @IsIn(enumToArray(UserStatus))
   @Column({
     type: 'enum',

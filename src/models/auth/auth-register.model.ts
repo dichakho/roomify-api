@@ -21,6 +21,7 @@ export class RegisterDto {
   fullName: string
 
   @IsString()
+  @IsNotEmpty()
   @Length(5, 24)
   @Matches(/((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, { message: 'Password must be contain uppercase, lowercase, number and special character' })
   @ApiProperty({ example: 'Admin123!' })
