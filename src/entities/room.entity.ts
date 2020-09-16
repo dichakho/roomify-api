@@ -11,7 +11,7 @@ const { UPDATE, CREATE } = CrudValidationGroups;
 @Entity('rooms')
 export class Room extends BaseEntity {
   @PrimaryColumn()
-  id:number
+  id: number
 
   @ApiProperty({ example: 'Chung cu' })
   @IsNotEmpty({ groups: [CREATE] })
@@ -39,6 +39,12 @@ export class Room extends BaseEntity {
   @Column('decimal', { precision: 5, scale: 2 })
   area: number
 
+  @ApiProperty({ example: ['https://lh3.googleusercontent.com/50RuktOOgpl8k61d_IEbYGUvewvlrD6kzhMCzPQ19dAU589lTUKV3OecQOfRnVO2PfMZyHC2FeXfDRWY=w1080-h608-p-no-v0'] })
+  @IsOptional({ groups: [UPDATE] })
+  @IsNotEmpty({ groups: [CREATE] })
+  @Column("text", { array: true })
+  images: Array<string>
+
   @ApiProperty({ example: 'OPEN' })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
@@ -54,9 +60,7 @@ export class Room extends BaseEntity {
   @IsNumber()
   propertyId: number
 
-  @ManyToOne(()=> Property, (property:Property) => property.rooms)
+  @ManyToOne(() => Property, (property: Property) => property.rooms)
   property: Property
 
-  @ManyToOne(() => Category, (category: Category) => category.rooms)
-  category: Category
 }
