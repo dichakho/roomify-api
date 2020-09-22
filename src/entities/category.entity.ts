@@ -4,7 +4,7 @@ import { IsOptional, IsEmpty, IsNotEmpty } from 'class-validator';
 import slug from 'slug';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { TreeBase } from './treebase.entity';
-import { Room } from './room.entity';
+import { Property } from './property.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('categories')
@@ -34,10 +34,10 @@ export class Category extends TreeBase {
   parent: Category;
 
   @OneToMany(
-    type => Room,
-    room => room.category
+    type => Property,
+    property => property.category
   )
-  rooms: Room[];
+  properties: Property[];
 
   // @BeforeInsert()
   // generateSlug() {

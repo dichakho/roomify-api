@@ -47,12 +47,13 @@ export default class Permissions {
     }
   ]
 
-  public manager_role_permission = [
+  public moderator_role_permission = [
     {
       module: 'USER',
       methods: [
         { name: 'DELETE', description: 'Delete object' },
-        { name: 'PATCH', description: 'Update object' }
+        { name: 'PATCH', description: 'Update object' },
+        { name: 'GET', description: 'Retrieve object' }
       ]
     },
     {
@@ -68,7 +69,7 @@ export default class Permissions {
     },
     {
       role: 'MODERATOR',
-      permissions: this.manager_role_permission
+      permissions: this.moderator_role_permission
     }
   ]
 

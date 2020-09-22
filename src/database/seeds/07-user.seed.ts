@@ -16,20 +16,20 @@ export default class CreateUsers implements Seeder {
         'https://microhealth.com/assets/images/illustrations/personal-user-illustration-@2x.png',
       status: 'ACTIVE'
     };
-    const manager = {
-      fullName: 'Manager',
-      username: 'manager',
-      email: 'manager@gmail.com',
+    const moderator = {
+      fullName: 'Moderator',
+      username: 'moderator',
+      email: 'moderator@gmail.com',
       password: hashPwd,
       phone: '0981234888',
       avatar:
         'https://microhealth.com/assets/images/illustrations/personal-user-illustration-@2x.png',
       status: 'ACTIVE'
     };
-    const reviewer = {
-      fullName: 'Reviewer',
-      username: 'reviewer',
-      email: 'reviewer@gmail.com',
+    const owner = {
+      fullName: 'Owner',
+      username: 'owner',
+      email: 'owner@gmail.com',
       password: hashPwd,
       phone: '0981234777',
       avatar:
@@ -50,7 +50,7 @@ export default class CreateUsers implements Seeder {
       .createQueryBuilder()
       .insert()
       .into(User)
-      .values([admin, manager, reviewer, user])
+      .values([admin, moderator, owner, user])
       .execute();
 
     await factory(User)().createMany(10);

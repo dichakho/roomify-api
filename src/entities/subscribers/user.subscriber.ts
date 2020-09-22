@@ -24,9 +24,11 @@ export class UsersSubscriber implements EntitySubscriberInterface<User> {
   }
 
   async beforeUpdate(event: InsertEvent<User>): Promise<void> {
-    if (event.entity.password) {
-      event.entity.password = await Bcrypt.hash(event.entity.password);
+    console.log('BEFORE UPDATE', event.entity);
+    if(event.entity !== undefined) {
+      if (event.entity.password) {
+        event.entity.password = await Bcrypt.hash(event.entity.password);
+      }
     }
-
   }
 }
