@@ -4,7 +4,6 @@ import { IsOptional, IsEmpty, IsNotEmpty } from 'class-validator';
 import slug from 'slug';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { TreeBase } from './treebase.entity';
-import { Room } from './room.entity';
 import { Property } from './property.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;

@@ -5,6 +5,10 @@ import { CategoryModule } from './app/category/category.module';
 import { UserModule } from './app/user/user.module';
 import { AuthModule } from './app/auth/auth.module';
 import { ValidatorModule } from './validators/validator.module';
+import { PropertyModule } from './app/property/property.module';
+import { AmenityModule } from './app/amenity/amenity.module';
+import { RoomModule } from './app/room/room.module';
+import { DestinationModule } from './app/destination/destination.module';
 
 @Module({
   imports: [
@@ -14,7 +18,11 @@ import { ValidatorModule } from './validators/validator.module';
     CategoryModule,
     UserModule,
     AuthModule,
-    ValidatorModule
+    ValidatorModule,
+    PropertyModule,
+    AmenityModule,
+    RoomModule,
+    DestinationModule
   ]
 })
 export class AppModule { }

@@ -69,4 +69,5 @@ export class UserService extends BaseService<User, UserRepository> {
       throw error;
     }
   }
+
 }
