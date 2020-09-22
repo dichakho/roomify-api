@@ -1,5 +1,3 @@
-import { UseGuards } from '@nestjs/common';
-import { HierarchyGuard } from '@src/common/guards/hierarchy.guard';
 import { MethodName } from '../common/enums/methods.enum';
 import { Methods } from '../common/decorators/methods.decorator';
 

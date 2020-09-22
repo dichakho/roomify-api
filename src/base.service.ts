@@ -26,7 +26,6 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> extends 
   async deleleSoft(id: number) {
     try {
       const result = await this.repository.softDelete(id);
-      console.log('DELETE_SOFT', result);
     } catch (error) {
       console.log(error);
 

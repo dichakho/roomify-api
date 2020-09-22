@@ -1,6 +1,6 @@
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile, Param } from '@nestjs/common';
-import { Crud, CrudController, CrudRequest, Override, ParsedRequest } from '@nestjsx/crud';
+import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from '@src/entities/user.entity';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
@@ -80,7 +80,6 @@ export class UserController implements CrudController<User> {
   async uploadAvatar(@UploadedFile() file, @Request() req: UserRequest) {
     return this.service.updateAvatar(file.path, req);
   }
-
 
   // @Override()
   // async deleteOne(@Param('id') id:number) {
