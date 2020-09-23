@@ -1,11 +1,11 @@
-import { Injectable, InternalServerErrorException, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { UpdateMyUser } from '@src/models/users/update-my-user.model';
 import { BaseService } from '@src/base.service';
 import { UserRequest } from '@src/models/users/user-request.model';
 import { UpdateMyPassword } from '@src/models/users/update-my-password.model';
 import { User } from '../../entities/user.entity';
 import { UserRepository } from './user.repository';
-import Bcrypt from '../../plugins/bcrypt.plugin'
+import Bcrypt from '../../plugins/bcrypt.plugin';
 
 @Injectable()
 export class UserService extends BaseService<User, UserRepository> {
@@ -42,32 +42,22 @@ export class UserService extends BaseService<User, UserRepository> {
   }
 
   async updateAvatar(path: string, req: UserRequest): Promise<any> {
-    try {
-      const avatar = await this.uploadImage(path, req.user.fullName);
-      await this.repository.update({ id: req.user.id }, { avatar });
-      return {
-        avatar
-      };
-    } catch (error) {
-      console.log('UPDATE_AVATAR_USER_SERVICE', error);
-      throw new InternalServerErrorException();
-    }
+    const avatar = await this.uploadImage(path, req.user.fullName);
+    await this.repository.update({ id: req.user.id }, { avatar });
+    return {
+      avatar
+    };
   }
 
   async updateMyPassword(id: number, body: UpdateMyPassword) {
-    try {
-      const user = await this.repository.findOne({
-        select: ['password'],
-        where: {
-          id
-        }
-      });
-      if (!Bcrypt.compareSync(body.oldPassword, user.password)) throw new BadRequestException('Old password is incorrect');
-      await this.repository.update(id, { password: body.newPassword });
-    } catch (error) {
-      console.log('UPDATE_PASSWORD_USER_SERVICE', error);
-      throw error;
-    }
+    const user = await this.repository.findOne({
+      select: ['password'],
+      where: {
+        id
+      }
+    });
+    if (!Bcrypt.compareSync(body.oldPassword, user.password)) throw new BadRequestException('Old password is incorrect');
+    await this.repository.update(id, { password: body.newPassword });
   }
 
 }

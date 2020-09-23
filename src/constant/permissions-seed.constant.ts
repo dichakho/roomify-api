@@ -2,6 +2,7 @@ export default class Permissions {
   public modules = [
     { name: 'USER', description: 'CRUD user' },
     { name: 'DESTINATION', description: 'CRUD destination' },
+    { name: 'AMENITY', description: 'CRUD amenity' },
     { name: 'PROPERTY', description: 'CRUD property' },
     { name: 'ROOM', description: 'CRUD room' },
     { name: 'CATEGORY', description: 'CRUD category' }

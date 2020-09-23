@@ -9,19 +9,12 @@ import { UserRequest } from '@src/models/users/user-request.model';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { imageFileFilter } from '@src/utils/file-upload';
 import { UpdateMyPassword } from '@src/models/users/update-my-password.model';
-import { method } from '../../constant/method-crud.constant';
 import { ModulesName } from '../../common/enums/modules.enum';
 import { UserService } from './user.service';
+import { method } from '@src/constant/config-crud.constant';
 @Crud({
   model: {
     type: User
-  },
-  params: {
-    id: {
-      field: 'id',
-      type: 'number',
-      primary: true
-    }
   },
   query: {
     exclude: ['password'],
@@ -30,15 +23,11 @@ import { UserService } from './user.service';
         allow: ['name'],
         eager: true
       }
-    },
-    limit: 10,
-    maxLimit: 50,
-    alwaysPaginate: false
-  },
-  routes: method
+    }
+  }
 })
 @Modules(ModulesName.USER)
-@ApiTags('v1/users')
+@ApiTags('users')
 @Controller('users')
 export class UserController implements CrudController<User> {
   constructor(public service: UserService) { }
@@ -79,6 +68,10 @@ export class UserController implements CrudController<User> {
     }))
   async uploadAvatar(@UploadedFile() file, @Request() req: UserRequest) {
     return this.service.updateAvatar(file.path, req);
+  }
+
+  get base(): CrudController<User> {
+    return this;
   }
 
   // @Override()
