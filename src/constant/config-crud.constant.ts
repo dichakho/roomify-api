@@ -1,5 +1,4 @@
-import { UseGuards } from '@nestjs/common';
-import { HierarchyGuard } from '@src/common/guards/hierarchy.guard';
+import { CrudGlobalConfig } from '@nestjsx/crud';
 import { MethodName } from '../common/enums/methods.enum';
 import { Methods } from '../common/decorators/methods.decorator';
 
@@ -25,4 +24,20 @@ export const method = {
   createManyBase: {
     decorators: [Methods(MethodName.POST)]
   }
+};
+
+export const configCRUD:CrudGlobalConfig = {
+  query: {
+    limit: 15,
+    maxLimit: 20,
+    alwaysPaginate: false
+  },
+  params: {
+    id: {
+      field: 'id',
+      type: 'number',
+      primary: true
+    }
+  },
+  routes: method
 };

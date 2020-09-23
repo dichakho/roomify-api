@@ -1,6 +1,6 @@
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile, Param } from '@nestjs/common';
-import { Crud, CrudController, CrudRequest, Override, ParsedRequest } from '@nestjsx/crud';
+import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from '@src/entities/user.entity';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
@@ -9,19 +9,12 @@ import { UserRequest } from '@src/models/users/user-request.model';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { imageFileFilter } from '@src/utils/file-upload';
 import { UpdateMyPassword } from '@src/models/users/update-my-password.model';
-import { method } from '../../constant/method-crud.constant';
 import { ModulesName } from '../../common/enums/modules.enum';
 import { UserService } from './user.service';
+import { method } from '@src/constant/config-crud.constant';
 @Crud({
   model: {
     type: User
-  },
-  params: {
-    id: {
-      field: 'id',
-      type: 'number',
-      primary: true
-    }
   },
   query: {
     exclude: ['password'],
@@ -30,15 +23,11 @@ import { UserService } from './user.service';
         allow: ['name'],
         eager: true
       }
-    },
-    limit: 10,
-    maxLimit: 50,
-    alwaysPaginate: false
-  },
-  routes: method
+    }
+  }
 })
 @Modules(ModulesName.USER)
-@ApiTags('v1/users')
+@ApiTags('users')
 @Controller('users')
 export class UserController implements CrudController<User> {
   constructor(public service: UserService) { }
@@ -81,6 +70,9 @@ export class UserController implements CrudController<User> {
     return this.service.updateAvatar(file.path, req);
   }
 
+  get base(): CrudController<User> {
+    return this;
+  }
 
   // @Override()
   // async deleteOne(@Param('id') id:number) {

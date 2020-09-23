@@ -1,5 +1,5 @@
 import { Seeder, Factory } from 'typeorm-seeding';
-import { Connection } from 'typeorm';
+import { Connection, QueryBuilder } from 'typeorm';
 import { User } from '../../entities/user.entity';
 import Bcrypt from '../../plugins/bcrypt.plugin';
 

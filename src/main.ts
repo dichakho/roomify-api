@@ -2,11 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
 import 'dotenv/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AppModule } from './app.module';
+import { useContainer } from 'class-validator';
+import { CrudConfigService } from '@nestjsx/crud';
+import { configCRUD } from './constant/config-crud.constant';
+import { ResponseFormatInterceptor } from './common/interceptors/response-format.interceptor';
 import { HttpExceptionFilter } from './common/exception-filter/http-exception.filter';
 import { ValidationPipe } from './common/pipes/validation.pipe';
-import { TransformInterceptor } from './common/interceptors/transform.interceptor';
-import { useContainer } from 'class-validator';
+
+CrudConfigService.load(configCRUD);
+import { AppModule } from './app.module';
 import { ValidatorModule } from './validators/validator.module';
 
 async function bootstrap() {
@@ -15,7 +19,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   useContainer(app.select(ValidatorModule), { fallbackOnErrors: true });
   app.useGlobalFilters(new HttpExceptionFilter());
-  // app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalInterceptors(new ResponseFormatInterceptor());
 
   const swaggerOptions = new DocumentBuilder()
     .setTitle('Roomify API Documentation')

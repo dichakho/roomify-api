@@ -18,19 +18,30 @@ export class AuthService extends TypeOrmCrudService<User>{
     super(repository);
   }
 
+  // async validateUser(username: string, password: string): Promise<any> {
+  //   try {
+  //     const user = await this.userService.findOneByUsername(username);
+  //     if (!user) throw new BadRequestException('Wrong credentials provided');
+  //     const isPasswordMatching = await Bcrypt.compare(password, user.password);
+  //     if (!isPasswordMatching) {
+  //       throw new BadRequestException('Wrong credentials provided');
+  //     }
+  //     return user;
+  //   } catch (error) {
+  //     console.log('LOGIN_SERVICE_ERROR', error);
+  //     throw error;
+  //   }
+  // }
   async validateUser(username: string, password: string): Promise<any> {
-    try {
-      const user = await this.userService.findOneByUsername(username);
-      if (!user) throw new BadRequestException('Wrong credentials provided');
-      const isPasswordMatching = await Bcrypt.compare(password, user.password);
-      if (!isPasswordMatching) {
-        throw new BadRequestException('Wrong credentials provided');
-      }
-      return user;
-    } catch (error) {
-      console.log('LOGIN_SERVICE_ERROR', error);
-      throw error;
+
+    const user = await this.userService.findOneByUsername(username);
+    if (!user) throw new BadRequestException('Wrong credentials provided');
+    const isPasswordMatching = await Bcrypt.compare(password, user.password);
+    if (!isPasswordMatching) {
+      throw new BadRequestException('Wrong credentials provided');
     }
+    return user;
+
   }
 
   async login(user: LoginDTO) {
@@ -51,13 +62,8 @@ export class AuthService extends TypeOrmCrudService<User>{
   }
 
   async register(userRegister: RegisterDto): Promise<void> {
-    try {
-      const result = await this.repo.save({ ...userRegister, roles: [{ id: 4 }] });
-      console.log('RESULT', result);
+    const result = await this.repo.save({ ...userRegister, roles: [{ id: 4 }] });
+    console.log('RESULT', result);
 
-    } catch (error) {
-      console.log('SERVICE_AUTHEN_REGISTER', error);
-      throw new InternalServerErrorException();
-    }
   }
 }

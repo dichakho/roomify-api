@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ManyToMany, JoinTable, Entity, Column, IsNull } from 'typeorm';
+import { ManyToMany, JoinTable, Entity, Column, IsNull, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber, IsMobilePhone } from 'class-validator';
 import { CrudValidationGroups } from '@nestjsx/crud';
@@ -22,7 +22,7 @@ export class User extends BaseEntity {
   @IsOptional({ groups: [UPDATE, CREATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsString()
-  @Column()
+  @Column({unique: true})
   username: string;
 
   @ApiProperty({ example: 'member@gmail.com' })

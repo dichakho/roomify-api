@@ -2,4 +2,7 @@ export enum ModulesName {
   CATEGORY = 'CATEGORY',
   DESTINATION = 'DESTINATION',
   USER = 'USER',
+  AMENTITY = 'AMENITY',
+  PROPERTY = 'PROPERTY',
+  ROOM = 'ROOM'
 }
