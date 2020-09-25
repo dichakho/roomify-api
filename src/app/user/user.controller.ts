@@ -12,6 +12,7 @@ import { UpdateMyPassword } from '@src/models/users/update-my-password.model';
 import { ModulesName } from '../../common/enums/modules.enum';
 import { UserService } from './user.service';
 import { method } from '@src/constant/config-crud.constant';
+import { UploadFile } from '@src/models/users/upload-file.model';
 @Crud({
   model: {
     type: User
@@ -66,7 +67,7 @@ export class UserController implements CrudController<User> {
       preservePath: true,
       fileFilter: imageFileFilter
     }))
-  async uploadAvatar(@UploadedFile() file, @Request() req: UserRequest) {
+  async uploadAvatar(@UploadedFile() file:UploadFile, @Request() req: UserRequest) {
     return this.service.updateAvatar(file.path, req);
   }
 
