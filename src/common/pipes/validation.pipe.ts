@@ -15,7 +15,7 @@ export class ValidationPipe implements PipeTransform<any> {
       errors.map(a => {
         if(a.constraints.isNotEmpty !== undefined) throw new BadRequestException(a.constraints.isNotEmpty);
         if(a.constraints.isMobilePhone) throw new BadRequestException(a.constraints.isMobilePhone);
-        if(a.constraints.isUsernameUnique) throw new BadRequestException(a.constraints.isUsernameUnique);
+        if(a.constraints.isUnique) throw new BadRequestException(a.constraints.isUnique);
         if(a.constraints.matches) throw new BadRequestException(a.constraints.matches);
         throw new BadRequestException(a.constraints);
 

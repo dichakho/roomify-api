@@ -22,6 +22,14 @@ export class UserService extends BaseService<User, UserRepository> {
     return result;
   }
 
+  async findOneByPhone(phone: string): Promise<User | undefined> {
+    const result = await this.repository.findOne({
+      where: { phone },
+      relations: ['roles']
+    });
+    return result;
+  }
+
   async updateMyInformation(user: User, userUpdate: UpdateMyUser): Promise<User> {
     const data: any = user;
     data.permissions = undefined;

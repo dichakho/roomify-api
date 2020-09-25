@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, HttpStatus, HttpException, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { UserService } from '@src/app/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import Bcrypt from '@src/plugins/bcrypt.plugin';
@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@src/entities/user.entity';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { LoginDTO } from '@src/models/auth/auth-login.model';
+import { RegisterPhoneDto } from '@src/models/auth/auth-register-phone.model';
 
 @Injectable()
 export class AuthService extends TypeOrmCrudService<User>{
@@ -66,4 +67,15 @@ export class AuthService extends TypeOrmCrudService<User>{
     console.log('RESULT', result);
 
   }
+
+  async registerPhone(userRegister: RegisterPhoneDto): Promise<void> {
+    const user = {
+      fullName: userRegister.fullName,
+      password: userRegister.password,
+      phone: userRegister.phone
+    };
+    const result = await this.repo.save({ ...userRegister, roles: [{ id: 4 }] });
+    console.log('RESULT', result);
+  }
+
 }

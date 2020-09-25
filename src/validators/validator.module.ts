@@ -1,6 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { UniqueUsernameValidator } from './auth/unique-username.validator';
 import { UserModule } from '../app/user/user.module';
+import { UniquePhoneValidator } from './auth/unique-phone.validator';
 
 @Global()
 @Module({
@@ -8,11 +9,12 @@ import { UserModule } from '../app/user/user.module';
     UserModule
   ],
   providers: [
-    UniqueUsernameValidator
-
+    UniqueUsernameValidator,
+    UniquePhoneValidator
   ],
   exports: [
-    UniqueUsernameValidator
+    UniqueUsernameValidator,
+    UniquePhoneValidator
   ]
 })
 export class ValidatorModule {
