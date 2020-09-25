@@ -3,7 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 export interface Response<T> {
-  status: number,
+  statusCode: number,
   message: string,
   data: T;
 }
@@ -14,7 +14,7 @@ export class ResponseFormatInterceptor<T> implements NestInterceptor<T, Response
     const res = context.switchToHttp().getResponse();
     const code = res.statusCode;
     if (code === 200 || code === 201 || code === 202) return next.handle().pipe(map(data => ({
-      status: code,
+      statusCode: code,
       message: 'Success !!!',
       data
     })));

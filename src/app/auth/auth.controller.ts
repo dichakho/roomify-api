@@ -1,10 +1,11 @@
 import {
   Controller,
   Post,
-  Body
+  Body, BadRequestException
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { LoginDTO } from '@src/models/auth/auth-login.model';
+import { RegisterPhoneDto } from '@src/models/auth/auth-register-phone.model';
 import { RegisterDto } from '@src/models/auth/auth-register.model';
 import { AuthService } from './auth.service';
 
@@ -21,6 +22,11 @@ export class AuthController {
   @Post('register')
   async register(@Body() body: RegisterDto) {
     return this.authService.register(body);
+  }
+
+  @Post('register-phone')
+  async registerPhone(@Body() body: RegisterPhoneDto) {
+    return this.authService.registerPhone(body);
   }
 
   @Post('reset-password')

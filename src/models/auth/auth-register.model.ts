@@ -3,11 +3,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UniqueUsernameValidator } from '../../validators/auth/unique-username.validator';
 
 export class RegisterDto {
-  // @IsNotEmpty()
-  // @IsMobilePhone('vi-VN')
-  // @Validate(UniquePhoneValidator, { message: 'Phone number already exists' })
-  // @ApiProperty({ example: '0905009313' })
-  // phone: string
 
   @IsNotEmpty()
   @Length(5, 30)
@@ -19,6 +14,11 @@ export class RegisterDto {
   @IsNotEmpty()
   @ApiProperty({ example: 'admin' })
   fullName: string
+
+  @IsNotEmpty()
+  @ApiProperty({ example: '060606' })
+  @IsString()
+  code: string
 
   @IsString()
   @IsNotEmpty()

@@ -4,7 +4,7 @@ import { UserService } from '../../app/user/user.service';
 
 @ValidatorConstraint({ name: 'isUnique', async: true })
 @Injectable()
-export class UniqueUsernameValidator implements ValidatorConstraintInterface {
+export class UniquePhoneValidator implements ValidatorConstraintInterface {
   constructor(private userService: UserService) {
   }
 
@@ -13,7 +13,7 @@ export class UniqueUsernameValidator implements ValidatorConstraintInterface {
   }
 
   async validate(value: string, validationArguments?: ValidationArguments): Promise<boolean> {
-    const result = await this.userService.findOneByUsername(value);
+    const result = await this.userService.findOneByPhone(value);
     return !result;
   }
 }

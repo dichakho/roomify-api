@@ -22,7 +22,7 @@ export class User extends BaseEntity {
   @IsOptional({ groups: [UPDATE, CREATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsString()
-  @Column({unique: true})
+  @Column({ unique: true })
   username: string;
 
   @ApiProperty({ example: 'member@gmail.com' })

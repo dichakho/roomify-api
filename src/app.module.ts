@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { DatabaseConnectionService } from './database/database-connection.service';
 import { CategoryModule } from './app/category/category.module';
 import { UserModule } from './app/user/user.module';
@@ -12,6 +13,7 @@ import { DestinationModule } from './app/destination/destination.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useClass: DatabaseConnectionService
     }),
