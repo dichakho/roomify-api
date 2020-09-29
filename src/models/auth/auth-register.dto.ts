@@ -1,5 +1,7 @@
-import { IsString, IsNotEmpty, Length, Matches, Validate } from 'class-validator';
+import { IsString, IsNotEmpty, Length, Matches, Validate, IsMobilePhone } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { TokenIDValidator } from '@src/validators/auth/tokenID.validator';
+import { UniquePhoneValidator } from '@src/validators/auth/unique-phone.validator';
 import { UniqueUsernameValidator } from '../../validators/auth/unique-username.validator';
 
 export class RegisterDto {
@@ -16,9 +18,15 @@ export class RegisterDto {
   fullName: string
 
   @IsNotEmpty()
-  @ApiProperty({ example: '060606' })
+  @IsMobilePhone('vi-VN')
+  @Validate(UniquePhoneValidator, { message: 'Phone number already exists' })
+  @ApiProperty({ example: '0905009313' })
+  phone: string
+
+  @ApiProperty({ example: 'babab21123213asd' })
   @IsString()
-  code: string
+  @Validate(TokenIDValidator, { message: 'Token is invalid' })
+  tokenID: string
 
   @IsString()
   @IsNotEmpty()

@@ -14,6 +14,7 @@ import { adminConfig } from './constant/config-firebase.constant';
 CrudConfigService.load(configCRUD);
 import { AppModule } from './app.module';
 import { ValidatorModule } from './validators/validator.module';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,7 +22,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   useContainer(app.select(ValidatorModule), { fallbackOnErrors: true });
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalInterceptors(new ResponseFormatInterceptor());
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   const swaggerOptions = new DocumentBuilder()
     .setTitle('Roomify API Documentation')

@@ -47,9 +47,8 @@ export class Destination extends BaseEntity {
   child: Destination[];
 
   @IsOptional()
-  @ApiProperty({ example: 4 })
   @IsNumber({}, { each: true })
-  propertyId: number;
+  propertyId: Array<number>;
 
   @OneToMany(() => Property, (property: Property) => property.description)
   @JoinColumn({ name: 'propertyId' })

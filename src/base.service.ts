@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { BaseEntity, Repository } from 'typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { unlinkSync } from 'fs';
+import { CrudRequest } from '@nestjsx/crud';
 import { IBaseService } from './i.base.service';
 import { uploads } from './plugins/cloudinary.plugin';
 
@@ -23,13 +24,24 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> extends 
     return image;
   }
 
-  async deleleSoft(id: number) {
-    try {
-      const result = await this.repository.softDelete(id);
-    } catch (error) {
-      console.log(error);
+  async delele(id: number) {
+    const checkData = await this.repository.findOne(id);
+    if (!checkData) throw new NotFoundException();
+    await this.repository.delete(id);
+  }
 
-    }
+  async deleteOne(req: CrudRequest) {
+
+    const { returnDeleted } = req.options.routes.deleteOneBase;
+    const found = await this.getOneOrFail(req, returnDeleted);
+    const data: any = found;
+    await this.repository.softRemove(data);
+  }
+
+  async restore(id: number) {
+    const checkData = await this.repository.findOne(id);
+    if (!checkData) throw new NotFoundException();
+    await this.repository.restore(id);
 
   }
 }

@@ -27,7 +27,12 @@ import { createSlug } from '../../utils/helper';
   query: {
     limit: 5,
     maxLimit: 50,
-    alwaysPaginate: true
+    alwaysPaginate: true,
+    join: {
+      properties: {
+        eager: true
+      }
+    }
   }
 })
 @ApiTags('categories')
