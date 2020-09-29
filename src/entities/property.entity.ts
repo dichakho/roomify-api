@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
@@ -7,6 +7,7 @@ import { Room } from './room.entity';
 import { Category } from './category.entity';
 import { Amenity } from './amenity.entity';
 import { type } from 'os';
+import { User } from './user.entity';
 
 const { UPDATE, CREATE } = CrudValidationGroups;
 @Entity('properties')
@@ -25,7 +26,7 @@ export class Property extends BaseEntity {
   @IsNotEmpty({ groups: [CREATE] })
   @IsOptional({ groups: [UPDATE] })
   @IsString()
-  @Column()
+  @Column('text')
   description: string
 
   @ApiProperty({ example: 95.37 })
@@ -71,11 +72,11 @@ export class Property extends BaseEntity {
   @IsNumber()
   roomId: number
 
-  @ManyToOne(() => Room, (room: Room) => room.property)
+  @OneToMany(() => Room, (room: Room) => room.property)
   rooms: Array<Room>
 
-  @ManyToOne(() => Category, (category:Category) =>category.properties)
-  category:Category
+  @ManyToOne(() => Category, (category: Category) => category.properties)
+  category: Category
 
   @ManyToMany(
     type => Amenity,
@@ -83,4 +84,8 @@ export class Property extends BaseEntity {
   )
   @JoinTable({ name: 'amenity_property' })
   amenities: Amenity[]
+
+  @ManyToOne(type => User, user => user.properties)
+  @JoinTable({ name: 'ownerId' })
+  owner: User
 }

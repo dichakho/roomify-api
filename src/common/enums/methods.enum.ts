@@ -5,6 +5,6 @@ export enum MethodName{
   DELETE = 'DELETE',
   GET_LIST = 'GETLIST',
   POST = 'POST',
-  DELETE_SOFT = 'DELETESOFT',
+  RESTORE = 'RESTORE',
   MANAGE_ROLE = 'MANAGEROLE'
 }

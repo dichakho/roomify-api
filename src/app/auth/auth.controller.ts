@@ -1,12 +1,12 @@
 import {
   Controller,
   Post,
-  Body, BadRequestException
+  Body
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { LoginDTO } from '@src/models/auth/auth-login.model';
-import { RegisterPhoneDto } from '@src/models/auth/auth-register-phone.model';
-import { RegisterDto } from '@src/models/auth/auth-register.model';
+import { LoginDTO } from '@src/models/auth/auth-login.dto';
+import { RegisterPhoneDto } from '@src/models/auth/auth-register-phone.dto';
+import { RegisterDto } from '@src/models/auth/auth-register.dto';
 import { AuthService } from './auth.service';
 
 @ApiTags('auth')
@@ -24,10 +24,10 @@ export class AuthController {
     return this.authService.register(body);
   }
 
-  @Post('register-phone')
-  async registerPhone(@Body() body: RegisterPhoneDto) {
-    return this.authService.registerPhone(body);
-  }
+  // @Post('register-phone')
+  // async registerPhone(@Body() body: RegisterPhoneDto) {
+  //   return this.authService.registerPhone(body);
+  // }
 
   @Post('reset-password')
   async resetPassword(@Body() { password: string }) {}

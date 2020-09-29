@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, Length, Matches, Validate, IsMobilePhone } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { UniquePhoneValidator } from '../../validators/auth/unique-phone.validator';
 import { TokenIDValidator } from '@src/validators/auth/tokenID.validator';
+import { UniquePhoneValidator } from '../../validators/auth/unique-phone.validator';
 
 export class RegisterPhoneDto {
   @IsNotEmpty()

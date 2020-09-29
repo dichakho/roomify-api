@@ -1,8 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { UpdateMyUser } from '@src/models/users/update-my-user.model';
+import { Injectable, BadRequestException, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
+import { UpdateMyUserDto } from '@src/models/users/update-my-user.dto';
 import { BaseService } from '@src/base.service';
-import { UserRequest } from '@src/models/users/user-request.model';
-import { UpdateMyPassword } from '@src/models/users/update-my-password.model';
+import { UserRequestDto } from '@src/models/users/user-request.dto';
+import { UpdateMyPasswordDto } from '@src/models/users/update-my-password.dto';
 import { User } from '../../entities/user.entity';
 import { UserRepository } from './user.repository';
 import Bcrypt from '../../plugins/bcrypt.plugin';
@@ -30,7 +30,7 @@ export class UserService extends BaseService<User, UserRepository> {
     return result;
   }
 
-  async updateMyInformation(user: User, userUpdate: UpdateMyUser): Promise<User> {
+  async updateMyInformation(user: User, userUpdate: UpdateMyUserDto): Promise<User> {
     const data: any = user;
     data.permissions = undefined;
     if (userUpdate.phone !== undefined) {
@@ -49,7 +49,7 @@ export class UserService extends BaseService<User, UserRepository> {
     return result;
   }
 
-  async updateAvatar(path: string, req: UserRequest): Promise<any> {
+  async updateAvatar(path: string, req: UserRequestDto): Promise<any> {
     const avatar = await this.uploadImage(path, req.user.fullName);
     await this.repository.update({ id: req.user.id }, { avatar });
     return {
@@ -57,7 +57,7 @@ export class UserService extends BaseService<User, UserRepository> {
     };
   }
 
-  async updateMyPassword(id: number, body: UpdateMyPassword) {
+  async updateMyPassword(id: number, body: UpdateMyPasswordDto) {
     const user = await this.repository.findOne({
       select: ['password'],
       where: {

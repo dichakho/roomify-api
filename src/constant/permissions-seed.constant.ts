@@ -16,8 +16,7 @@ export default class Permissions {
     { name: 'PATCH', description: 'Update object' },
     { name: 'GETLIST', description: 'Get list information' },
     { name: 'MANAGEROLE', description: 'Change role of user' },
-    { name: 'DELETESOFT', description: 'Delete object but already exist' }
-
+    { name: 'RESTORE', description: 'Restore data was deleted' }
   ];
 
   public roles = [
@@ -45,7 +44,23 @@ export default class Permissions {
       methods: this.methods
     },
     {
-      module: 'ROLE',
+      module: 'DESTINATION',
+      methods: this.methods
+    },
+    {
+      module: 'AMENITY',
+      methods: this.methods
+    },
+    {
+      module: 'PROPERTY',
+      methods: this.methods
+    },
+    {
+      module: 'ROOM',
+      methods: this.methods
+    },
+    {
+      module: 'CATEGORY',
       methods: this.methods
     }
   ]
@@ -56,12 +71,97 @@ export default class Permissions {
       methods: [
         { name: 'DELETE', description: 'Delete object' },
         { name: 'PATCH', description: 'Update object' },
-        { name: 'GET', description: 'Retrieve object' }
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'RESTORE', description: 'Restore data was deleted' },
+        { name: 'GETLIST', description: 'Get list information' }
       ]
     },
     {
-      module: 'ROLE',
+      module: 'DESTINATION',
       methods: this.methods
+    },
+    {
+      module: 'AMENITY',
+      methods: this.methods
+    },
+    {
+      module: 'PROPERTY',
+      methods: this.methods
+    },
+    {
+      module: 'ROOM',
+      methods: this.methods
+    },
+    {
+      module: 'CATEGORY',
+      methods: this.methods
+    }
+  ]
+
+  public owner_role_permission = [
+    {
+      module: 'USER',
+      methods: [
+        { name: 'DELETE', description: 'Delete object' },
+        { name: 'PATCH', description: 'Update object' },
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'RESTORE', description: 'Restore data was deleted' },
+        { name: 'GETLIST', description: 'Get list information' }
+
+      ]
+    },
+    {
+      module: 'DESTINATION',
+      methods: []
+    },
+    {
+      module: 'AMENITY',
+      methods: this.methods
+    },
+    {
+      module: 'PROPERTY',
+      methods: this.methods
+    },
+    {
+      module: 'ROOM',
+      methods: this.methods
+    },
+    {
+      module: 'CATEGORY',
+      methods: [
+        { name: 'GETLIST', description: 'Get list information' }
+      ]
+    }
+  ]
+
+  public user_role_permission = [
+    {
+      module: 'USER',
+      methods: []
+    },
+    {
+      module: 'DESTINATION',
+      methods: []
+    },
+    {
+      module: 'AMENITY',
+      methods: []
+    },
+    {
+      module: 'PROPERTY',
+      methods: [
+        { name: 'GETLIST', description: 'Get list information' }
+      ]
+    },
+    {
+      module: 'ROOM',
+      methods: [
+        { name: 'GETLIST', description: 'Get list information' }
+      ]
+    },
+    {
+      module: 'CATEGORY',
+      methods: []
     }
   ]
 
@@ -73,6 +173,14 @@ export default class Permissions {
     {
       role: 'MODERATOR',
       permissions: this.moderator_role_permission
+    },
+    {
+      role: 'OWNER',
+      permissions: this.owner_role_permission
+    },
+    {
+      role: 'USER',
+      permissions: this.user_role_permission
     }
   ]
 }
