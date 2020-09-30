@@ -8,6 +8,7 @@ export class HttpExceptionFilter implements ExceptionFilter<HttpException> {
   async catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
+
     // const request = ctx.getRequest();
     const statusCode = exception.getStatus();
     const exceptionResponse: any = exception.getResponse();
@@ -53,6 +54,13 @@ export class HttpExceptionFilter implements ExceptionFilter<HttpException> {
           statusCode,
           message: customMessage || 'Forbidden resource',
           error: 'Forbidden'
+        });
+        break;
+      case 404:
+        response.status(statusCode).json({
+          statusCode,
+          message: customMessage || 'Not Found',
+          error: 'Not Found'
         });
         break;
       case 500:

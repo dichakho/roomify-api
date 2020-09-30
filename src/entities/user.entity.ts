@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ManyToMany, JoinTable, Entity, Column, IsNull, Unique } from 'typeorm';
+import { ManyToMany, JoinTable, Entity, Column, IsNull, Unique, OneToMany, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber, IsMobilePhone } from 'class-validator';
 import { CrudValidationGroups } from '@nestjsx/crud';
@@ -7,6 +7,7 @@ import { BaseEntity } from './base.entity';
 import { Role } from './roles.entity';
 import { UserStatus } from '../common/enums/userStatus.enum';
 import { enumToArray } from '../utils/helper';
+import { Property } from './property.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('users')
@@ -81,4 +82,7 @@ export class User extends BaseEntity {
   @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
   @JoinTable({ name: 'user_roles' })
   roles: Role[];
+
+  @OneToMany(type => Property, property => property.owner)
+  properties: Array<Property>;
 }

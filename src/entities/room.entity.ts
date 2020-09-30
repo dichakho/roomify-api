@@ -1,11 +1,10 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { IsString, IsNotEmpty, IsOptional, IsNumber, IsIn } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { RoomStatus } from '../common/enums/roomStatus.enum';
 import { enumToArray } from '../utils/helper';
 import { Property } from './property.entity';
-import { Category } from './category.entity';
 
 const { UPDATE, CREATE } = CrudValidationGroups;
 @Entity('rooms')

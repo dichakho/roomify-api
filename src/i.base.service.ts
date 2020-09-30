@@ -3,5 +3,7 @@ export interface IBaseService<T> {
 
   uploadImage(path : string, folder: string): Promise<string>
 
-  deleleSoft(id : number)
+  delele(id : number)
+
+  restore(id:number)
 }

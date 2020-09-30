@@ -30,7 +30,7 @@ export const configCRUD:CrudGlobalConfig = {
   query: {
     limit: 15,
     maxLimit: 20,
-    alwaysPaginate: false
+    alwaysPaginate: true
   },
   params: {
     id: {

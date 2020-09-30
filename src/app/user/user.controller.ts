@@ -1,18 +1,20 @@
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
+import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { User } from '@src/entities/user.entity';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
-import { UpdateMyUser } from '@src/models/users/update-my-user.model';
-import { UserRequest } from '@src/models/users/user-request.model';
+import { UpdateMyUserDto } from '@src/models/users/update-my-user.dto';
+import { UserRequestDto } from '@src/models/users/user-request.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { imageFileFilter } from '@src/utils/file-upload';
-import { UpdateMyPassword } from '@src/models/users/update-my-password.model';
-import { ModulesName } from '../../common/enums/modules.enum';
-import { UserService } from './user.service';
+import { UpdateMyPasswordDto } from '@src/models/users/update-my-password.dto';
 import { method } from '@src/constant/config-crud.constant';
-import { UploadFile } from '@src/models/users/upload-file.model';
+import { UploadFileDto } from '@src/models/users/upload-file.dto';
+import { Methods } from '@src/common/decorators/methods.decorator';
+import { MethodName } from '@src/common/enums/methods.enum';
+import { UserService } from './user.service';
+import { ModulesName } from '../../common/enums/modules.enum';
 @Crud({
   model: {
     type: User
@@ -47,14 +49,14 @@ export class UserController implements CrudController<User> {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Patch('me')
-  async updateMe(@Request() req: UserRequest, @Body() body: UpdateMyUser) {
+  async updateMe(@Request() req: UserRequestDto, @Body() body: UpdateMyUserDto) {
     return this.service.updateMyInformation(req.user, body);
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Patch('password')
-  async updateMyPassword(@Request() req: UserRequest, @Body() body: UpdateMyPassword) {
+  async updateMyPassword(@Request() req: UserRequestDto, @Body() body: UpdateMyPasswordDto) {
     return this.service.updateMyPassword(req.user.id, body);
   }
 
@@ -67,8 +69,20 @@ export class UserController implements CrudController<User> {
       preservePath: true,
       fileFilter: imageFileFilter
     }))
-  async uploadAvatar(@UploadedFile() file:UploadFile, @Request() req: UserRequest) {
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Avatar of user',
+    type: UploadFileDto
+  })
+  async uploadAvatar(@UploadedFile() file, @Request() req: UserRequestDto) {
     return this.service.updateAvatar(file.path, req);
+  }
+
+  @ApiBearerAuth()
+  @Patch('restore/:id')
+  @Methods(MethodName.PATCH)
+  restore(@Param('id', ParseIntPipe) id: number) {
+    return this.service.restore(id);
   }
 
   get base(): CrudController<User> {
@@ -76,7 +90,10 @@ export class UserController implements CrudController<User> {
   }
 
   // @Override()
-  // async deleteOne(@Param('id') id:number) {
+  // @ApiBearerAuth()
+  // @Methods(MethodName.DELETE)
+  // async deleteOne(@Param('id') id: number) {
   //   this.service.deleleSoft(id);
   // }
+
 }

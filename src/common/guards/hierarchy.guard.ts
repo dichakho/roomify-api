@@ -5,7 +5,7 @@ import { createQueryBuilder } from 'typeorm';
 
 @Injectable()
 export class HierarchyGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private reflector: Reflector) { }
 
   async checkRank(id: number, roleId: number): Promise<boolean> {
     const userQuery = await createQueryBuilder().select('user').from(User, 'user').where('user.id =:id', { id }).leftJoinAndSelect('user.roles', 'roles').getOne();
@@ -18,11 +18,15 @@ export class HierarchyGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const methods = this.reflector.get<string[]>('methods', context.getHandler());
+    const modules = this.reflector.get<string[]>('modules', context.getClass());
 
-    if(methods[0] !== 'DELETE') return true;
-    const request = context.switchToHttp().getRequest();
-    const { user } = request;
-    const param = request.params;
-    return this.checkRank(param.id, user.roles[0].id);
+    if (methods[0] === 'DELETE' && modules[0] === 'USER') {
+      const request = context.switchToHttp().getRequest();
+      const { user } = request;
+      const param = request.params;
+      return this.checkRank(param.id, user.roles[0].id);
+    }
+    return true;
+
   }
 }
