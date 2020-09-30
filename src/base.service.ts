@@ -7,8 +7,9 @@ import { IBaseService } from './i.base.service';
 import { uploads } from './plugins/cloudinary.plugin';
 
 @Injectable()
-export class BaseService<T extends BaseEntity, R extends Repository<T>> extends TypeOrmCrudService<T> implements IBaseService<T> {
-
+export class BaseService<T extends BaseEntity, R extends Repository<T>>
+  extends TypeOrmCrudService<T>
+  implements IBaseService<T> {
   constructor(protected repository: R) {
     super(repository);
   }
@@ -31,7 +32,6 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> extends 
   }
 
   async deleteOne(req: CrudRequest) {
-
     const { returnDeleted } = req.options.routes.deleteOneBase;
     const found = await this.getOneOrFail(req, returnDeleted);
     const data: any = found;
@@ -42,6 +42,5 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> extends 
     const checkData = await this.repository.findOne(id);
     if (!checkData) throw new NotFoundException();
     await this.repository.restore(id);
-
   }
 }
