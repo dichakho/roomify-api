@@ -1,3 +1,5 @@
+import { DeepPartial } from 'typeorm';
+
 export interface IBaseService<T> {
   index(): Promise<T[]>
 
@@ -6,4 +8,5 @@ export interface IBaseService<T> {
   delele(id : number)
 
   restore(id:number)
+  createBulkData(dto: DeepPartial<T>[]): Promise<T[]>
 }
