@@ -4,6 +4,8 @@ import { Injectable } from '@nestjs/common';
 import config from 'config';
 import { UserRepository } from '@src/app/user/user.repository';
 import _ from 'lodash';
+import { Permission } from '@src/entities/permission.entity';
+import { Role } from '@src/entities/roles.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -18,12 +20,25 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     const userPermissions = await this.userRepository.findOne({
       where: { id: payload.id },
-      relations: ['roles', 'roles.permissions']
+      relations: ['roles', 'roles.permissions', 'userPermission']
     });
     const permissions = [];
-    userPermissions.roles.map((u: any) => {
-      u.permissions.map((p: any) => {
-        permissions.push(`${p.module.name}_${p.method.name}`);
+    const deletedPermissions = [];
+    userPermissions.userPermission.map(t => {
+      if (t.status === 'DELETE') deletedPermissions.push(t.permission.id);
+      else permissions.push(`${t.permission.module.name}_${t.permission.method.name}`);
+    });
+    userPermissions.roles.map((u: Role) => {
+      u.permissions.map((p: Permission) => {
+        if (deletedPermissions.length !== 0) {
+          deletedPermissions.map(temp => {
+            if (p.id !== temp) permissions.push(`${p.module.name}_${p.method.name}`);
+          });
+        }
+        else {
+          permissions.push(`${p.module.name}_${p.method.name}`);
+        }
+
       });
     });
     userPermissions.password = undefined;
@@ -31,6 +46,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     userPermissions.updatedAt = undefined;
     userPermissions.deletedAt = undefined;
     userPermissions.roles[0].permissions = undefined;
+    userPermissions.userPermission = undefined;
     return { ...userPermissions, permissions };
 
   }

@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, JoinColumn, Column, ManyToMany } from 'typeorm';
+import { Entity, ManyToOne, JoinColumn, Column, ManyToMany, OneToMany } from 'typeorm';
 import { from } from 'rxjs';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsOptional, IsNotEmpty } from 'class-validator';
@@ -7,6 +7,7 @@ import { BaseEntity } from './base.entity';
 import { Module } from './module.entity';
 import { Method } from './method.entity';
 import { Role } from './roles.entity';
+import { UserPermission } from './user-permission.entity';
 
 const { UPDATE, CREATE } = CrudValidationGroups;
 @Entity('permissions')
@@ -46,4 +47,10 @@ export class Permission extends BaseEntity {
     role => role.permissions
   )
   roles: Role[];
+
+  @OneToMany(
+    type => UserPermission,
+    userpermission => userpermission.permission
+  )
+  userPermissions: Array<UserPermission>
 }

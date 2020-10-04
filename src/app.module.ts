@@ -10,6 +10,7 @@ import { PropertyModule } from './app/property/property.module';
 import { AmenityModule } from './app/amenity/amenity.module';
 import { RoomModule } from './app/room/room.module';
 import { DestinationModule } from './app/destination/destination.module';
+import { UserPermissionModule } from './app/user-permission/user-permission.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { DestinationModule } from './app/destination/destination.module';
     PropertyModule,
     AmenityModule,
     RoomModule,
-    DestinationModule
+    DestinationModule,
+    UserPermissionModule
   ]
 })
 export class AppModule { }

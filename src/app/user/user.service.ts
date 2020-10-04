@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { UpdateMyUserDto } from '@src/models/users/update-my-user.dto';
 import { BaseService } from '@src/base.service';
 import { UserRequestDto } from '@src/models/users/user-request.dto';

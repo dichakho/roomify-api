@@ -33,10 +33,7 @@ export class Category extends TreeBase {
   @TreeParent()
   parent: Category;
 
-  @OneToMany(
-    type => Property,
-    property => property.category
-  )
+  @OneToMany(() => Property, (property: Property) => property.category)
   properties: Property[];
 
   // @BeforeInsert()

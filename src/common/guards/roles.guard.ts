@@ -19,8 +19,6 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const methods = this.reflector.get<string[]>('methods', context.getHandler());
-    console.log('METHODS ----->', methods);
-
     const modules = this.reflector.get<string[]>('modules', context.getClass());
     const requirePermissions = [`${modules[0]}_${methods[0]}`];
     const request = context.switchToHttp().getRequest();

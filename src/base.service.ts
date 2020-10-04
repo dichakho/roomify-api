@@ -1,5 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { BaseEntity, Repository } from 'typeorm';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BaseEntity, DeepPartial, Repository } from 'typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { unlinkSync } from 'fs';
 import { CrudRequest } from '@nestjsx/crud';
@@ -7,7 +7,7 @@ import { IBaseService } from './i.base.service';
 import { uploads } from './plugins/cloudinary.plugin';
 
 @Injectable()
-export class BaseService<T extends BaseEntity, R extends Repository<T>> extends TypeOrmCrudService<T> implements IBaseService<T> {
+export abstract class BaseService<T extends BaseEntity, R extends Repository<T>> extends TypeOrmCrudService<T> implements IBaseService<T> {
 
   constructor(protected repository: R) {
     super(repository);
@@ -19,7 +19,6 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> extends 
 
   async uploadImage(path: string, folder: string): Promise<string> {
     const image = await uploads(path, folder);
-    console.log('IMAGE --->', image);
     await unlinkSync(path);
     return image;
   }
@@ -43,5 +42,10 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> extends 
     if (!checkData) throw new NotFoundException();
     await this.repository.restore(id);
 
+  }
+
+  createBulkData(dto: DeepPartial<T>[]): Promise<T[]> {
+    if (dto.length === 0) throw new BadRequestException('Nothing to change. Data is empty !!!');
+    return this.repository.save(dto, { chunk: 50 });
   }
 }
