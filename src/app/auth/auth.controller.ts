@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { LoginDTO } from '@src/models/auth/auth-login.dto';
-import { RegisterPhoneDto } from '@src/models/auth/auth-register-phone.dto';
 import { RegisterDto } from '@src/models/auth/auth-register.dto';
 import { AuthService } from './auth.service';
 

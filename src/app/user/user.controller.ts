@@ -1,6 +1,6 @@
 import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
-import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile, Param, Delete, ParseIntPipe } from '@nestjs/common';
-import { Crud, CrudController, Override } from '@nestjsx/crud';
+import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile, Param, ParseIntPipe } from '@nestjs/common';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from '@src/entities/user.entity';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
@@ -9,12 +9,12 @@ import { UserRequestDto } from '@src/models/users/user-request.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { imageFileFilter } from '@src/utils/file-upload';
 import { UpdateMyPasswordDto } from '@src/models/users/update-my-password.dto';
-import { method } from '@src/constant/config-crud.constant';
 import { UploadFileDto } from '@src/models/users/upload-file.dto';
 import { Methods } from '@src/common/decorators/methods.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
 import { UserService } from './user.service';
 import { ModulesName } from '../../common/enums/modules.enum';
+import { UserPermissionService } from '../user-permission/user-permission.service';
 @Crud({
   model: {
     type: User

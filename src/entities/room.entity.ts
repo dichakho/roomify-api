@@ -1,17 +1,15 @@
-import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { IsString, IsNotEmpty, IsOptional, IsNumber, IsIn } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { RoomStatus } from '../common/enums/roomStatus.enum';
 import { enumToArray } from '../utils/helper';
 import { Property } from './property.entity';
+import { BaseEntity } from './base.entity';
 
 const { UPDATE, CREATE } = CrudValidationGroups;
 @Entity('rooms')
 export class Room extends BaseEntity {
-  @PrimaryColumn()
-  id: number
-
   @ApiProperty({ example: 'Chung cu' })
   @IsNotEmpty({ groups: [CREATE] })
   @IsOptional({ groups: [UPDATE] })
@@ -41,7 +39,7 @@ export class Room extends BaseEntity {
   @ApiProperty({ example: ['https://lh3.googleusercontent.com/50RuktOOgpl8k61d_IEbYGUvewvlrD6kzhMCzPQ19dAU589lTUKV3OecQOfRnVO2PfMZyHC2FeXfDRWY=w1080-h608-p-no-v0'] })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
-  @Column("text", { array: true })
+  @Column('text', { array: true })
   images: Array<string>
 
   @ApiProperty({ example: 'OPEN' })

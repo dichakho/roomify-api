@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@src/entities/user.entity';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { LoginDTO } from '@src/models/auth/auth-login.dto';
-import { RegisterPhoneDto } from '@src/models/auth/auth-register-phone.dto';
 
 @Injectable()
 export class AuthService extends TypeOrmCrudService<User>{
@@ -59,14 +58,14 @@ export class AuthService extends TypeOrmCrudService<User>{
 
   }
 
-  async registerPhone(userRegister: RegisterPhoneDto): Promise<void> {
-    const user = {
-      fullName: userRegister.fullName,
-      password: userRegister.password,
-      phone: userRegister.phone
-    };
-    const result = await this.repo.save({ ...user, roles: [{ id: 4 }] });
-    console.log('RESULT', result);
-  }
+  // async registerPhone(userRegister: RegisterPhoneDto): Promise<void> {
+  //   const user = {
+  //     fullName: userRegister.fullName,
+  //     password: userRegister.password,
+  //     phone: userRegister.phone
+  //   };
+  //   const result = await this.repo.save({ ...user, roles: [{ id: 4 }] });
+  //   console.log('RESULT', result);
+  // }
 
 }
