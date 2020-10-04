@@ -30,7 +30,6 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
   }
 
   async deleteOne(req: CrudRequest) {
-
     const { returnDeleted } = req.options.routes.deleteOneBase;
     const found = await this.getOneOrFail(req, returnDeleted);
     const data: any = found;
@@ -41,7 +40,6 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     const checkData = await this.repository.findOne(id);
     if (!checkData) throw new NotFoundException();
     await this.repository.restore(id);
-
   }
 
   createBulkData(dto: DeepPartial<T>[]): Promise<T[]> {
