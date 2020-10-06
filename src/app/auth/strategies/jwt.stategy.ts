@@ -20,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     const userPermissions = await this.userRepository.findOne({
       where: { id: payload.id },
-      relations: ['roles', 'roles.permissions', 'userPermission']
+      relations: ['roles', 'roles.permissions', 'userPermission', 'userPermission.permission']
     });
     const permissions = [];
     const deletedPermissions = [];
@@ -31,9 +31,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     userPermissions.roles.map((u: Role) => {
       u.permissions.map((p: Permission) => {
         if (deletedPermissions.length !== 0) {
-          deletedPermissions.map(temp => {
-            if (p.id !== temp) permissions.push(`${p.module.name}_${p.method.name}`);
-          });
+          let i = 0;
+          do {
+            if(deletedPermissions[i] === p.id) {
+              deletedPermissions.splice(i, 1);
+              break;
+            }
+            if(i === deletedPermissions.length - 1) permissions.push(`${p.module.name}_${p.method.name}`);
+            i += 1;
+          } while(i < deletedPermissions.length);
+
         }
         else {
           permissions.push(`${p.module.name}_${p.method.name}`);

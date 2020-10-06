@@ -5,7 +5,8 @@ export default class Permissions {
     { name: 'AMENITY', description: 'CRUD amenity' },
     { name: 'PROPERTY', description: 'CRUD property' },
     { name: 'ROOM', description: 'CRUD room' },
-    { name: 'CATEGORY', description: 'CRUD category' }
+    { name: 'CATEGORY', description: 'CRUD category' },
+    { name: 'USER_PERMISSION', description: 'CRUD user permission' }
   ];
 
   public methods = [
@@ -62,6 +63,10 @@ export default class Permissions {
     {
       module: 'CATEGORY',
       methods: this.methods
+    },
+    {
+      module: 'USER_PERMISSION',
+      methods: this.methods
     }
   ]
 
@@ -94,6 +99,10 @@ export default class Permissions {
     },
     {
       module: 'CATEGORY',
+      methods: this.methods
+    },
+    {
+      module: 'USER_PERMISSION',
       methods: this.methods
     }
   ]
