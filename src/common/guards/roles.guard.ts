@@ -23,6 +23,7 @@ export class RolesGuard implements CanActivate {
     const requirePermissions = [`${modules[0]}_${methods[0]}`];
     const request = context.switchToHttp().getRequest();
     const { user } = request;
+
     return this.matchPermissions(user.permissions, requirePermissions);
   }
 }

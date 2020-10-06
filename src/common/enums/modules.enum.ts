@@ -4,5 +4,6 @@ export enum ModulesName {
   USER = 'USER',
   AMENTITY = 'AMENITY',
   PROPERTY = 'PROPERTY',
-  ROOM = 'ROOM'
+  ROOM = 'ROOM',
+  USER_PERMISSION = 'USER_PERMISSION'
 }

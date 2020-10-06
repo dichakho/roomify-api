@@ -1,7 +1,6 @@
 import { Entity, Column, TreeChildren, TreeParent, Tree, Unique, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsEmpty, IsNotEmpty } from 'class-validator';
-import slug from 'slug';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { TreeBase } from './treebase.entity';
 import { Property } from './property.entity';
