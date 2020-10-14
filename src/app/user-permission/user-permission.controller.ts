@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Post, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { Methods } from '@src/common/decorators/methods.decorator';
@@ -22,6 +22,6 @@ export class UserPermissionController {
   @Post()
   createMany(@Body() body: AddDeletePermissions) {
     console.log(body);
-    return this.service.createBulkData(body.data);
+    return this.service.createBulk(body);
   }
 }

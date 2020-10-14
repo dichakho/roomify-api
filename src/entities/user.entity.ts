@@ -79,7 +79,7 @@ export class User extends BaseEntity {
   @IsNumber({}, { each: true })
   roleIds: Array<number>;
 
-  @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
+  @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true})
   @JoinTable({ name: 'user_roles' })
   roles: Role[];
 
@@ -87,5 +87,5 @@ export class User extends BaseEntity {
   properties: Array<Property>;
 
   @OneToMany(() => UserPermission, (userpermission: UserPermission) => userpermission.user)
-  userPermission : Array<UserPermission>
+  userPermissions : Array<UserPermission>
 }

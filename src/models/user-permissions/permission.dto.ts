@@ -1,20 +1,14 @@
 // eslint-disable-next-line max-classes-per-file
 import { ApiProperty } from '@nestjs/swagger';
-import { UserPermissionStatus } from '@src/common/enums/userPermissionStatus.enum';
+import { IsNotEmpty, IsNumber, Validate } from 'class-validator';
 
 export class AddDeletePermissions {
-  data: AddDeletePermission[]
-}
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty({ example: 2 })
+  userId: number
 
-class AddDeletePermission {
-  @ApiProperty({ example: { id: 2 } })
-  user: {
-    id: number
-  };
-
-  @ApiProperty({ example: { id: 2 } })
-  permission: {
-    id: number
-  }
-
+  @IsNotEmpty()
+  @ApiProperty({ example: [2, 3] })
+  permissionIds: number[]
 }

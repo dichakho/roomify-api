@@ -10,10 +10,10 @@ import { User } from './user.entity';
 @Entity('user_permission')
 export class UserPermission extends BaseEntity {
 
-  @ManyToOne(() => User, (user: User) => user.userPermission)
+  @ManyToOne(() => User, (user: User) => user.userPermissions)
   user: User
 
-  @ManyToOne(() => Permission, (permission: Permission) => permission.userPermissions)
+  @ManyToOne(() => Permission, (permission: Permission) => permission.userPermissions, { eager: true })
   permission: Permission
 
   @Column()

@@ -14,7 +14,6 @@ import { Methods } from '@src/common/decorators/methods.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
 import { UserService } from './user.service';
 import { ModulesName } from '../../common/enums/modules.enum';
-import { UserPermissionService } from '../user-permission/user-permission.service';
 @Crud({
   model: {
     type: User
