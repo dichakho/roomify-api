@@ -1,5 +1,5 @@
 import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
-import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile, Param, ParseIntPipe, Query, UsePipes, ValidationPipe, Post, Delete } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from '@src/entities/user.entity';
 import { Modules } from '@src/common/decorators/modules.decorator';
@@ -14,6 +14,8 @@ import { Methods } from '@src/common/decorators/methods.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
 import { UserService } from './user.service';
 import { ModulesName } from '../../common/enums/modules.enum';
+import { GetMany } from '@src/models/base/getMany.dto';
+import { PermissionDTO } from '@src/models/users/permissionId.dto';
 @Crud({
   model: {
     type: User
@@ -82,6 +84,24 @@ export class UserController implements CrudController<User> {
   @Methods(MethodName.PATCH)
   restore(@Param('id', ParseIntPipe) id: number) {
     return this.service.restore(id);
+  }
+
+  @Get('/:id/permissions')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  getPermissionOfUser(@Param('id', ParseIntPipe) userId: number, @Query() metadata: GetMany) {
+    return this.service.getPermissionOfUser(userId, metadata);
+  }
+
+  @Post('/:id/permissions')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  createPermissionOfUser(@Param('id', ParseIntPipe) userId: number, @Body() body: PermissionDTO) {
+    return this.service.createBulk(userId, body.permissionIds);
+  }
+
+  @Delete('/:id/permissions/:permissionId')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  deletePermissionOfUser(@Param('id', ParseIntPipe) userId: number, @Param('permissionId', ParseIntPipe) permissionId: number) {
+    return this.service.deleteMany(userId, permissionId);
   }
 
   get base(): CrudController<User> {

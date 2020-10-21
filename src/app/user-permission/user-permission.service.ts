@@ -11,28 +11,40 @@ export class UserPermissionService extends BaseService<UserPermission, UserPermi
     super(repository);
   }
 
-  async deleteMany(dto: any) {
-    const { data } = dto;
-    let promise;
-    const queries = await this.repository.find({ where: { user: data[0].user, status: 'ADD' }, relations: ['permission'] });
-    console.log('QUERY ---->', queries);
-    data.map(async (d: UserPermission) => {
-      if (queries.length > 0) {
-        promise = new Promise((resolve, reject) => {
-          for (let i = 0; i < queries.length; i += 1) {
-            if (queries[i].permission.id === d.permission.id) {
-              this.repository.delete(queries[i].id);
-              queries.splice(i, 1);
-              break;
-            }
-            if (i === queries.length - 1) this.repository.save({ ...d, status: 'DELETE' });
+  async deleteMany(body: AddDeletePermissions): Promise<any> {
+    const { permissionIds } = body;
+    const { userId } = body;
+    const temp = [];
+    const queries = await this.userRepository.findOne({ where: { id: userId }, relations: ['userPermissions', 'roles', 'roles.permissions'] });
+    if (queries === undefined) {
+      throw new NotFoundException('User not found');
+    }
+    queries.roles.forEach(role => {
+      permissionIds.forEach(permissionId => {
+        let status = 0;
+        queries.userPermissions.forEach(userPermission => {
+          if (userPermission.permission.id === permissionId && userPermission.status === 'ADD') {
+            this.repository.delete({ id: userPermission.id });
+            status = 1;
+          }
+          if (userPermission.permission.id === permissionId && userPermission.status === 'DELETE') {
+            throw new BadRequestException(`This user don't have permission with ${userPermission.permission.method.name} ${userPermission.permission.module.name}`);
           }
         });
-      }
-      else {
-        await this.repository.save({ ...d, status: 'DELETE' });
-      }
+        if (status === 0) {
+          for (let i = 0; i < role.permissions.length; i += 1) {
+            if (permissionId === role.permissions[i].id) {
+              temp.push({ user: { id: userId }, permission: { id: permissionId }, status: 'DELETE' });
+              break;
+            }
+            if (i === role.permissions.length - 1) {
+              throw new BadRequestException(`This user don't have permission with id: ${permissionId}`);
+            }
+          }
+        }
+      });
     });
+    if(temp.length > 0) await this.repository.save(temp);
   }
 
   async createBulk(body: AddDeletePermissions): Promise<UserPermission[]> {
@@ -46,14 +58,13 @@ export class UserPermissionService extends BaseService<UserPermission, UserPermi
     queries.roles.map(role => {
       permissionIds.forEach(permissionId => {
         let status = 0;
-        queries.userPermissions.forEach(async userPermission => {
+        queries.userPermissions.forEach(userPermission => {
           if (userPermission.permission.id === permissionId && userPermission.status === 'DELETE') {
-            await this.repository.delete({ id: userPermission.permission.id });
+            this.repository.delete({ id: userPermission.id });
             status = 1;
           }
           if (userPermission.permission.id === permissionId && userPermission.status === 'ADD') {
-            // throw new BadRequestException(`Already existed permission with ${userPermission.permission.method.name} ${userPermission.permission.module.name}`);
-            status = 1;
+            throw new BadRequestException(`Already existed permission with ${userPermission.permission.method.name} ${userPermission.permission.module.name}`);
           }
         });
         if (status === 0) {
@@ -67,7 +78,10 @@ export class UserPermissionService extends BaseService<UserPermission, UserPermi
       });
     });
     let result: UserPermission[];
-    if (temp.length !== 0) result = await this.repository.save(temp);
+    if (temp.length !== 0) {
+      result = await this.repository.save(temp);
+    }
     return result;
   }
+
 }
