@@ -1,11 +1,18 @@
 import {
   Controller,
   Post,
-  Body
+  Body,
+  Get,
+  Patch,
+  UseGuards,
+  Request
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
 import { LoginDTO } from '@src/models/auth/auth-login.dto';
 import { RegisterDto } from '@src/models/auth/auth-register.dto';
+import { UpdateMyUserDto } from '@src/models/users/update-my-user.dto';
+import { UserRequestDto } from '@src/models/users/user-request.dto';
 import { AuthService } from './auth.service';
 
 @ApiTags('auth')
@@ -21,6 +28,24 @@ export class AuthController {
   @Post('register')
   async register(@Body() body: RegisterDto) {
     return this.authService.register(body);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getMe(@Request() req) {
+    const { user } = req;
+    user.role = user.roles[0].name;
+    user.roles = undefined;
+    user.permissions = undefined;
+    return user;
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Patch('me')
+  async updateMe(@Request() req: UserRequestDto, @Body() body: UpdateMyUserDto) {
+    return this.authService.updateMyInformation(req.user, body);
   }
 
   // @Post('register-phone')

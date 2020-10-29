@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@src/entities/user.entity';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { LoginDTO } from '@src/models/auth/auth-login.dto';
+import { UpdateMyUserDto } from '@src/models/users/update-my-user.dto';
 
 @Injectable()
 export class AuthService extends TypeOrmCrudService<User>{
@@ -56,6 +57,25 @@ export class AuthService extends TypeOrmCrudService<User>{
     const result = await this.repo.save({ ...user, roles: [{ id: 4 }] });
     console.log('RESULT', result);
 
+  }
+
+  async updateMyInformation(user: User, userUpdate: UpdateMyUserDto): Promise<User> {
+    const data: any = user;
+    data.permissions = undefined;
+    if (userUpdate.phone !== undefined) {
+      data.phone = userUpdate.phone;
+    }
+    if (userUpdate.fullName !== undefined) {
+      data.fullName = userUpdate.fullName;
+    }
+    if (userUpdate.email !== undefined) {
+      data.email = userUpdate.email;
+    }
+    if (userUpdate.avatar !== undefined) {
+      data.avatar = userUpdate.avatar;
+    }
+    const result = await this.repo.save(data);
+    return result;
   }
 
   // async registerPhone(userRegister: RegisterPhoneDto): Promise<void> {

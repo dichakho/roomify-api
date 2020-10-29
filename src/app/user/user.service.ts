@@ -173,7 +173,6 @@ export class UserService extends BaseService<User, UserRepository> {
     queries.roles.forEach(role => {
       let status = 0;
       queries.userPermissions.forEach(userPermission => {
-        console.log('hehehehehehehehe', userPermission);
 
         if (userPermission.permission.id === permissionId && userPermission.status === 'ADD') {
           this.userPermissionRepo.delete({ id: userPermission.id });

@@ -8,6 +8,8 @@ import { UserStatus } from '../common/enums/userStatus.enum';
 import { enumToArray } from '../utils/helper';
 import { Property } from './property.entity';
 import { UserPermission } from './user-permission.entity';
+import { Bookings } from './bookings.entity';
+import { Roommate } from './roommate.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('users')
@@ -88,4 +90,10 @@ export class User extends BaseEntity {
 
   @OneToMany(() => UserPermission, (userpermission: UserPermission) => userpermission.user)
   userPermissions : Array<UserPermission>
+
+  @OneToMany(()=> Bookings, (booking: Bookings) => booking.user)
+  bookings: Array<Bookings>
+
+  @OneToMany(() => Roommate, (roommate: Roommate) => roommate.user)
+  roommates: Roommate[]
 }
