@@ -8,6 +8,8 @@ import { UserStatus } from '../common/enums/userStatus.enum';
 import { enumToArray } from '../utils/helper';
 import { Property } from './property.entity';
 import { UserPermission } from './user-permission.entity';
+import { Bookings } from './bookings.entity';
+import { Roommate } from './roommate.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('users')
@@ -79,7 +81,7 @@ export class User extends BaseEntity {
   @IsNumber({}, { each: true })
   roleIds: Array<number>;
 
-  @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
+  @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true})
   @JoinTable({ name: 'user_roles' })
   roles: Role[];
 
@@ -87,5 +89,11 @@ export class User extends BaseEntity {
   properties: Array<Property>;
 
   @OneToMany(() => UserPermission, (userpermission: UserPermission) => userpermission.user)
-  userPermission : Array<UserPermission>
+  userPermissions : Array<UserPermission>
+
+  @OneToMany(()=> Bookings, (booking: Bookings) => booking.user)
+  bookings: Array<Bookings>
+
+  @OneToMany(() => Roommate, (roommate: Roommate) => roommate.user)
+  roommates: Roommate[]
 }

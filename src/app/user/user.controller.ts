@@ -1,5 +1,5 @@
 import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
-import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile, Param, ParseIntPipe, Query, UsePipes, ValidationPipe, Post, Delete } from '@nestjs/common';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { User } from '@src/entities/user.entity';
 import { Modules } from '@src/common/decorators/modules.decorator';
@@ -12,9 +12,10 @@ import { UpdateMyPasswordDto } from '@src/models/users/update-my-password.dto';
 import { UploadFileDto } from '@src/models/users/upload-file.dto';
 import { Methods } from '@src/common/decorators/methods.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
+import { GetMany } from '@src/models/base/getMany.dto';
+import { PermissionDTO } from '@src/models/users/permissionId.dto';
 import { UserService } from './user.service';
 import { ModulesName } from '../../common/enums/modules.enum';
-import { UserPermissionService } from '../user-permission/user-permission.service';
 @Crud({
   model: {
     type: User
@@ -35,23 +36,23 @@ import { UserPermissionService } from '../user-permission/user-permission.servic
 export class UserController implements CrudController<User> {
   constructor(public service: UserService) { }
 
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get('me')
-  async getMe(@Request() req) {
-    const { user } = req;
-    user.role = user.roles[0].name;
-    user.roles = undefined;
-    user.permissions = undefined;
-    return user;
-  }
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // @Get('me')
+  // async getMe(@Request() req) {
+  //   const { user } = req;
+  //   user.role = user.roles[0].name;
+  //   user.roles = undefined;
+  //   user.permissions = undefined;
+  //   return user;
+  // }
 
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Patch('me')
-  async updateMe(@Request() req: UserRequestDto, @Body() body: UpdateMyUserDto) {
-    return this.service.updateMyInformation(req.user, body);
-  }
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // @Patch('me')
+  // async updateMe(@Request() req: UserRequestDto, @Body() body: UpdateMyUserDto) {
+  //   return this.service.updateMyInformation(req.user, body);
+  // }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -83,6 +84,30 @@ export class UserController implements CrudController<User> {
   @Methods(MethodName.PATCH)
   restore(@Param('id', ParseIntPipe) id: number) {
     return this.service.restore(id);
+  }
+
+  @ApiBearerAuth()
+  @Methods(MethodName.MANAGE_PERMISSION)
+  @Get('/:id/permissions')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  getPermissionOfUser(@Param('id', ParseIntPipe) userId: number, @Query() metadata: GetMany) {
+    return this.service.getPermissionOfUser(userId, metadata);
+  }
+
+  @ApiBearerAuth()
+  @Methods(MethodName.MANAGE_PERMISSION)
+  @Post('/:id/permissions')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  createPermissionOfUser(@Param('id', ParseIntPipe) userId: number, @Body() body: PermissionDTO) {
+    return this.service.createBulk(userId, body.permissionIds);
+  }
+
+  @ApiBearerAuth()
+  @Methods(MethodName.MANAGE_PERMISSION)
+  @Delete('/:id/permissions/:permissionId')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  deletePermissionOfUser(@Param('id', ParseIntPipe) userId: number, @Param('permissionId', ParseIntPipe) permissionId: number) {
+    return this.service.deleteMany(userId, permissionId);
   }
 
   get base(): CrudController<User> {
