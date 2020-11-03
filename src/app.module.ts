@@ -18,7 +18,7 @@ import { UserPermissionModule } from './app/user-permission/user-permission.modu
     TypeOrmModule.forRootAsync({
       useClass: DatabaseConnectionService
     }),
-    CategoryModule,
+    // CategoryModule,
     UserModule,
     AuthModule,
     ValidatorModule,
@@ -29,4 +29,4 @@ import { UserPermissionModule } from './app/user-permission/user-permission.modu
     UserPermissionModule
   ]
 })
-export class AppModule { }
+export class AppModule {}
