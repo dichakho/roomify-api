@@ -18,7 +18,7 @@ import { UserPermissionModule } from './app/user-permission/user-permission.modu
     TypeOrmModule.forRootAsync({
       useClass: DatabaseConnectionService
     }),
-    // CategoryModule,
+    CategoryModule,
     UserModule,
     AuthModule,
     ValidatorModule,
