@@ -15,8 +15,6 @@ export class UserPermissionSubscriber implements EntitySubscriberInterface<UserP
      * Called before post insertion.
      */
   async beforeInsert(event: InsertEvent<UserPermission>): Promise<void> {
-    console.log('SUBSCRIBER 00------------------>', event.entity);
-    if (!event.entity.status) event.entity.status = 'ADD';
   }
 
   async beforeUpdate(event: InsertEvent<UserPermission>): Promise<void> {

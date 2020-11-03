@@ -19,6 +19,6 @@ define(Category, (
   if(_.isUndefined(parent)) {
     return category;
   }
-  category.parent = parent;
+  // category.parent = parent;
   return category;
 });

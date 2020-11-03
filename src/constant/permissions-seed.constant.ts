@@ -17,7 +17,8 @@ export default class Permissions {
     { name: 'PATCH', description: 'Update object' },
     { name: 'GETLIST', description: 'Get list information' },
     { name: 'MANAGEROLE', description: 'Change role of user' },
-    { name: 'RESTORE', description: 'Restore data was deleted' }
+    { name: 'RESTORE', description: 'Restore data was deleted' },
+    { name: 'MANAGEPERMISSION', description: 'Create, delete and see information about permission of users' },
   ];
 
   public roles = [

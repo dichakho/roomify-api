@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
@@ -60,14 +60,11 @@ export class Property extends BaseEntity {
 
   @IsOptional()
   @IsNumber()
+  @JoinColumn()
   destinationId: number
 
   @ManyToOne(() => Destination, (destination: Destination) => destination.properties)
   destination: Destination
-
-  @IsOptional()
-  @IsNumber()
-  roomId: number
 
   @OneToMany(() => Room, (room: Room) => room.property)
   rooms: Array<Room>
@@ -75,9 +72,15 @@ export class Property extends BaseEntity {
   @ManyToOne(() => Category, (category: Category) => category.properties)
   category: Category
 
-  @ManyToMany(() => Amenity, (amenity: Amenity) => amenity.properties)
-  @JoinTable({ name: 'amenity_property' })
-  amenities: Amenity[]
+  @IsOptional()
+  @IsNumber()
+  @JoinColumn()
+  categoryId: number
+
+  @IsOptional()
+  @IsNumber()
+  @JoinColumn()
+  ownerId: number
 
   @ManyToOne(() => User, (user: User) => user.properties)
   @JoinTable({ name: 'ownerId' })

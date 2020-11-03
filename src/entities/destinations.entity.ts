@@ -1,14 +1,15 @@
-import { IsOptional, IsNotEmpty, IsString, IsNumber } from 'class-validator';
-import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
+import { IsOptional, IsNotEmpty, IsString, IsNumber, IsEmpty } from 'class-validator';
+import { Entity, Column, ManyToOne, OneToMany, JoinColumn, Tree, TreeChildren, TreeParent } from 'typeorm';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseEntity } from './base.entity';
 import { Property } from './property.entity';
+import { TreeBase } from './treebase.entity';
 
 const { UPDATE, CREATE } = CrudValidationGroups;
 
 @Entity('destinations')
-export class Destination extends BaseEntity {
+@Tree('materialized-path')
+export class Destination extends TreeBase {
   @ApiProperty({ example: 'destination1' })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
@@ -23,27 +24,13 @@ export class Destination extends BaseEntity {
   status: number;
 
   @IsOptional()
-  @ApiProperty({ example: 4 })
-  @IsNumber({}, { each: true })
-  parentId: number;
-
-  @IsOptional()
-  @ApiProperty({ example: [2, 3] })
-  @IsNumber({}, { each: true })
-  childId: Array<number>;
-
-  @ManyToOne(
-    type => Destination,
-    destination => destination.child
-  )
-  @JoinColumn({ name: 'parentId' })
+  @IsEmpty()
+  @TreeParent()
   parent: Destination;
 
-  @OneToMany(
-    type => Destination,
-    destination => destination.parent
-  )
-  @JoinColumn({ name: 'childId' })
+  @IsOptional()
+  @IsEmpty()
+  @TreeChildren()
   child: Destination[];
 
   @IsOptional()

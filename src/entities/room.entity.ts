@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { IsString, IsNotEmpty, IsOptional, IsNumber, IsIn } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
@@ -6,6 +6,8 @@ import { RoomStatus } from '../common/enums/roomStatus.enum';
 import { enumToArray } from '../utils/helper';
 import { Property } from './property.entity';
 import { BaseEntity } from './base.entity';
+import { Amenity } from './amenity.entity';
+import { Bookings } from './bookings.entity';
 
 const { UPDATE, CREATE } = CrudValidationGroups;
 @Entity('rooms')
@@ -55,9 +57,15 @@ export class Room extends BaseEntity {
 
   @IsOptional()
   @IsNumber()
+  @JoinColumn()
   propertyId: number
 
   @ManyToOne(() => Property, (property: Property) => property.rooms)
   property: Property
 
+  @ManyToMany(() => Amenity, (amenities: Amenity) => amenities.rooms)
+  amenities: Amenity[]
+
+  @OneToMany(() => Bookings, (booking: Bookings) => booking.room)
+  bookings: Bookings[]
 }

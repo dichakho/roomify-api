@@ -50,59 +50,59 @@ export class CategoryController implements CrudController<Category> {
     return this;
   }
 
-  @Override('createOneBase')
-  async createOneOverride(@ParsedBody() dto: Category) {
-    try {
-      // let cateObject: Category;
-      const cateObject = dto;
-      if (dto.parentId) {
-        const parentObject = await this.repository.findOne(dto.parentId);
-        if (parentObject) {
-          cateObject.parent = parentObject;
-        } else {
-          return new BadRequestException([
-            {
-              constraints: {
-                isForeignKey: 'parentId must be an existed foreign key'
-              },
-              property: 'parentId'
-            }
-          ]).getResponse();
-        }
-      }
-      cateObject.slug = createSlug(cateObject.name);
-      const result = this.repository.create(cateObject);
-      await this.repository.save(result);
-      return result;
-    } catch (error) {
-      console.log(error);
-      if (error.code === '23505') {
-        throw new ConflictException();
-      }
-      throw new InternalServerErrorException();
-    }
-  }
+  // @Override('createOneBase')
+  // async createOneOverride(@ParsedBody() dto: Category) {
+  //   try {
+  //     // let cateObject: Category;
+  //     const cateObject = dto;
+  //     if (dto.parentId) {
+  //       const parentObject = await this.repository.findOne(dto.parentId);
+  //       if (parentObject) {
+  //         cateObject.parent = parentObject;
+  //       } else {
+  //         return new BadRequestException([
+  //           {
+  //             constraints: {
+  //               isForeignKey: 'parentId must be an existed foreign key'
+  //             },
+  //             property: 'parentId'
+  //           }
+  //         ]).getResponse();
+  //       }
+  //     }
+  //     cateObject.slug = createSlug(cateObject.name);
+  //     const result = this.repository.create(cateObject);
+  //     await this.repository.save(result);
+  //     return result;
+  //   } catch (error) {
+  //     console.log(error);
+  //     if (error.code === '23505') {
+  //       throw new ConflictException();
+  //     }
+  //     throw new InternalServerErrorException();
+  //   }
+  // }
 
-  @Get('/all')
-  @Methods('GET')
-  @UsePipes(ValidationPipe)
+  // @Get('/all')
+  // @Methods('GET')
+  // @UsePipes(ValidationPipe)
 
-  // @UseFilters(HttpExceptionFilter)
-  // @UseGuards(JwtAuthGuard)
-  // @UseGuards(RolesGuard)
-  // @ApiBearerAuth()
-  getAll() {
-    try {
-      return this.repository.find();
-    } catch (error) {
-      throw new InternalServerErrorException();
-    }
-  }
+  // // @UseFilters(HttpExceptionFilter)
+  // // @UseGuards(JwtAuthGuard)
+  // // @UseGuards(RolesGuard)
+  // // @ApiBearerAuth()
+  // getAll() {
+  //   try {
+  //     return this.repository.find();
+  //   } catch (error) {
+  //     throw new InternalServerErrorException();
+  //   }
+  // }
 
-  @Override('getManyBase')
-  async getManyOverride() {
-    const category = await this.treeRepository.findTrees();
-    console.log('hello', category);
-    return category;
-  }
+  // @Override('getManyBase')
+  // async getManyOverride() {
+  //   const category = await this.treeRepository.findTrees();
+  //   console.log('hello', category);
+  //   return category;
+  // }
 }

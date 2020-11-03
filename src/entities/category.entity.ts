@@ -2,14 +2,13 @@ import { Entity, Column, TreeChildren, TreeParent, Tree, Unique, OneToMany } fro
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsEmpty, IsNotEmpty } from 'class-validator';
 import { CrudValidationGroups } from '@nestjsx/crud';
-import { TreeBase } from './treebase.entity';
 import { Property } from './property.entity';
+import { BaseEntity } from './base.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('categories')
-@Tree('materialized-path')
 @Unique(['slug'])
-export class Category extends TreeBase {
+export class Category extends BaseEntity {
 
   @ApiProperty({ example: 'Category1' })
   @IsOptional({ groups: [UPDATE] })
@@ -21,16 +20,6 @@ export class Category extends TreeBase {
   @IsOptional({ groups: [UPDATE] })
   @Column()
   slug: string;
-
-  @IsOptional()
-  @IsEmpty()
-  @TreeChildren({ cascade: true })
-  children: Category[];
-
-  @IsOptional()
-  @IsEmpty()
-  @TreeParent()
-  parent: Category;
 
   @OneToMany(() => Property, (property: Property) => property.category)
   properties: Property[];
