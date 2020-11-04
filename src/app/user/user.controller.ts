@@ -26,6 +26,10 @@ import { ModulesName } from '../../common/enums/modules.enum';
       roles: {
         allow: ['name'],
         eager: true
+      },
+      ownerRegistration: {
+        eager: true,
+        allow: ['status']
       }
     }
   }

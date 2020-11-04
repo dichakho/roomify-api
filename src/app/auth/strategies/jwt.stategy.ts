@@ -22,6 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       where: { id: payload.id },
       relations: ['roles', 'roles.permissions', 'userPermissions']
     });
+
     const permissions = [];
     const deletedPermissions = [];
     if(userPermissions.userPermissions.length > 0) {

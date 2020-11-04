@@ -16,6 +16,7 @@ export class Roommate extends BaseEntity {
   @Column('decimal', { precision: 5, scale: 2 })
   price: number
 
+  @ApiProperty({ readOnly: true })
   @ManyToOne(() => User, (user: User) => user.roommates)
   user: User
 }
