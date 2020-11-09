@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException, Inject, forwardRef } from '@nestjs/common';
 import { UpdateMyUserDto } from '@src/models/users/update-my-user.dto';
 import { BaseService } from '@src/base.service';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
@@ -14,6 +14,7 @@ import { UserRepository } from './user.repository';
 import { User } from '../../entities/user.entity';
 import { AddDeletePermissions } from '@src/models/user-permissions/permission.dto';
 import { UserPermissionRepository } from '../user-permission/user-permission.repository';
+import { CreateUserDTO } from '@src/models/users/create.dto';
 
 @Injectable()
 export class UserService extends BaseService<User, UserRepository> {
@@ -76,6 +77,11 @@ export class UserService extends BaseService<User, UserRepository> {
     await this.repository.update(id, { password: body.newPassword });
   }
 
+  async createUser(data: CreateUserDTO): Promise<User> {
+    const result = await this.repository.save(data);
+    return result;
+  }
+
   async getPermissionOfUser(userId: number, metadata: GetMany) {
     let data = [];
     let { limit, offset, page } = metadata;
@@ -129,7 +135,7 @@ export class UserService extends BaseService<User, UserRepository> {
     };
   }
 
-  async createBulk(userId: number, permissionIds: number[]): Promise<UserPermission[]> {
+  async createBulkPermission(userId: number, permissionIds: number[]): Promise<UserPermission[]> {
     const queries = await this.repository.findOne({ where: { id: userId }, relations: ['userPermissions', 'roles', 'roles.permissions'] });
     const temp = [];
     if (queries === undefined) {
@@ -164,7 +170,7 @@ export class UserService extends BaseService<User, UserRepository> {
     return result;
   }
 
-  async deleteMany(userId:number, permissionId:number): Promise<any> {
+  async deleteManyPermission(userId:number, permissionId:number): Promise<any> {
     const temp = [];
     const queries = await this.repository.findOne({ where: { id: userId }, relations: ['userPermissions', 'roles', 'roles.permissions'] });
     if (queries === undefined) {

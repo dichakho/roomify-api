@@ -1,7 +1,8 @@
 import { ManyToMany, JoinTable, Entity, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber, IsMobilePhone } from 'class-validator';
+import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber, IsMobilePhone, IsObject, Validate } from 'class-validator';
 import { CrudValidationGroups } from '@nestjsx/crud';
+import { CheckRoleOfUser } from '@src/validators/users/create-user-role.validator';
 import { BaseEntity } from './base.entity';
 import { Role } from './roles.entity';
 import { UserStatus } from '../common/enums/userStatus.enum';
@@ -36,8 +37,7 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   email: string;
 
-  @ApiProperty({ example: 'admin' })
-  @ApiProperty({ writeOnly: true })
+  @ApiProperty({ example: 'admin', writeOnly: true })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsString()
@@ -81,7 +81,9 @@ export class User extends BaseEntity {
   @IsNumber({}, { each: true })
   roleIds: Array<number>;
 
-  @ApiProperty({ readOnly: true })
+  @ApiProperty({ example: { id: 1 } })
+  @IsObject()
+  @Validate(CheckRoleOfUser)
   @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
   @JoinTable({ name: 'user_roles' })
   roles: Role[];

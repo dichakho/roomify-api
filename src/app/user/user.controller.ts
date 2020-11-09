@@ -1,6 +1,6 @@
 import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { Controller, Get, UseGuards, Request, Patch, Body, UseInterceptors, UploadedFile, Param, ParseIntPipe, Query, UsePipes, ValidationPipe, Post, Delete } from '@nestjs/common';
-import { Crud, CrudController } from '@nestjsx/crud';
+import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { User } from '@src/entities/user.entity';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
@@ -16,6 +16,7 @@ import { GetMany } from '@src/models/base/getMany.dto';
 import { PermissionDTO } from '@src/models/users/permissionId.dto';
 import { UserService } from './user.service';
 import { ModulesName } from '../../common/enums/modules.enum';
+import { CreateUserDTO } from '@src/models/users/create.dto';
 @Crud({
   model: {
     type: User
@@ -103,7 +104,7 @@ export class UserController implements CrudController<User> {
   @Post('/:id/permissions')
   @UsePipes(new ValidationPipe({ transform: true }))
   createPermissionOfUser(@Param('id', ParseIntPipe) userId: number, @Body() body: PermissionDTO) {
-    return this.service.createBulk(userId, body.permissionIds);
+    return this.service.createBulkPermission(userId, body.permissionIds);
   }
 
   @ApiBearerAuth()
@@ -111,11 +112,17 @@ export class UserController implements CrudController<User> {
   @Delete('/:id/permissions/:permissionId')
   @UsePipes(new ValidationPipe({ transform: true }))
   deletePermissionOfUser(@Param('id', ParseIntPipe) userId: number, @Param('permissionId', ParseIntPipe) permissionId: number) {
-    return this.service.deleteMany(userId, permissionId);
+    return this.service.deleteManyPermission(userId, permissionId);
   }
 
   get base(): CrudController<User> {
     return this;
+  }
+
+  @Override('createOneBase')
+  create(@Body() body:CreateUserDTO) {
+    console.log('body--->', body);
+    return this.service.createUser(body);
   }
 
   // @Override()
