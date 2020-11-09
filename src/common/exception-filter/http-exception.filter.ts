@@ -10,7 +10,7 @@ export class HttpExceptionFilter implements ExceptionFilter<HttpException> {
     const response = ctx.getResponse();
 
     // const request = ctx.getRequest();
-    const statusCode = exception.getStatus();
+    let statusCode = exception.getStatus();
     const exceptionResponse: any = exception.getResponse();
 
     // Handle isNotEmpty Error

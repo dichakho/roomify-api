@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { BaseService } from '@src/base.service';
 import { OwnerRegistration } from '@src/entities/owner_registration.entity';
 import { CreateOwnerRegistrationDto } from '@src/models/owner-registration/create.dto';
@@ -20,7 +20,7 @@ export class OwnerRegistrationService extends BaseService<OwnerRegistration, Own
     } catch (error) {
       console.log('CATCH ---->', error);
       if (error.code === '23503') throw new NotFoundException('User not found');
-      if (error.code === '23505') throw new BadRequestException('User has sent request to adminstrator');
+      if (error.code === '23505') throw new ForbiddenException('User has sent request to adminstrator');
       throw new InternalServerErrorException();
     }
   }
@@ -31,15 +31,13 @@ export class OwnerRegistrationService extends BaseService<OwnerRegistration, Own
     await this.repository.delete(id);
     if (query.status === OwnerStatus.ACCEPT) {
       const userQuery = await this.userRepo.findOne({ where: { id: query.user.id }, relations: ['roles'] });
-      console.log('user_query --->', userQuery);
       for (let i = 0; i < userQuery.roles.length; i += 1) {
         if (userQuery.roles[i].name === 'OWNER') {
           userQuery.roles[i] = undefined;
           break;
         }
       }
-      const result = await this.userRepo.save(userQuery);
-      console.log('result ---->', result);
+      await this.userRepo.save(userQuery);
     }
   }
 

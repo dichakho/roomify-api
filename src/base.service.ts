@@ -18,6 +18,10 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     return this.repository.find();
   }
 
+  get(condition?: any): Promise<T> {
+    return this.repository.findOne({ where: condition });
+  }
+
   async uploadImage(path: string, folder: string): Promise<string> {
     const image = await uploads(path, folder);
     await unlinkSync(path);
@@ -43,9 +47,10 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     await this.repository.restore(id);
   }
 
-  createBulkData(dto: DeepPartial<T>[]): Promise<T[]> {
+  async createBulkData(dto: DeepPartial<T>[]): Promise<T[]> {
     if (dto.length === 0) throw new BadRequestException('Nothing to change. Data is empty !!!');
-    return this.repository.save(dto, { chunk: 50 });
+    const result = await this.repository.save(dto, { chunk: 50 });
+    return result;
   }
 
   async getManyData(metadata: GetMany, relation?: string[], findOption?: any): Promise<any> {

@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
-import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber, IsEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { Destination } from './destinations.entity';
@@ -30,12 +30,14 @@ export class Property extends BaseEntity {
   @ApiProperty({ example: 95.37 })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
+  @IsNumber()
   @Column('decimal', { precision: 5, scale: 2 })
   logtitude: number
 
   @ApiProperty({ example: 95.37 })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
+  @IsNumber()
   @Column('decimal', { precision: 5, scale: 2 })
   latitude: number
 
@@ -53,18 +55,23 @@ export class Property extends BaseEntity {
   @Column({ default: 'https://c8.alamy.com/comp/JX2THD/residential-building-beauty-cottage-devon-rural-scene-thatched-roof-JX2THD.jpg' })
   thumbnail: string
 
+  @ApiProperty({ readOnly: true })
+  @IsEmpty()
   @Column('decimal', { nullable: true, precision: 5, scale: 2, default: 0 })
   maxPrice: number
 
+  @ApiProperty({ readOnly: true })
+  @IsEmpty()
   @Column('decimal', { nullable: true, precision: 5, scale: 2, default: 0 })
   minPrice: number
 
+  @ApiProperty({ readOnly: true })
   @IsOptional()
   @IsNumber()
   @JoinColumn()
   destinationId: number
 
-  @ApiProperty({ readOnly: true })
+  @ApiProperty({ example: { id: 1 } })
   @ManyToOne(() => Destination, (destination: Destination) => destination.properties)
   destination: Destination
 
@@ -72,15 +79,17 @@ export class Property extends BaseEntity {
   @OneToMany(() => Room, (room: Room) => room.property)
   rooms: Array<Room>
 
-  @ApiProperty({ readOnly: true })
+  @ApiProperty({ example: { id: 1 } })
   @ManyToOne(() => Category, (category: Category) => category.properties)
   category: Category
 
+  @ApiProperty({ readOnly: true })
   @IsOptional()
   @IsNumber()
   @JoinColumn()
   categoryId: number
 
+  @ApiProperty({ readOnly: true })
   @IsOptional()
   @IsNumber()
   @JoinColumn()
