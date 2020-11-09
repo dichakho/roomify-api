@@ -6,6 +6,7 @@ import { User } from '@src/entities/user.entity';
 import { ExistedDestinationValidator } from '@src/validators/property/exist-destination.validator';
 import { Type } from 'class-transformer';
 import { IsString, IsNumber, IsNotEmpty, IsOptional, IsObject, ValidateNested, Validate } from 'class-validator';
+import { DontExistedCategoryValidator } from '../../validators/property/exist-category.validation';
 
 export class CreatePropertyDTO {
   @ApiProperty({ example: 'Chung cu' })
@@ -42,6 +43,7 @@ export class CreatePropertyDTO {
   destination: Destination
 
   @ApiProperty({ example: { id: 1 } })
+  @Validate(DontExistedCategoryValidator)
   @IsNotEmpty()
   category: Category
 

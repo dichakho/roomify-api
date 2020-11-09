@@ -13,6 +13,8 @@ export class UniqueUsernameValidator implements ValidatorConstraintInterface {
   }
 
   async validate(value: string, validationArguments?: ValidationArguments): Promise<boolean> {
+    console.log(value);
+
     const result = await this.userService.findOneByUsername(value);
     return !result;
   }

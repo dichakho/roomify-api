@@ -13,7 +13,7 @@ export class CreateUserDTO {
   @ApiProperty({ example: 'admin' })
   @IsNotEmpty()
   @IsString()
-  @Validate(ExistedUsernameValidator)
+  @Validate(ExistedUsernameValidator, { message: 'Username already exists' })
   username: string;
 
   @ApiProperty({ example: 'member@gmail.com' })

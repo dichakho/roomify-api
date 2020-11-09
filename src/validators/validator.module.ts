@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { forwardRef, Global, Module } from '@nestjs/common';
 import { DestinationModule } from '@src/app/destination/destination.module';
 import { UniqueUsernameValidator } from './auth/unique-username.validator';
 import { UserModule } from '../app/user/user.module';
@@ -9,7 +9,7 @@ import { ExistedDestinationValidator } from './property/exist-destination.valida
 @Global()
 @Module({
   imports: [
-    UserModule,
+    forwardRef(() => UserModule),
     DestinationModule
   ],
   providers: [
