@@ -119,9 +119,10 @@ export class UserController implements CrudController<User> {
     return this;
   }
 
+  @ApiBearerAuth()
+  @Methods(MethodName.POST)
   @Override('createOneBase')
   create(@Body() body:CreateUserDTO) {
-    console.log('body--->', body);
     return this.service.createUser(body);
   }
 

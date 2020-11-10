@@ -8,6 +8,7 @@ import { ModulesName } from '@src/common/enums/modules.enum';
 import { method } from '@src/constant/config-crud.constant';
 import { Property } from '@src/entities/property.entity';
 import { CreatePropertyDTO } from '@src/models/property/create.dto';
+import { UpdatePropertyDTO } from '@src/models/property/update.dto';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
 import { PropertyService } from './property.service';
 
@@ -49,5 +50,12 @@ export class PropertyController implements CrudController<Property>{
   @Override('createOneBase')
   createOne(@Body() body: CreatePropertyDTO, @Req() req: UserRequestDto) {
     return this.service.create(body, req);
+  }
+
+  @ApiBearerAuth()
+  @Methods(MethodName.PATCH)
+  @Override('updateOneBase')
+  updateOne(@Body() body: UpdatePropertyDTO, @Param('id', ParseIntPipe) id: number, @Req() req: UserRequestDto) {
+    return this.service.update(body, id, req);
   }
 }

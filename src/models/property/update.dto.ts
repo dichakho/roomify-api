@@ -3,29 +3,32 @@ import { Category } from '@src/entities/category.entity';
 import { Destination } from '@src/entities/destinations.entity';
 import { Policy } from '@src/entities/policy.entity';
 import { ExistedDestinationValidator } from '@src/validators/property/exist-destination.validator';
-import { IsString, IsNumber, IsNotEmpty, IsOptional, IsObject, ValidateNested, Validate } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty, IsOptional, IsObject, Validate } from 'class-validator';
 import { DontExistedCategoryValidator } from '../../validators/property/exist-category.validation';
 
-export class CreatePropertyDTO {
+export class UpdatePropertyDTO {
   @ApiProperty({ example: 'Chung cu' })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   name: string
 
   @ApiProperty({ example: 'Lorem idolt ...' })
+  @IsOptional()
   @IsString()
   description: string
 
   @ApiProperty({ example: 95.37 })
+  @IsOptional()
   @IsNumber()
   logtitude: number
 
   @ApiProperty({ example: 95.37 })
+  @IsOptional()
   @IsNumber()
   latitude: number
 
   @ApiProperty({ example: '123 Nguyen Luong Bang' })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   address: string
 
@@ -35,18 +38,19 @@ export class CreatePropertyDTO {
   thumbnail: string
 
   @ApiProperty({ example: { id: 1 } })
-  @IsNotEmpty()
+  @IsOptional()
   @IsObject()
   @Validate(ExistedDestinationValidator)
   destination: Destination
 
   @ApiProperty({ example: { id: 1 } })
-  @IsNotEmpty()
+  @IsOptional()
   @IsObject()
   @Validate(DontExistedCategoryValidator)
   category: Category
 
-  @IsNotEmpty()
+  @ApiProperty({ example: { id: 1, electricity: 10, water: 10, parking: 10, internet: 10 } })
+  @IsOptional()
   @IsObject()
   policy: Policy
 }

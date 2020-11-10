@@ -99,6 +99,7 @@ export class Property extends BaseEntity {
   @JoinTable()
   owner: User
 
-  @OneToOne(() => Policy, (policy: Policy) => policy.property)
+  @OneToOne(() => Policy, (policy: Policy) => policy.property, { eager: true, cascade: true, onDelete: 'CASCADE' })
+  @JoinColumn()
   policy: Policy
 }

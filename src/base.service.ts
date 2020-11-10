@@ -18,8 +18,8 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     return this.repository.find();
   }
 
-  get(condition?: any): Promise<T> {
-    return this.repository.findOne({ where: condition });
+  get(condition?: any, relations?: string[]): Promise<T> {
+    return this.repository.findOne({ where: condition, relations });
   }
 
   async uploadImage(path: string, folder: string): Promise<string> {

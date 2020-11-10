@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { Column, Entity, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Property } from './property.entity';
 

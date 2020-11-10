@@ -2,7 +2,6 @@ import { ManyToMany, JoinTable, Entity, Column, OneToMany, OneToOne, JoinColumn 
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber, IsMobilePhone, IsObject, Validate } from 'class-validator';
 import { CrudValidationGroups } from '@nestjsx/crud';
-import { CheckRoleOfUser } from '@src/validators/users/create-user-role.validator';
 import { BaseEntity } from './base.entity';
 import { Role } from './roles.entity';
 import { UserStatus } from '../common/enums/userStatus.enum';
@@ -83,7 +82,6 @@ export class User extends BaseEntity {
 
   @ApiProperty({ example: { id: 1 } })
   @IsObject()
-  @Validate(CheckRoleOfUser)
   @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
   @JoinTable({ name: 'user_roles' })
   roles: Role[];
