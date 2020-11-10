@@ -1,6 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { BaseService } from '@src/base.service';
 import { Property } from '@src/entities/property.entity';
+import { User } from '@src/entities/user.entity';
 import { CreatePropertyDTO } from '@src/models/property/create.dto';
 import { UpdatePropertyDTO } from '@src/models/property/update.dto';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
@@ -27,14 +28,24 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
   }
 
   async update(data: UpdatePropertyDTO, id: number, req: UserRequestDto): Promise<Property> {
-    console.log('data ------>', data);
     const propertyQuery = await this.get({ id }, ['owner']);
-    if(!propertyQuery) throw new NotFoundException('Not found property !!!');
-    console.log('property query ------->', propertyQuery);
-    const { user } = req;
-    if (user.id !== propertyQuery.owner.id) throw new ForbiddenException('Can not update property of other users');
+    this.checkPossession(propertyQuery, req.user);
     const result = await this.repository.save({ ...data, id });
     return result;
 
+  }
+
+  async delete(id: number, req: UserRequestDto): Promise<void> {
+    const propertyQuery = await this.get({ id }, ['owner']);
+    for(let i = 0; i < req.user.roles.length; i += 1) {
+      if(req.user.roles[i].name === 'OWNER') this.checkPossession(propertyQuery, req.user);
+    }
+    const result = await this.repository.softDelete(id);
+    if(result.affected === 0) throw new NotFoundException('Not found property !!!');
+  }
+
+  checkPossession(propertyQuery:any, user: User): void {
+    if (!propertyQuery) throw new NotFoundException('Not found property !!!');
+    if (user.id !== propertyQuery.owner.id) throw new ForbiddenException('Can not action with property of other users');
   }
 }

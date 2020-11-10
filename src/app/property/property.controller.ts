@@ -58,4 +58,13 @@ export class PropertyController implements CrudController<Property>{
   updateOne(@Body() body: UpdatePropertyDTO, @Param('id', ParseIntPipe) id: number, @Req() req: UserRequestDto) {
     return this.service.update(body, id, req);
   }
+
+  @ApiBearerAuth()
+  @Methods(MethodName.DELETE)
+  @Override('deleteOneBase')
+  deleteOne(@Param('id', ParseIntPipe) id: number, @Req() req: UserRequestDto) {
+    console.log('id ---->', id);
+
+    return this.service.delete(id, req);
+  }
 }
