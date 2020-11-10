@@ -24,7 +24,7 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
 
   async uploadImage(path: string, folder: string): Promise<string> {
     const image = await uploads(path, folder);
-    await unlinkSync(path);
+    unlinkSync(path);
     return image;
   }
 
