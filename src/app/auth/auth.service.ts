@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { UserService } from '@src/app/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import Bcrypt from '@src/plugins/bcrypt.plugin';
@@ -21,13 +21,15 @@ export class AuthService extends TypeOrmCrudService<User>{
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.userService.findOneByUsername(username);
-    if (!user) throw new BadRequestException('Wrong credentials provided');
+    console.log('user --->', user);
+
+    if (!user) throw new NotFoundException('Username or password is wrong');
     const isPasswordMatching = await Bcrypt.compare(password, user.password);
     if (!isPasswordMatching) {
-      throw new BadRequestException('Wrong credentials provided');
+      throw new NotFoundException('Username or password is wrong');
     }
+    if(user.status === 'BANNED') throw new ForbiddenException('Your account was banned !!!');
     return user;
-
   }
 
   async login(user: LoginDTO) {

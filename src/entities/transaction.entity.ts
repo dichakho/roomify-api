@@ -15,6 +15,7 @@ export class Transaction extends BaseEntity {
   @Column()
   isPaid: boolean
 
+  @ApiProperty({ readOnly: true })
   @OneToMany(() => Bookings, (booking: Bookings) => booking.transaction)
   bookings: Bookings[]
 }

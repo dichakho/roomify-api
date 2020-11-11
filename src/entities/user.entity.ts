@@ -1,6 +1,6 @@
-import { ManyToMany, JoinTable, Entity, Column, OneToMany } from 'typeorm';
+import { ManyToMany, JoinTable, Entity, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber, IsMobilePhone } from 'class-validator';
+import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber, IsMobilePhone, IsObject, Validate } from 'class-validator';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { BaseEntity } from './base.entity';
 import { Role } from './roles.entity';
@@ -10,6 +10,7 @@ import { Property } from './property.entity';
 import { UserPermission } from './user-permission.entity';
 import { Bookings } from './bookings.entity';
 import { Roommate } from './roommate.entity';
+import { OwnerRegistration } from './owner_registration.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('users')
@@ -35,8 +36,7 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   email: string;
 
-  @ApiProperty({ example: 'admin' })
-  @ApiProperty({ writeOnly: true })
+  @ApiProperty({ example: 'admin', writeOnly: true })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsString()
@@ -65,9 +65,8 @@ export class User extends BaseEntity {
   })
   avatar: string;
 
-  @ApiProperty({ example: 'ACTIVE' })
+  @ApiProperty({ readOnly: true })
   @IsOptional({ groups: [UPDATE] })
-  // @IsNotEmpty({ groups: [CREATE] })
   @IsIn(enumToArray(UserStatus))
   @Column({
     type: 'enum',
@@ -76,24 +75,35 @@ export class User extends BaseEntity {
   })
   status: string;
 
+  @ApiProperty({ readOnly: true })
   @IsOptional()
-  @ApiProperty({ example: [4] })
   @IsNumber({}, { each: true })
   roleIds: Array<number>;
 
-  @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true})
+  @ApiProperty({ example: { id: 1 } })
+  @IsObject()
+  @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
   @JoinTable({ name: 'user_roles' })
   roles: Role[];
 
+  @ApiProperty({ readOnly: true })
   @OneToMany(() => Property, (property: Property) => property.owner)
   properties: Array<Property>;
 
+  @ApiProperty({ readOnly: true })
   @OneToMany(() => UserPermission, (userpermission: UserPermission) => userpermission.user)
-  userPermissions : Array<UserPermission>
+  userPermissions: Array<UserPermission>
 
-  @OneToMany(()=> Bookings, (booking: Bookings) => booking.user)
+  @ApiProperty({ readOnly: true })
+  @OneToMany(() => Bookings, (booking: Bookings) => booking.user)
   bookings: Array<Bookings>
 
+  @ApiProperty({ readOnly: true })
   @OneToMany(() => Roommate, (roommate: Roommate) => roommate.user)
   roommates: Roommate[]
+
+  @ApiProperty({ readOnly: true })
+  @OneToOne(() => OwnerRegistration)
+  @JoinColumn()
+  ownerRegistration: OwnerRegistration
 }

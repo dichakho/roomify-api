@@ -55,6 +55,7 @@ export class Room extends BaseEntity {
   })
   status: string;
 
+  @ApiProperty({ readOnly: true })
   @IsOptional()
   @IsNumber()
   @JoinColumn()
@@ -63,9 +64,11 @@ export class Room extends BaseEntity {
   @ManyToOne(() => Property, (property: Property) => property.rooms)
   property: Property
 
+  @ApiProperty({ readOnly: true })
   @ManyToMany(() => Amenity, (amenities: Amenity) => amenities.rooms)
   amenities: Amenity[]
 
+  @ApiProperty({ readOnly: true })
   @OneToMany(() => Bookings, (booking: Bookings) => booking.room)
   bookings: Bookings[]
 }

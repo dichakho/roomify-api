@@ -11,6 +11,7 @@ import { AmenityModule } from './app/amenity/amenity.module';
 import { RoomModule } from './app/room/room.module';
 import { DestinationModule } from './app/destination/destination.module';
 import { UserPermissionModule } from './app/user-permission/user-permission.module';
+import { OwnerRegistrationModule } from './app/owner-registration/owner-registration.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { UserPermissionModule } from './app/user-permission/user-permission.modu
     AmenityModule,
     RoomModule,
     DestinationModule,
-    UserPermissionModule
+    UserPermissionModule,
+    OwnerRegistrationModule
   ]
 })
 export class AppModule {}

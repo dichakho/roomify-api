@@ -1,21 +1,18 @@
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserService } from '../../app/user/user.service';
+import { Injectable } from '@nestjs/common';
+import { getConnection } from 'typeorm';
+import { User } from '@src/entities/user.entity';
 
 @ValidatorConstraint({ name: 'isUnique', async: true })
 @Injectable()
-export class UniqueUsernameValidator implements ValidatorConstraintInterface {
-  constructor(private userService: UserService) {
-  }
+export class ExistedUsernameValidator implements ValidatorConstraintInterface {
 
   defaultMessage(validationArguments?: ValidationArguments): string {
     return `${validationArguments.value} is taken, please try another`;
   }
 
   async validate(value: string, validationArguments?: ValidationArguments): Promise<boolean> {
-    console.log(value);
-
-    const result = await this.userService.findOneByUsername(value);
+    const result = await getConnection().createQueryBuilder().select('user').from(User, 'user').where('user.username= :name', { name: value }).getOne();
     return !result;
   }
 }

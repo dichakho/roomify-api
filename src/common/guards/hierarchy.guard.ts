@@ -20,13 +20,12 @@ export class HierarchyGuard implements CanActivate {
     const methods = this.reflector.get<string[]>('methods', context.getHandler());
     const modules = this.reflector.get<string[]>('modules', context.getClass());
 
-    if (methods[0] === 'DELETE' && modules[0] === 'USER') {
+    if ((methods[0] === 'DELETE' || methods[0] === 'PATCH' || methods[0] === 'PUT') && modules[0] === 'USER') {
       const request = context.switchToHttp().getRequest();
       const { user } = request;
       const param = request.params;
       return this.checkRank(param.id, user.roles[0].id);
     }
     return true;
-
   }
 }
