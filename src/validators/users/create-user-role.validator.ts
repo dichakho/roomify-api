@@ -5,8 +5,8 @@ import { Role } from '@src/entities/roles.entity';
 @Injectable()
 export class CheckRoleOfUser implements ValidatorConstraintInterface {
 
-  validate(value: Role, validationArguments?: ValidationArguments): boolean | Promise<boolean> {
-    if(value.id !== undefined && (value.id === 3 || value.id === 1)) throw new ForbiddenException('Can not add role OWNER and ADMIN');
+  validate(value: number, validationArguments?: ValidationArguments): boolean | Promise<boolean> {
+    if(value !== undefined && (value === 3 || value === 1)) throw new ForbiddenException('Can not add role OWNER and ADMIN');
     return true;
   }
 

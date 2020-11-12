@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '@src/entities/roles.entity';
 import { CheckRoleOfUser } from '@src/validators/users/create-user-role.validator';
 import { ExistedUsernameValidator } from '@src/validators/users/exist-username.validator';
-import { IsString, IsEmail, IsMobilePhone, IsObject, Validate, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsEmail, IsMobilePhone, IsObject, Validate, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateUserDTO {
   @ApiProperty({ example: 'Admin' })
@@ -40,9 +40,10 @@ export class CreateUserDTO {
   @IsString()
   avatar: string;
 
-  @ApiProperty({ example: { id: 1 } })
-  @IsObject()
+  @ApiProperty({ example: 1 })
+  @IsNotEmpty()
+  @IsNumber()
   @Validate(CheckRoleOfUser)
-  roles: Role[];
+  roleId: number;
 
 }
