@@ -9,12 +9,12 @@ import { createQueryBuilder, getManager, getRepository } from 'typeorm';
 import Permissions from '@src/constant/permissions-seed.constant';
 import { Role } from '@src/entities/roles.entity';
 import { UserPermission } from '@src/entities/user-permission.entity';
+import { AddDeletePermissions } from '@src/models/user-permissions/permission.dto';
+import { CreateUserDTO } from '@src/models/users/create.dto';
 import Bcrypt from '../../plugins/bcrypt.plugin';
 import { UserRepository } from './user.repository';
 import { User } from '../../entities/user.entity';
-import { AddDeletePermissions } from '@src/models/user-permissions/permission.dto';
 import { UserPermissionRepository } from '../user-permission/user-permission.repository';
-import { CreateUserDTO } from '@src/models/users/create.dto';
 
 @Injectable()
 export class UserService extends BaseService<User, UserRepository> {
@@ -77,8 +77,16 @@ export class UserService extends BaseService<User, UserRepository> {
     await this.repository.update(id, { password: body.newPassword });
   }
 
-  async createUser(data: CreateUserDTO): Promise<User> {
-    const result = await this.repository.save(data);
+  async createUser(data: CreateUserDTO): Promise<any> {
+    console.log('data --->', data);
+    const user = {
+      username: data.username,
+      password: data.password,
+      fullName: data.fullName,
+      phone: data.phone,
+      email: data.email
+    };
+    const result = await this.repository.save({ ...user, roles: [{ id: data.roleId }] });
     return result;
   }
 
@@ -170,7 +178,7 @@ export class UserService extends BaseService<User, UserRepository> {
     return result;
   }
 
-  async deleteManyPermission(userId:number, permissionId:number): Promise<any> {
+  async deleteManyPermission(userId: number, permissionId: number): Promise<any> {
     const temp = [];
     const queries = await this.repository.findOne({ where: { id: userId }, relations: ['userPermissions', 'roles', 'roles.permissions'] });
     if (queries === undefined) {
@@ -200,6 +208,6 @@ export class UserService extends BaseService<User, UserRepository> {
         }
       }
     });
-    if(temp.length > 0) await this.userPermissionRepo.save(temp);
+    if (temp.length > 0) await this.userPermissionRepo.save(temp);
   }
 }
