@@ -1,4 +1,4 @@
-import { Body, Controller, Param, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Param, ParseIntPipe, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { Modules } from '@src/common/decorators/modules.decorator';
@@ -6,9 +6,10 @@ import { ModulesName } from '@src/common/enums/modules.enum';
 import { OwnerRegistration } from '@src/entities/owner_registration.entity';
 import { Methods } from '@src/common/decorators/methods.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
+import { UpdateOwnerRegistrationDto } from '@src/models/owner-registration/update.dto';
+import { UserRequestDto } from '@src/models/users/user-request.dto';
 import { OwnerRegistrationService } from './owner-registration.service';
 import { CreateOwnerRegistrationDto } from '../../models/owner-registration/create.dto';
-import { UpdateOwnerRegistrationDto } from '@src/models/owner-registration/update.dto';
 
 @Crud({
   model: {
@@ -35,8 +36,8 @@ export class OwnerRegistrationController implements CrudController<OwnerRegistra
 
   @Methods(MethodName.POST)
   @Override('createOneBase')
-  createOne(@Body() body: CreateOwnerRegistrationDto) {
-    return this.service.create(body);
+  createOne(@Body() body: CreateOwnerRegistrationDto, @Req() req: UserRequestDto) {
+    return this.service.create(body, req);
   }
 
   @Methods(MethodName.DELETE)
