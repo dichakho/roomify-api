@@ -1,7 +1,7 @@
 import { ValidatorConstraintInterface, ValidatorConstraint, ValidationArguments } from 'class-validator';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Role } from '@src/entities/roles.entity';
-@ValidatorConstraint({ name: 'CheckRoleOfUser', async: true })
+@ValidatorConstraint({ name: 'isValidate', async: true })
 @Injectable()
 export class CheckRoleOfUser implements ValidatorConstraintInterface {
 

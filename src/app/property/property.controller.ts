@@ -45,24 +45,6 @@ export class PropertyController implements CrudController<Property>{
     return this.service.restore(id);
   }
 
-  @ApiBearerAuth()
-  @Patch('image')
-  @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('image',
-    {
-      dest: 'uploads',
-      preservePath: true,
-      fileFilter: imageFileFilter
-    }))
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    description: 'Get URL image of property',
-    type: UploadFilePropertyDto
-  })
-  async uploadImage(@UploadedFile() file) {
-    return this.service.uploadImage(file.path, 'property');
-  }
-
   get base(): CrudController<Property> {
     return this;
   }
