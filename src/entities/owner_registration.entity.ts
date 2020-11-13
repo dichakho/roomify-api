@@ -11,7 +11,7 @@ const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('owner_registration')
 export class OwnerRegistration extends BaseEntity {
 
-  @ApiProperty({enum: OwnerStatus})
+  @ApiProperty({ enum: OwnerStatus })
   @Column({
     type: 'enum',
     enum: OwnerStatus,
@@ -23,6 +23,12 @@ export class OwnerRegistration extends BaseEntity {
   @IsEmpty({ groups: [UPDATE] })
   @Column()
   IDNumber: number
+
+  @Column()
+  nameOwner: string
+
+  @Column('text', { array: true })
+  householdRegistrationImgs: string[]
 
   @ApiProperty({ type: () => User, readOnly: true })
   @IsEmpty()

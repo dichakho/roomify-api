@@ -12,6 +12,7 @@ import { RoomModule } from './app/room/room.module';
 import { DestinationModule } from './app/destination/destination.module';
 import { UserPermissionModule } from './app/user-permission/user-permission.module';
 import { OwnerRegistrationModule } from './app/owner-registration/owner-registration.module';
+import { BaseController } from './base.controller';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { OwnerRegistrationModule } from './app/owner-registration/owner-registra
     DestinationModule,
     UserPermissionModule,
     OwnerRegistrationModule
-  ]
+  ],
+  controllers: [BaseController]
 })
 export class AppModule { }

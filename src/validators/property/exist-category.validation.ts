@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Category } from '@src/entities/category.entity';
 import { CategoryConstant } from '@src/constant/category.constant';
 
-@ValidatorConstraint({ name: 'isExisted', async: true })
+@ValidatorConstraint({ name: 'isValidate', async: true })
 @Injectable()
 export class DontExistedCategoryValidator implements ValidatorConstraintInterface {
 

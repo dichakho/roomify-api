@@ -177,6 +177,12 @@ export default class Permissions {
     {
       module: 'CATEGORY',
       methods: []
+    },
+    {
+      module: 'OWNER_REGISTRATION',
+      methods: [
+        { name: 'POST', description: 'Create object' }
+      ]
     }
   ]
 
