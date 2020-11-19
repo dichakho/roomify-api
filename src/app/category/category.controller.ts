@@ -33,6 +33,14 @@ import { createSlug } from '../../utils/helper';
         eager: true
       }
     }
+  },
+  routes: {
+    getManyBase: {
+      decorators: []
+    },
+    getOneBase: {
+      decorators: []
+    }
   }
 })
 @ApiTags('categories')
@@ -41,12 +49,10 @@ import { createSlug } from '../../utils/helper';
 export class CategoryController implements CrudController<Category> {
   constructor(
     public service: CategoryService,
-    private readonly repository: CategoryRepository,
-    @InjectRepository(Category)
-    private readonly treeRepository: TreeRepository<Category>
-  ) {}
+    private readonly repository: CategoryRepository
+  ) { }
 
-  get base():CrudController<Category> {
+  get base(): CrudController<Category> {
     return this;
   }
 
