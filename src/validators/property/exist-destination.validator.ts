@@ -13,7 +13,7 @@ export class ExistedDestinationValidator implements ValidatorConstraintInterface
     return `${validationArguments.value} do not exist, please try another`;
   }
 
-  async validate(value: Destination, validationArguments?: ValidationArguments): Promise<boolean> {
+  async validate(value: number, validationArguments?: ValidationArguments): Promise<boolean> {
     const result = await this.destinationService.findTree(value);
     if(!result) return false;
     if(!result.parent || !result.parent.parent) throw new NotFoundException('Destination must be PHUONG, please try another');
