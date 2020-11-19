@@ -13,8 +13,10 @@ export class DestinationService extends BaseService<Destination, DestinationRepo
     super(repository);
   }
 
-  async findTree(data: Destination): Promise<Destination> {
-    const result = await this.treeRepository.findAncestorsTree(data);
+  async findTree(data: number): Promise<Destination> {
+    const destination = this.repository.create();
+    destination.id = data;
+    const result = await this.treeRepository.findAncestorsTree(destination);
     return result;
   }
 }

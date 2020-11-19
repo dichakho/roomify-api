@@ -1,16 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Category } from '@src/entities/category.entity';
-import { Destination } from '@src/entities/destinations.entity';
 import { Policy } from '@src/entities/policy.entity';
 import { ExistedDestinationValidator } from '@src/validators/property/exist-destination.validator';
-import { IsString, IsNumber, IsNotEmpty, IsOptional, IsObject, Validate } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsObject, Validate } from 'class-validator';
 import { DontExistedCategoryValidator } from '../../validators/property/exist-category.validation';
 
 export class UpdatePropertyDTO {
   @ApiProperty({ example: 'Chung cu' })
   @IsOptional()
   @IsString()
-  name: string
+  title: string
 
   @ApiProperty({ example: 'Lorem idolt ...' })
   @IsOptional()
@@ -37,17 +35,17 @@ export class UpdatePropertyDTO {
   @IsString()
   thumbnail: string
 
-  @ApiProperty({ example: { id: 1 } })
+  @ApiProperty({ example: 1 })
   @IsOptional()
-  @IsObject()
+  @IsNumber()
   @Validate(ExistedDestinationValidator)
-  destination: Destination
+  destinationId: number
 
-  @ApiProperty({ example: { id: 1 } })
+  @ApiProperty({ example: 1 })
   @IsOptional()
-  @IsObject()
+  @IsNumber()
   @Validate(DontExistedCategoryValidator)
-  category: Category
+  categoryId: number
 
   @ApiProperty({ example: { id: 1, electricity: 10, water: 10, parking: 10, internet: 10 } })
   @IsOptional()

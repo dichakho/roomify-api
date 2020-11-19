@@ -18,7 +18,7 @@ export class Property extends BaseEntity {
   @IsOptional({ groups: [UPDATE] })
   @IsString()
   @Column()
-  name: string
+  title: string
 
   @ApiProperty({ example: 'Lorem idolt ...' })
   @IsNotEmpty({ groups: [CREATE] })

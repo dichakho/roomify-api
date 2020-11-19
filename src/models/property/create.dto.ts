@@ -1,6 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Category } from '@src/entities/category.entity';
-import { Destination } from '@src/entities/destinations.entity';
 import { Policy } from '@src/entities/policy.entity';
 import { ExistedDestinationValidator } from '@src/validators/property/exist-destination.validator';
 import { IsString, IsNumber, IsNotEmpty, IsOptional, IsObject, Validate } from 'class-validator';
@@ -10,7 +8,7 @@ export class CreatePropertyDTO {
   @ApiProperty({ example: 'Chung cu' })
   @IsNotEmpty()
   @IsString()
-  name: string
+  title: string
 
   @ApiProperty({ example: 'Lorem idolt ...' })
   @IsString()
@@ -34,17 +32,29 @@ export class CreatePropertyDTO {
   @IsString()
   thumbnail: string
 
-  @ApiProperty({ example: { id: 1 } })
-  @IsNotEmpty()
-  @IsObject()
-  @Validate(ExistedDestinationValidator)
-  destination: Destination
+  // @ApiProperty({ example: { id: 1 } })
+  // @IsNotEmpty()
+  // @IsObject()
+  // @Validate(ExistedDestinationValidator)
+  // destination: Destination
 
-  @ApiProperty({ example: { id: 1 } })
+  // @ApiProperty({ example: { id: 1 } })
+  // @IsNotEmpty()
+  // @IsObject()
+  // @Validate(DontExistedCategoryValidator)
+  // category: Category
+
+  @ApiProperty({ example: 100 } )
   @IsNotEmpty()
-  @IsObject()
+  @IsNumber()
+  @Validate(ExistedDestinationValidator)
+  destinationId: number
+
+  @ApiProperty({ example: 1 } )
+  @IsNotEmpty()
+  @IsNumber()
   @Validate(DontExistedCategoryValidator)
-  category: Category
+  categoryId: number
 
   @IsNotEmpty()
   @IsObject()

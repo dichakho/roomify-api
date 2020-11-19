@@ -11,8 +11,8 @@ export class DontExistedCategoryValidator implements ValidatorConstraintInterfac
     return `${validationArguments.value} do not exist, please try another`;
   }
 
-  async validate(value: Category, validationArguments?: ValidationArguments): Promise<boolean> {
-    if(value.id > CategoryConstant.length) throw new NotFoundException('Not found category');
+  async validate(value: number, validationArguments?: ValidationArguments): Promise<boolean> {
+    if(value > CategoryConstant.length) throw new NotFoundException('Not found category');
     return true;
   }
 }
