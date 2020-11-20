@@ -1,0 +1,92 @@
+[
+    {
+        "name": "WC riêng",
+        "iconName": "toilet",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Chỗ để xe",
+        "iconName": "parking",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Cửa sổ",
+        "iconName": "window-closed-variant",
+        "iconType": "material-community"
+    },
+    {
+        "name": "An ninh",
+        "iconName": "security",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Wifi",
+        "iconName": "wifi",
+        "iconType": "antdesign"
+    },
+    {
+        "name": "Tự do",
+        "iconName": "clock",
+        "iconType": "evilicon"
+    },
+    {
+        "name": "Chủ riêng",
+        "iconName": "account-key-outline",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Máy lạnh",
+        "iconName": "air-conditioner",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Máy nước nóng",
+        "iconName": "water-boiler",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Nhà bếp",
+        "iconName": "stove",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Tủ lạnh",
+        "iconName": "fridge-outline",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Máy giặt",
+        "iconName": "washing-machine",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Gác lửng",
+        "iconName": "stairs",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Giường",
+        "iconName": "bed-outline",
+        "iconType": "ionicon"
+    },
+    {
+        "name": "Tủ đồ",
+        "iconName": "wardrobe-outline",
+        "iconType": "material-community"
+    },
+    {
+        "name": "Tivi",
+        "iconName": "tv-outline",
+        "iconType": "ionicon"
+    },
+    {
+        "name": "Thú cưng",
+        "iconName": "pets",
+        "iconType": "material"
+    },
+    {
+        "name": "Ban công",
+        "iconName": "list-outline",
+        "iconType": "ionicon"
+    }
+]
