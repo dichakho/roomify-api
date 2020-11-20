@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { IsString, IsNotEmpty, IsOptional, IsNumber, IsIn } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
@@ -23,7 +23,7 @@ export class Room extends BaseEntity {
   @IsNotEmpty({ groups: [CREATE] })
   @IsOptional({ groups: [UPDATE] })
   @IsString()
-  @Column()
+  @Column({ nullable: true })
   slug: string
 
   @ApiProperty({ example: 95.37 })
@@ -35,7 +35,7 @@ export class Room extends BaseEntity {
   @ApiProperty({ example: 95.37 })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
-  @Column('decimal', { precision: 5, scale: 2 })
+  @Column('decimal', { precision: 5, scale: 2, nullable: true })
   area: number
 
   @ApiProperty({ example: ['https://lh3.googleusercontent.com/50RuktOOgpl8k61d_IEbYGUvewvlrD6kzhMCzPQ19dAU589lTUKV3OecQOfRnVO2PfMZyHC2FeXfDRWY=w1080-h608-p-no-v0'] })
@@ -66,6 +66,7 @@ export class Room extends BaseEntity {
 
   @ApiProperty({ readOnly: true })
   @ManyToMany(() => Amenity, (amenities: Amenity) => amenities.rooms)
+  @JoinTable({ name: 'room_amenity' })
   amenities: Amenity[]
 
   @ApiProperty({ readOnly: true })

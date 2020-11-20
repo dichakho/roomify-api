@@ -83,7 +83,7 @@ export class User extends BaseEntity {
   @ApiProperty({ example: { id: 1 } })
   @IsObject()
   @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
-  @JoinTable({ name: 'user_roles' })
+  @JoinTable({ name: 'user_role' })
   roles: Role[];
 
   @ApiProperty({ readOnly: true })

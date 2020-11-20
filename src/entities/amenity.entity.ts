@@ -21,7 +21,13 @@ export class Amenity extends BaseEntity {
   @Column()
   iconName: string
 
+  @ApiProperty({ example: 'material' })
+  @IsOptional({ groups: [UPDATE] })
+  @IsNotEmpty({ groups: [CREATE] })
+  @Column()
+  iconType: string
+
   @ApiProperty({ readOnly: true })
   @ManyToMany(() => Room, (room: Room) => room.amenities)
-  rooms: Property[];
+  rooms: Room[];
 }
