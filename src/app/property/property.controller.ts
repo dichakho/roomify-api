@@ -30,6 +30,14 @@ import { PropertyService } from './property.service';
         eager: true
       }
     }
+  },
+  routes: {
+    getManyBase: {
+      decorators: []
+    },
+    getOneBase: {
+      decorators: []
+    }
   }
 })
 @Modules(ModulesName.PROPERTY)
