@@ -29,8 +29,10 @@ export default class CreateProperties implements Seeder {
       propertyData.category = { id: Faker.random.number({ min: 1, max: 4 }) };
       propertyData.owner = { id: 3 };
       rooms.push(propertyData.rooms);
+      propertyData.averagePrice = properties[i].rooms.price;
       propertyData.rooms = undefined;
       propertyData.description = Faker.lorem.sentences(4);
+      propertyData.averageArea = 100.97;
 
       policy = await connection
         .createQueryBuilder()

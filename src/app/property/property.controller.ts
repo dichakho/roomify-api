@@ -6,14 +6,11 @@ import { Methods } from '@src/common/decorators/methods.decorator';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
 import { ModulesName } from '@src/common/enums/modules.enum';
-import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
 import { method } from '@src/constant/config-crud.constant';
 import { Property } from '@src/entities/property.entity';
 import { CreatePropertyDTO } from '@src/models/property/create.dto';
 import { UpdatePropertyDTO } from '@src/models/property/update.dto';
-import { UploadFilePropertyDto } from '@src/models/property/upload-file.dto';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
-import { imageFileFilter } from '@src/utils/file-upload';
 import { PropertyService } from './property.service';
 
 @Crud({
@@ -26,12 +23,22 @@ import { PropertyService } from './property.service';
         eager: true,
         allow: ['name', 'slug']
       },
-      rooms: {
-        eager: true
-      },
       owner: {
         eager: true,
         allow: ['fullName', 'username', 'email', 'phone', 'avatar']
+      },
+      destination: {
+        eager: true,
+        allow: ['name']
+      },
+      'destination.parent': {
+        eager: true,
+        allow: ['name'],
+        alias: 'district'
+      },
+      'destination.parent.parent': {
+        eager: true,
+        allow: ['name']
       }
     }
   },
