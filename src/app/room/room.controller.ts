@@ -49,6 +49,8 @@ export class RoomController implements CrudController<Room> {
     return this.service.getOneRoom(id);
   }
 
+  @ApiBearerAuth()
+  @Methods(MethodName.POST)
   @Override('createOneBase')
   createOne(@Body() body: CreateRoom) {
     return this.service.createRoom(body);
