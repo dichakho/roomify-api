@@ -61,6 +61,7 @@ export class Room extends BaseEntity {
   @JoinColumn()
   propertyId: number
 
+  @ApiProperty({ readOnly: true, type: () => Property })
   @ManyToOne(() => Property, (property: Property) => property.rooms)
   property: Property
 
