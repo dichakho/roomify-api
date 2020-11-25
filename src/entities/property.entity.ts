@@ -9,6 +9,7 @@ import { Amenity } from './amenity.entity';
 import { User } from './user.entity';
 import { BaseEntity } from './base.entity';
 import { Policy } from './policy.entity';
+import { FavoriteProperty } from './favorite_property.entity';
 
 const { UPDATE, CREATE } = CrudValidationGroups;
 @Entity('properties')
@@ -77,6 +78,7 @@ export class Property extends BaseEntity {
 
   @ApiProperty({ readOnly: true })
   @OneToMany(() => Room, (room: Room) => room.property)
+  @JoinColumn()
   rooms: Array<Room>
 
   @ApiProperty({ example: { id: 1 } })
@@ -102,4 +104,8 @@ export class Property extends BaseEntity {
   @OneToOne(() => Policy, (policy: Policy) => policy.property, { eager: true, cascade: true, onDelete: 'CASCADE' })
   @JoinColumn()
   policy: Policy
+
+  @ApiProperty({ readOnly: true })
+  @OneToMany(() => FavoriteProperty, (favoriteProperty: FavoriteProperty) => favoriteProperty.property)
+  favoriteProperty: FavoriteProperty[]
 }

@@ -42,7 +42,7 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
   }
 
   async restore(id: number): Promise<void> {
-    const checkData = await this.repository.findOne(id);
+    const checkData = await this.repository.findOne({ where: { id }, withDeleted: true });
     if (!checkData) throw new NotFoundException();
     await this.repository.restore(id);
   }

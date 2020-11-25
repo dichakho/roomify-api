@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Param, ParseIntPipe, Patch, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
@@ -22,12 +22,16 @@ import { PropertyService } from './property.service';
   },
   query: {
     join: {
-      amenities: {
+      category: {
         eager: true,
-        allow: ['name']
+        allow: ['name', 'slug']
       },
       rooms: {
         eager: true
+      },
+      owner: {
+        eager: true,
+        allow: ['fullName', 'username', 'email', 'phone', 'avatar']
       }
     }
   },
@@ -51,6 +55,11 @@ export class PropertyController implements CrudController<Property>{
   @Methods(MethodName.PATCH)
   restore(@Param('id', ParseIntPipe) id: number) {
     return this.service.restore(id);
+  }
+
+  @Get(':id/rooms')
+  getRoom(@Param('id', ParseIntPipe) id: number) {
+    return this.service.getRooms(id);
   }
 
   get base(): CrudController<Property> {
@@ -79,4 +88,5 @@ export class PropertyController implements CrudController<Property>{
 
     return this.service.delete(id, req);
   }
+
 }
