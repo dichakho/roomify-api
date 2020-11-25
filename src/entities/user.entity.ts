@@ -11,6 +11,7 @@ import { UserPermission } from './user-permission.entity';
 import { Bookings } from './bookings.entity';
 import { Roommate } from './roommate.entity';
 import { OwnerRegistration } from './owner_registration.entity';
+import { FavoriteProperty } from './favorite_property.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('users')
@@ -103,7 +104,12 @@ export class User extends BaseEntity {
   roommates: Roommate[]
 
   @ApiProperty({ readOnly: true })
+  @OneToMany(() => FavoriteProperty, (favoriteProperty: FavoriteProperty) => favoriteProperty.user)
+  favorteProperty: FavoriteProperty[]
+
+  @ApiProperty({ readOnly: true })
   @OneToOne(() => OwnerRegistration)
   @JoinColumn()
   ownerRegistration: OwnerRegistration
+
 }

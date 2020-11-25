@@ -7,7 +7,8 @@ export default class Permissions {
     { name: 'ROOM', description: 'CRUD room' },
     { name: 'CATEGORY', description: 'CRUD category' },
     { name: 'USER_PERMISSION', description: 'CRUD user permission' },
-    { name: 'OWNER_REGISTRATION', description: 'CRUD request of user that want to upgrade to owner' }
+    { name: 'OWNER_REGISTRATION', description: 'CRUD request of user that want to upgrade to owner' },
+    { name: 'FAVORITE_PROPERTY', description: 'Favorite of property' }
   ];
 
   public methods = [
@@ -72,6 +73,10 @@ export default class Permissions {
     },
     {
       module: 'OWNER_REGISTRATION',
+      methods: this.methods
+    },
+    {
+      module: 'FAVORITE_PROPERTY',
       methods: this.methods
     }
   ]

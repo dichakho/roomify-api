@@ -5,6 +5,7 @@ import { UserModule } from '../app/user/user.module';
 import { UniquePhoneValidator } from './auth/unique-phone.validator';
 import { TokenIDValidator } from './auth/tokenID.validator';
 import { ExistedDestinationValidator } from './property/exist-destination.validator';
+import { ExistedPropertyValidator } from './favorite-property/existedProperty.validator';
 
 @Global()
 @Module({
@@ -16,13 +17,15 @@ import { ExistedDestinationValidator } from './property/exist-destination.valida
     UniqueUsernameValidator,
     UniquePhoneValidator,
     TokenIDValidator,
-    ExistedDestinationValidator
+    ExistedDestinationValidator,
+    ExistedPropertyValidator
   ],
   exports: [
     UniqueUsernameValidator,
     UniquePhoneValidator,
     TokenIDValidator,
-    ExistedDestinationValidator
+    ExistedDestinationValidator,
+    ExistedPropertyValidator
   ]
 })
 export class ValidatorModule {

@@ -101,10 +101,9 @@ export class UserController implements CrudController<User> {
 
   @ApiBearerAuth()
   @Methods(MethodName.MANAGE_PERMISSION)
-  @Post('/:id/permissions')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  createPermissionOfUser(@Param('id', ParseIntPipe) userId: number, @Body() body: PermissionDTO) {
-    return this.service.createBulkPermission(userId, body.permissionIds);
+  @Post('/permissions')
+  createPermissionOfUser(@Body() body: PermissionDTO) {
+    return this.service.createBulkPermission(body.userId, body.permissionIds);
   }
 
   @ApiBearerAuth()

@@ -16,6 +16,14 @@ import { RoomService } from './room.service';
   query: {
     join: {
     }
+  },
+  routes: {
+    getManyBase: {
+      decorators: []
+    },
+    getOneBase: {
+      decorators: []
+    }
   }
 })
 @Modules(ModulesName.ROOM)
@@ -33,6 +41,11 @@ export class RoomController implements CrudController<Room> {
 
   get base():CrudController<Room> {
     return this;
+  }
+
+  @Override('getOneBase')
+  getOne(@Param('id', ParseIntPipe) id: number) {
+    return this.service.getOneRoom(id);
   }
 
 }
