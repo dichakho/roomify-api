@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { BaseService } from '@src/base.service';
 import { RoomStatus } from '@src/common/enums/roomStatus.enum';
 import { Room } from '@src/entities/room.entity';
@@ -19,9 +19,10 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     return room;
   }
 
-  async createRoom(data: CreateRoom) {
-    const property = await this.propertyRepository.findOne({ where: { id: data.propertyId }, relations: ['rooms'] });
+  async createRoom(data: CreateRoom, userId: number) {
+    const property = await this.propertyRepository.findOne({ where: { id: data.propertyId }, relations: ['rooms', 'owner'] });
     if (!property) throw new NotFoundException('Property not found');
+    if (userId !== property.owner.id) throw new ForbiddenException("Can't create room of property's others");
     const amenities = await this.amenityRepository.findByIds(data.amenityIds);
     const room = this.repository.create();
     room.name = data.name;
@@ -30,14 +31,11 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     room.area = data.area;
     room.images = data.images;
     room.amenities = amenities;
-    const result = await this.repository.save({ ...room, property: { id: data.propertyId } });
-    if (property.maxPrice < result.price) property.maxPrice = result.price;
-    if (property.minPrice > result.price) property.minPrice = result.price;
-    const count = property.rooms.length;
-    const tinh = (property.averagePrice * count + result.price) / (count + 1);
-    property.averagePrice = tinh;
-    property.averageArea = (property.averageArea * count + result.area) / (count + 1);
-    await this.propertyRepository.save(property);
+    room.property = property;
+    const result = await this.repository.save(room);
+    const tempProperty = this.propertyRepository.create();
+    tempProperty.id = property.id;
+    result.property = tempProperty;
     return result;
   }
 }
