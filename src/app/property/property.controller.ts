@@ -18,6 +18,12 @@ import { PropertyService } from './property.service';
     type: Property
   },
   query: {
+    sort: [
+      {
+        field: 'id',
+        order: 'DESC'
+      }
+    ],
     join: {
       category: {
         eager: true,

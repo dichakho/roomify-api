@@ -17,8 +17,12 @@ import { RoomService } from './room.service';
     type: Room
   },
   query: {
-    join: {
-    }
+    sort: [
+      {
+        field: 'id',
+        order: 'DESC'
+      }
+    ]
   },
   routes: {
     getManyBase: {
