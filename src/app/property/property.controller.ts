@@ -45,6 +45,9 @@ import { PropertyService } from './property.service';
       'destination.parent.parent': {
         eager: true,
         allow: ['name']
+      },
+      policy: {
+        eager: true
       }
     }
   },
