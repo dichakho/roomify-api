@@ -70,6 +70,8 @@ export class PropertyController implements CrudController<Property>{
     return this.service.restore(id);
   }
 
+  @ApiBearerAuth()
+  @Methods(MethodName.GET)
   @Get(':id/rooms')
   getRoom(@Param('id', ParseIntPipe) id: number) {
     return this.service.getRooms(id);
@@ -97,7 +99,6 @@ export class PropertyController implements CrudController<Property>{
   @Methods(MethodName.DELETE)
   @Override('deleteOneBase')
   deleteOne(@Param('id', ParseIntPipe) id: number, @Req() req: UserRequestDto) {
-    console.log('id ---->', id);
 
     return this.service.delete(id, req);
   }

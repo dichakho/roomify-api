@@ -5,6 +5,6 @@ import { Repository, EntityRepository, getManager } from 'typeorm';
 export class PropertyRepository extends Repository<Property> {
   getOneWithRoom(id: number): any {
     return getManager().createQueryBuilder(Property, 'property').where('property.id= :id', { id })
-      .leftJoinAndSelect('property.rooms', 'rooms').andWhere('rooms.status= :status', { status: RoomStatus.OPEN }).getOne();
+      .leftJoinAndSelect('property.rooms', 'rooms').leftJoinAndSelect('rooms.amenities', 'amenities').andWhere('rooms.status= :status', { status: RoomStatus.OPEN }).getOne();
   }
 }

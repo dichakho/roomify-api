@@ -1,12 +1,14 @@
 import { Controller, Param, ParseIntPipe, Patch } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Crud, CrudController } from '@nestjsx/crud';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { Methods } from '@src/common/decorators/methods.decorator';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
 import { ModulesName } from '@src/common/enums/modules.enum';
 import { method } from '@src/constant/config-crud.constant';
 import { Destination } from '@src/entities/destinations.entity';
+import { TreeRepository } from 'typeorm';
 import { DestinationService } from './destination.service';
 
 @Crud({
@@ -15,9 +17,14 @@ import { DestinationService } from './destination.service';
   },
   query: {
     join: {
-      properties: {
-        eager: true
-      }
+    }
+  },
+  routes: {
+    getManyBase: {
+      decorators: []
+    },
+    getOneBase: {
+      decorators: []
     }
   }
 })
@@ -25,7 +32,9 @@ import { DestinationService } from './destination.service';
 @ApiTags('destinations')
 @Controller('destinations')
 export class DestinationController implements CrudController<Destination> {
-  constructor(public service: DestinationService) { }
+  constructor(public service: DestinationService,
+    @InjectRepository(Destination)
+    private readonly treeRepository:TreeRepository<Destination>) { }
 
   @ApiBearerAuth()
   @Patch('restore/:id')
@@ -37,4 +46,6 @@ export class DestinationController implements CrudController<Destination> {
   get base():CrudController<Destination> {
     return this;
   }
+
+
 }
