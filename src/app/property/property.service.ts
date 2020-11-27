@@ -1,18 +1,24 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from '@src/base.service';
 import { RoomStatus } from '@src/common/enums/roomStatus.enum';
+import { Destination } from '@src/entities/destinations.entity';
 import { FavoriteProperty } from '@src/entities/favorite_property.entity';
 import { Property } from '@src/entities/property.entity';
 import { User } from '@src/entities/user.entity';
+import { GetMany } from '@src/models/base/getMany.dto';
 import { CreatePropertyDTO } from '@src/models/property/create.dto';
 import { UpdatePropertyDTO } from '@src/models/property/update.dto';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
-import { FavoritePropertyRepository } from '../favorite-property/favorite-property.repository';
+import { In, TreeRepository } from 'typeorm';
+import { DestinationService } from '../destination/destination.service';
 import { PropertyRepository } from './property.repository';
 
 @Injectable()
 export class PropertyService extends BaseService<Property, PropertyRepository> {
-  constructor(protected repository: PropertyRepository, private favoriteRepository: FavoritePropertyRepository) {
+  constructor(protected repository: PropertyRepository,
+    @InjectRepository(Destination)
+    private readonly treeRepository: TreeRepository<Destination>) {
     super(repository);
   }
 
@@ -59,5 +65,55 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
 
     return { data };
 
+  }
+
+  async getPropertyOfDestination(destinationId: number, query: GetMany) {
+    let { limit, page, offset } = query;
+    if (limit === undefined) limit = 15;
+    if (offset === undefined) offset = 0;
+    if (page === undefined && offset === undefined) {
+      offset = 0;
+      page = 1;
+    }
+    else if (offset === undefined) {
+      offset = limit * (page - 1);
+    }
+    else {
+      page = Math.trunc(offset / limit) + 1;
+    }
+    const destination = this.treeRepository.create();
+    destination.id = destinationId;
+
+    const queryTree = await this.treeRepository.findDescendantsTree(destination);
+
+    const id = [];
+    if (queryTree.child.length > 0) {
+      if (queryTree.child[0].child.length > 0) {
+        queryTree.child.forEach(child => {
+          child.child.forEach(subChild => {
+            id.push(subChild.id);
+          });
+        });
+      } else {
+        queryTree.child.forEach(child => {
+          id.push(child.id);
+        });
+      }
+    }
+    else {
+      id.push(destinationId);
+    }
+    const result = await this.repository.findAndCount({ where: { destinationId: In(id) }, take: limit, skip: offset });
+    const data = result[0];
+    const count = data.length;
+    const total = result[1];
+    const pageCount = Math.ceil(total / limit);
+    return {
+      count,
+      total,
+      page,
+      pageCount,
+      data
+    };
   }
 }

@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-import { Property } from '@src/entities/property.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FavoriteProperty } from '@src/entities/favorite_property.entity';
 import { PropertyService } from './property.service';
 import { PropertyController } from './property.controller';
 import { PropertyRepository } from './property.repository';
+import { DestinationModule } from '../destination/destination.module';
+import { DestinationRepository } from '../destination/destination.repository';
+import { Destination } from '@src/entities/destinations.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PropertyRepository, FavoriteProperty])],
+  imports: [TypeOrmModule.forFeature([PropertyRepository, Destination])],
   providers: [PropertyService],
   controllers: [PropertyController],
   exports: [PropertyService]

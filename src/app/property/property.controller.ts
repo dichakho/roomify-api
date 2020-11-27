@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, Patch, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
@@ -8,6 +8,7 @@ import { MethodName } from '@src/common/enums/methods.enum';
 import { ModulesName } from '@src/common/enums/modules.enum';
 import { method } from '@src/constant/config-crud.constant';
 import { Property } from '@src/entities/property.entity';
+import { GetMany } from '@src/models/base/getMany.dto';
 import { CreatePropertyDTO } from '@src/models/property/create.dto';
 import { UpdatePropertyDTO } from '@src/models/property/update.dto';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
@@ -78,6 +79,12 @@ export class PropertyController implements CrudController<Property>{
   @Get(':id/rooms')
   getRoom(@Param('id', ParseIntPipe) id: number) {
     return this.service.getRooms(id);
+  }
+
+  @Get('/destination/:destinationId')
+  getPropertyOfDestination(@Param('destinationId', ParseIntPipe) destinationId: number, @Query() query: GetMany) {
+
+    return this.service.getPropertyOfDestination(destinationId, query);
   }
 
   get base(): CrudController<Property> {

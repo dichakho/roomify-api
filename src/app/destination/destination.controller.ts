@@ -1,4 +1,4 @@
-import { Controller, Param, ParseIntPipe, Patch } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Patch } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
@@ -34,7 +34,7 @@ import { DestinationService } from './destination.service';
 export class DestinationController implements CrudController<Destination> {
   constructor(public service: DestinationService,
     @InjectRepository(Destination)
-    private readonly treeRepository:TreeRepository<Destination>) { }
+    private readonly treeRepository: TreeRepository<Destination>) { }
 
   @ApiBearerAuth()
   @Patch('restore/:id')
@@ -43,7 +43,22 @@ export class DestinationController implements CrudController<Destination> {
     return this.service.restore(id);
   }
 
-  get base():CrudController<Destination> {
+  @Get('/city')
+  getCity() {
+    return this.service.getCity();
+  }
+
+  @Get('city/:cityId/district')
+  async getDistrinct(@Param('cityId', ParseIntPipe) cityId: number) {
+    return this.service.getDistrict(cityId);
+  }
+
+  @Get('city/district/:districtId/sub-district')
+  async getSubDistrinct(@Param('districtId', ParseIntPipe) districtId: number) {
+    return this.service.getSubDistrict(districtId);
+  }
+
+  get base(): CrudController<Destination> {
     return this;
   }
 
