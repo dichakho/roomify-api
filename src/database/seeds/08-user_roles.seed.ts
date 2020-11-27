@@ -23,7 +23,7 @@ export default class CreateUserRoles implements Seeder {
     await connection
       .createQueryBuilder()
       .insert()
-      .into('user_roles')
+      .into('user_role')
       .values(userRoles)
       .execute();
   }

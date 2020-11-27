@@ -17,11 +17,11 @@ export class Destination extends TreeBase {
   @Column()
   name: string;
 
-  @ApiProperty({ example: 95.37 })
-  @IsOptional({ groups: [UPDATE] })
-  @IsNotEmpty({ groups: [CREATE] })
-  @Column('decimal', { precision: 5, scale: 2 })
-  status: number;
+  // @ApiProperty({ example: 1 })
+  // @IsOptional({ groups: [UPDATE] })
+  // @IsNotEmpty({ groups: [CREATE] })
+  // @Column()
+  // status: number;
 
   @IsOptional()
   @IsEmpty()
@@ -33,10 +33,12 @@ export class Destination extends TreeBase {
   @TreeChildren()
   child: Destination[];
 
+  @ApiProperty({ readOnly: true })
   @IsOptional()
   @IsNumber({}, { each: true })
   propertyId: Array<number>;
 
+  @ApiProperty({ readOnly: true })
   @OneToMany(() => Property, (property: Property) => property.description)
   @JoinColumn({ name: 'propertyId' })
   properties: Array<Property>

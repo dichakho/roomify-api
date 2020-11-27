@@ -14,24 +14,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Methods } from '@src/common/decorators/methods.decorator';
 import { ModulesName } from '@src/common/enums/modules.enum';
 import { Modules } from '@src/common/decorators/modules.decorator';
-import { ValidationPipe } from '@src/common/pipes/validation.pipe';
 import { method } from '@src/constant/config-crud.constant';
 import { CategoryService } from './category.service';
 import { CategoryRepository } from './category.repository';
-import { createSlug } from '../../utils/helper';
 
 @Crud({
   model: {
     type: Category
   },
-  query: {
-    limit: 5,
-    maxLimit: 50,
-    alwaysPaginate: true,
-    join: {
-      properties: {
-        eager: true
-      }
+  routes: {
+    getManyBase: {
+      decorators: []
+    },
+    getOneBase: {
+      decorators: []
     }
   }
 })
@@ -41,12 +37,10 @@ import { createSlug } from '../../utils/helper';
 export class CategoryController implements CrudController<Category> {
   constructor(
     public service: CategoryService,
-    private readonly repository: CategoryRepository,
-    @InjectRepository(Category)
-    private readonly treeRepository: TreeRepository<Category>
-  ) {}
+    private readonly repository: CategoryRepository
+  ) { }
 
-  get base():CrudController<Category> {
+  get base(): CrudController<Category> {
     return this;
   }
 

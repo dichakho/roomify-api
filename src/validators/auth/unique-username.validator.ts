@@ -1,5 +1,5 @@
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserService } from '../../app/user/user.service';
 
 @ValidatorConstraint({ name: 'isUnique', async: true })
@@ -13,6 +13,8 @@ export class UniqueUsernameValidator implements ValidatorConstraintInterface {
   }
 
   async validate(value: string, validationArguments?: ValidationArguments): Promise<boolean> {
+    console.log(value);
+
     const result = await this.userService.findOneByUsername(value);
     return !result;
   }

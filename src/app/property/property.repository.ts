@@ -1,10 +1,10 @@
+import { RoomStatus } from '@src/common/enums/roomStatus.enum';
 import { Property } from '@src/entities/property.entity';
-import { property } from 'lodash';
-import { Repository, EntityRepository } from 'typeorm';
-@EntityRepository(property)
+import { Repository, EntityRepository, getManager } from 'typeorm';
+@EntityRepository(Property)
 export class PropertyRepository extends Repository<Property> {
-  async findOneById(id: number): Promise<Property> {
-    return this.findOne(id);
+  getOneWithRoom(id: number): any {
+    return getManager().createQueryBuilder(Property, 'property').where('property.id= :id', { id })
+      .leftJoinAndSelect('property.rooms', 'rooms').leftJoinAndSelect('rooms.amenities', 'amenities').andWhere('rooms.status= :status', { status: RoomStatus.OPEN }).getOne();
   }
-
 }

@@ -11,6 +11,9 @@ import { AmenityModule } from './app/amenity/amenity.module';
 import { RoomModule } from './app/room/room.module';
 import { DestinationModule } from './app/destination/destination.module';
 import { UserPermissionModule } from './app/user-permission/user-permission.module';
+import { OwnerRegistrationModule } from './app/owner-registration/owner-registration.module';
+import { BaseController } from './base.controller';
+import { FavoritePropertyModule } from './app/favorite-property/favorite-property.module';
 
 @Module({
   imports: [
@@ -26,7 +29,10 @@ import { UserPermissionModule } from './app/user-permission/user-permission.modu
     AmenityModule,
     RoomModule,
     DestinationModule,
-    UserPermissionModule
-  ]
+    UserPermissionModule,
+    OwnerRegistrationModule,
+    FavoritePropertyModule
+  ],
+  controllers: [BaseController]
 })
 export class AppModule {}
