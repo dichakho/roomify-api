@@ -26,12 +26,16 @@ export class Destination extends TreeBase {
   @IsOptional()
   @IsEmpty()
   @TreeParent()
+  @JoinColumn({ name: 'parentId' })
   parent: Destination;
 
   @IsOptional()
   @IsEmpty()
   @TreeChildren()
   child: Destination[];
+
+  @Column()
+  parentId: number
 
   @ApiProperty({ readOnly: true })
   @IsOptional()
