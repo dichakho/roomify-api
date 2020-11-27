@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { FavoriteProperty } from '@src/entities/favorite_property.entity';
 import { FavoritePropertyRepository } from './favorite-property.repository';
 
 @Injectable()
@@ -21,6 +20,9 @@ export class FavoritePropertyService {
 
   async getFavoriteProperty(userId: number): Promise<any> {
     const data = await this.repository.find({ where: { user: { id: userId } }, relations: ['property'] });
+    const t = await this.repository.getDistinct(userId);
+    console.log('asdasdasdasdasd', t);
+
     return { data };
 
   }
