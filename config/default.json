@@ -1,6 +1,6 @@
 {
   "jwt": {
-    "expiresIn": "7200s",
+    "expiresIn": "7d",
     "secret": "roomifySecret"
   }
 }
