@@ -12,11 +12,11 @@ export class FavoriteProperty extends BaseEntity {
   @JoinColumn()
   propertyId: number
 
-  @ApiProperty({ readOnly: true })
+  @ApiProperty({ readOnly: true, type: () => User })
   @ManyToOne(() => User, (user: User) => user.favorteProperty)
   user: User
 
-  @ApiProperty({ readOnly: true })
+  @ApiProperty({ readOnly: true, type: () => Property })
   @ManyToOne(() => Property, (property: Property) => property.favoriteProperty)
   property: Property
 }

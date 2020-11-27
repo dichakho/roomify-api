@@ -18,4 +18,10 @@ export class FavoritePropertyService {
     }
 
   }
+
+  async getFavoriteProperty(userId: number): Promise<any> {
+    const data = await this.repository.find({ where: { user: { id: userId } }, relations: ['property'] });
+    return { data };
+
+  }
 }

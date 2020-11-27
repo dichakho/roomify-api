@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Methods } from '@src/common/decorators/methods.decorator';
 import { Modules } from '@src/common/decorators/modules.decorator';
@@ -21,5 +21,13 @@ export class FavoritePropertyController {
   createOne(@Req() req: UserRequestDto, @Body() body: CreateFavorite) {
     const { user } = req;
     return this.service.createOne(user.id, body.propertyId);
+  }
+
+
+  @ApiBearerAuth()
+  @Get()
+  @Methods(MethodName.GET)
+  getFavoriteProperty(@Req() req: UserRequestDto) {
+    return this.service.getFavoriteProperty(req.user.id);
   }
 }
