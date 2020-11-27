@@ -53,7 +53,7 @@ export class DestinationController implements CrudController<Destination> {
     return this.service.getDistrict(cityId);
   }
 
-  @Get('city/district/:districtId')
+  @Get('city/district/:districtId/sub-district')
   async getSubDistrinct(@Param('districtId', ParseIntPipe) districtId: number) {
     return this.service.getSubDistrict(districtId);
   }

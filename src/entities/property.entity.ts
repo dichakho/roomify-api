@@ -79,11 +79,12 @@ export class Property extends BaseEntity {
   @ApiProperty({ readOnly: true })
   @IsOptional()
   @IsNumber()
-  @JoinColumn()
+  @Column()
   destinationId: number
 
   @ApiProperty({ example: { id: 1 } })
   @ManyToOne(() => Destination, (destination: Destination) => destination.properties)
+  @JoinColumn({ name: 'destinationId' })
   destination: Destination
 
   @ApiProperty({ readOnly: true })
