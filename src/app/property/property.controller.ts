@@ -87,6 +87,16 @@ export class PropertyController implements CrudController<Property>{
     return this.service.getPropertyOfDestination(destinationId, query);
   }
 
+  @Get('/near-me')
+  getPropertyNearMe(@Query('latitude', ParseIntPipe) latitude: number, @Query('longtitude', ParseIntPipe) longtitude: number, @Query('sub-district') subDistrict: string, @Query() query: GetMany) {
+    return this.service.getPropertyNearMe(latitude, longtitude, subDistrict, query);
+  }
+
+  @Get('/category/:categoryId')
+  getPropertyOfCategory(@Param('categoryId', ParseIntPipe) categoryId: number, @Query() query: GetMany) {
+    return this.service.getPropertyOfCategory(categoryId, query);
+  }
+
   get base(): CrudController<Property> {
     return this;
   }
