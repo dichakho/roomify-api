@@ -1,4 +1,4 @@
-import { Controller, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Controller, Get, Header, Param, ParseIntPipe, Post, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { Methods } from '@src/common/decorators/methods.decorator';
@@ -22,13 +22,18 @@ import { TransactionService } from './transaction.service';
 @ApiTags('transaction')
 @Controller('transaction')
 export class TransactionController implements CrudController<Transaction>{
-  constructor(public service: TransactionService){}
+  constructor(public service: TransactionService) { }
 
   @Post()
   @ApiBearerAuth()
   @Methods(MethodName.POST)
   create() {
     return this.service.createTransactionEveryMonth();
+  }
+
+  @Get('/extract-invoice/:id')
+  extract(@Res() res, @Param('id', ParseIntPipe) id: number) {
+    return this.service.extract(res, id);
   }
 
   get base(): CrudController<Transaction> {
@@ -38,7 +43,7 @@ export class TransactionController implements CrudController<Transaction>{
   @Override('getOneBase')
   @ApiBearerAuth()
   @Methods(MethodName.GET)
-  getOne(@Param('id', ParseIntPipe) id:number) {
+  getOne(@Param('id', ParseIntPipe) id: number) {
     return this.service.getOneTransaction(id);
   }
 }
