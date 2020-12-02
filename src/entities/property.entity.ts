@@ -32,14 +32,14 @@ export class Property extends BaseEntity {
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsNumber()
-  @Column('decimal', { precision: 5, scale: 2, nullable: true })
-  logtitude: number
+  @Column('decimal', { precision: 9, scale: 6, nullable: true })
+  longtitude: number
 
   @ApiProperty({ example: 95.37 })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsNumber()
-  @Column('decimal', { precision: 5, scale: 2, nullable: true })
+  @Column('decimal', { precision: 9, scale: 6, nullable: true })
   latitude: number
 
   @ApiProperty({ example: '123 Nguyen Luong Bang' })
@@ -94,12 +94,13 @@ export class Property extends BaseEntity {
 
   @ApiProperty({ example: { id: 1 } })
   @ManyToOne(() => Category, (category: Category) => category.properties)
+  @JoinColumn({ name: 'categoryId' })
   category: Category
 
   @ApiProperty({ readOnly: true })
   @IsOptional()
   @IsNumber()
-  @JoinColumn()
+  @Column()
   categoryId: number
 
   @ApiProperty({ readOnly: true })

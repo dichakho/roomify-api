@@ -33,6 +33,21 @@ export default class CreateProperties implements Seeder {
       propertyData.rooms = undefined;
       propertyData.description = Faker.lorem.sentences(4);
       propertyData.averageArea = 100.97;
+      if (id < 86) {
+        propertyData.latitude = Faker.random.number({ min: 16, max: 17, precision: 0.000001 });
+        propertyData.longtitude = Faker.random.number({ min: 108, max: 109, precision: 0.000001 });
+      }
+      else {
+        if (id < 252) {
+          propertyData.latitude = Faker.random.number({ min: 21, max: 22, precision: 0.000001 });
+          propertyData.longtitude = Faker.random.number({ min: 105, max: 106, precision: 0.000001 });
+        }
+        else {
+          propertyData.latitude = Faker.random.number({ min: 10, max: 11, precision: 0.000001 });
+          propertyData.longtitude = Faker.random.number({ min: 105, max: 106, precision: 0.000001 });
+        }
+
+      }
 
       policy = await connection
         .createQueryBuilder()
@@ -46,7 +61,7 @@ export default class CreateProperties implements Seeder {
         })
         .execute();
 
-      propertyData.policy = { id: policy.raw[0].id};
+      propertyData.policy = { id: policy.raw[0].id };
 
       await connection
         .createQueryBuilder()

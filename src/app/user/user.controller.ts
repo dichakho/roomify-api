@@ -14,9 +14,9 @@ import { Methods } from '@src/common/decorators/methods.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
 import { GetMany } from '@src/models/base/getMany.dto';
 import { PermissionDTO } from '@src/models/users/permissionId.dto';
+import { CreateUserDTO } from '@src/models/users/create.dto';
 import { UserService } from './user.service';
 import { ModulesName } from '../../common/enums/modules.enum';
-import { CreateUserDTO } from '@src/models/users/create.dto';
 @Crud({
   model: {
     type: User

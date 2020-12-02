@@ -23,18 +23,14 @@ export class Destination extends TreeBase {
   // @Column()
   // status: number;
 
-  @IsOptional()
-  @IsEmpty()
   @TreeParent()
   @JoinColumn({ name: 'parentId' })
   parent: Destination;
 
-  @IsOptional()
-  @IsEmpty()
   @TreeChildren()
   child: Destination[];
 
-  @Column()
+  @Column({ nullable: true })
   parentId: number
 
   @ApiProperty({ readOnly: true })

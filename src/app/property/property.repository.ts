@@ -8,4 +8,10 @@ export class PropertyRepository extends Repository<Property> {
       .leftJoinAndSelect('property.rooms', 'rooms').leftJoinAndSelect('rooms.amenities', 'amenities')
       .andWhere('rooms.status= :status', { status: RoomStatus.OPEN }).getOne();
   }
+
+  getPropertyWithSubDistrict(name: string, limit: number, offset: number): any {
+    return getManager().createQueryBuilder(Property, 'property')
+      .leftJoinAndSelect('property.destination', 'destination')
+      .where('destination.name= :name', { name }).take(limit).skip(offset).getManyAndCount();
+  }
 }

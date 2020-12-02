@@ -116,4 +116,62 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
       data
     };
   }
+
+  async getPropertyOfCategory(categoryId: number, query: GetMany) {
+    let { limit, page, offset } = query;
+    if (limit === undefined) limit = 15;
+    if (offset === undefined) offset = 0;
+    if (page === undefined && offset === undefined) {
+      offset = 0;
+      page = 1;
+    }
+    else if (offset === undefined) {
+      offset = limit * (page - 1);
+    }
+    else {
+      page = Math.trunc(offset / limit) + 1;
+    }
+    const result = await this.repository.findAndCount({ where: { categoryId }, take: limit, skip: offset });
+    console.log(result);
+    const data = result[0];
+    const count = data.length;
+    const total = result[1];
+    const pageCount = Math.ceil(total / limit);
+    return {
+      count,
+      total,
+      page,
+      pageCount,
+      data
+    };
+  }
+
+  async getPropertyNearMe(latitude: number, longtitude: number, subDistrict: string, query: GetMany) {
+    let { limit, page, offset } = query;
+    if (limit === undefined) limit = 15;
+    if (offset === undefined) offset = 0;
+    if (page === undefined && offset === undefined) {
+      offset = 0;
+      page = 1;
+    }
+    else if (offset === undefined) {
+      offset = limit * (page - 1);
+    }
+    else {
+      page = Math.trunc(offset / limit) + 1;
+    }
+    const result = await this.repository.getPropertyWithSubDistrict(subDistrict, limit, offset);
+    console.log(result);
+    const data = result[0];
+    const count = data.length;
+    const total = result[1];
+    const pageCount = Math.ceil(total / limit);
+    return {
+      count,
+      total,
+      page,
+      pageCount,
+      data
+    };
+  }
 }
