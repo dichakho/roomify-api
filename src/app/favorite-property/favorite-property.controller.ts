@@ -26,7 +26,7 @@ export class FavoritePropertyController {
 
   @ApiBearerAuth()
   @Get()
-  @Methods(MethodName.GET)
+  @Methods(MethodName.GET_LIST)
   getFavoriteProperty(@Req() req: UserRequestDto) {
     return this.service.getFavoriteProperty(req.user.id);
   }

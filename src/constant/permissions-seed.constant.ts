@@ -8,7 +8,11 @@ export default class Permissions {
     { name: 'CATEGORY', description: 'CRUD category' },
     { name: 'USER_PERMISSION', description: 'CRUD user permission' },
     { name: 'OWNER_REGISTRATION', description: 'CRUD request of user that want to upgrade to owner' },
-    { name: 'FAVORITE_PROPERTY', description: 'Favorite of property' }
+    { name: 'FAVORITE_PROPERTY', description: 'Favorite of property' },
+    { name: 'BOOKING', description: 'Using booking the property' },
+    { name: 'NOTIFICATION', description: 'CRUD notification' },
+    { name: 'ROOMMATE', description: 'CRUD request find roommate of user' },
+    { name: 'TRANSACTION', description: 'Manage invoice' }
   ];
 
   public methods = [
@@ -20,7 +24,7 @@ export default class Permissions {
     { name: 'GETLIST', description: 'Get list information' },
     { name: 'MANAGEROLE', description: 'Change role of user' },
     { name: 'RESTORE', description: 'Restore data was deleted' },
-    { name: 'MANAGEPERMISSION', description: 'Create, delete and see information about permission of users' },
+    { name: 'MANAGEPERMISSION', description: 'Create, delete and see information about permission of users' }
   ];
 
   public roles = [
@@ -78,6 +82,22 @@ export default class Permissions {
     {
       module: 'FAVORITE_PROPERTY',
       methods: this.methods
+    },
+    {
+      module: 'BOOKING',
+      methods: this.methods
+    },
+    {
+      module: 'TRANSACTION',
+      methods: this.methods
+    },
+    {
+      module: 'ROOMMATE',
+      methods: this.methods
+    },
+    {
+      module: 'NOTIFICATION',
+      methods: this.methods
     }
   ]
 
@@ -115,6 +135,26 @@ export default class Permissions {
     {
       module: 'USER_PERMISSION',
       methods: this.methods
+    },
+    {
+      module: 'FAVORITE_PROPERTY',
+      methods: this.methods
+    },
+    {
+      module: 'BOOKING',
+      methods: this.methods
+    },
+    {
+      module: 'TRANSACTION',
+      methods: this.methods
+    },
+    {
+      module: 'ROOMMATE',
+      methods: this.methods
+    },
+    {
+      module: 'NOTIFICATION',
+      methods: this.methods
     }
   ]
 
@@ -132,11 +172,17 @@ export default class Permissions {
     },
     {
       module: 'DESTINATION',
-      methods: []
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'GETLIST', description: 'Get list information' },
+      ]
     },
     {
       module: 'AMENITY',
-      methods: this.methods
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'GETLIST', description: 'Get list information' },
+      ]
     },
     {
       module: 'PROPERTY',
@@ -149,8 +195,38 @@ export default class Permissions {
     {
       module: 'CATEGORY',
       methods: [
+        { name: 'GET', description: 'Retrieve object' },
         { name: 'GETLIST', description: 'Get list information' }
       ]
+    },
+    {
+      module: 'FAVORITE_PROPERTY',
+      methods: [
+        { name: 'GETLIST', description: 'Get list information' },
+        { name: 'POST', description: 'Create object' }
+      ]
+    },
+    {
+      module: 'BOOKING',
+      methods: [
+        { name: 'POST', description: 'Create object' },
+        { name: 'GETLIST', description: 'Get list information' }
+      ]
+    },
+    {
+      module: 'TRANSACTION',
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'GETLIST', description: 'Get list information' },
+      ]
+    },
+    {
+      module: 'ROOMMATE',
+      methods: []
+    },
+    {
+      module: 'NOTIFICATION',
+      methods: []
     }
   ]
 
@@ -161,33 +237,71 @@ export default class Permissions {
     },
     {
       module: 'DESTINATION',
-      methods: []
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'GETLIST', description: 'Get list information' },
+      ]
     },
     {
       module: 'AMENITY',
-      methods: []
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'GETLIST', description: 'Get list information' },
+      ]
     },
     {
       module: 'PROPERTY',
       methods: [
+        { name: 'GET', description: 'Retrieve object' },
         { name: 'GETLIST', description: 'Get list information' }
       ]
     },
     {
       module: 'ROOM',
       methods: [
+        { name: 'GET', description: 'Retrieve object' },
         { name: 'GETLIST', description: 'Get list information' }
       ]
     },
     {
       module: 'CATEGORY',
-      methods: []
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'GETLIST', description: 'Get list information' }
+      ]
     },
     {
       module: 'OWNER_REGISTRATION',
       methods: [
         { name: 'POST', description: 'Create object' }
       ]
+    },
+    {
+      module: 'FAVORITE_PROPERTY',
+      methods: [
+        { name: 'POST', description: 'Create object' },
+        { name: 'GETLIST', description: 'Get list information' }
+      ]
+    },
+    {
+      module: 'BOOKING',
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'POST', description: 'Create object' },
+        { name: 'GETLIST', description: 'Get list information' },
+      ]
+    },
+    {
+      module: 'TRANSACTION',
+      methods: []
+    },
+    {
+      module: 'ROOMMATE',
+      methods: []
+    },
+    {
+      module: 'NOTIFICATION',
+      methods: []
     }
   ]
 

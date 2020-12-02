@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { DatabaseConnectionService } from './database/database-connection.service';
 import { CategoryModule } from './app/category/category.module';
 import { UserModule } from './app/user/user.module';
@@ -14,6 +15,8 @@ import { UserPermissionModule } from './app/user-permission/user-permission.modu
 import { OwnerRegistrationModule } from './app/owner-registration/owner-registration.module';
 import { BaseController } from './base.controller';
 import { FavoritePropertyModule } from './app/favorite-property/favorite-property.module';
+import { BookingModule } from './app/booking/booking.module';
+import { TransactionModule } from './app/transaction/transaction.module';
 
 @Module({
   imports: [
@@ -21,6 +24,7 @@ import { FavoritePropertyModule } from './app/favorite-property/favorite-propert
     TypeOrmModule.forRootAsync({
       useClass: DatabaseConnectionService
     }),
+    ScheduleModule.forRoot(),
     CategoryModule,
     UserModule,
     AuthModule,
@@ -31,7 +35,9 @@ import { FavoritePropertyModule } from './app/favorite-property/favorite-propert
     DestinationModule,
     UserPermissionModule,
     OwnerRegistrationModule,
-    FavoritePropertyModule
+    FavoritePropertyModule,
+    BookingModule,
+    TransactionModule
   ],
   controllers: [BaseController]
 })
