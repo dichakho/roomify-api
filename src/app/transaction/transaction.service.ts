@@ -5,6 +5,8 @@ import { Transaction } from '@src/entities/transaction.entity';
 import { IResponseFormat } from '@src/models/base/response.interface';
 import { BookingRepository } from '../booking/booking.respository';
 import { TransactionRepository } from './transaction.repository';
+import stringify from 'csv-stringify';
+import fs from 'fs';
 
 @Injectable()
 export class TransactionService extends BaseService<Transaction, TransactionRepository> {
@@ -14,7 +16,7 @@ export class TransactionService extends BaseService<Transaction, TransactionRepo
 
   async getOneTransaction(id: number): Promise<IResponseFormat<Transaction>> {
     const data = await this.repository.findOne({ where: { id }, relations: ['bookings'] });
-    if(!data) throw new NotFoundException('Transaction not found !!!');
+    if (!data) throw new NotFoundException('Transaction not found !!!');
     return { data };
   }
 
@@ -24,5 +26,26 @@ export class TransactionService extends BaseService<Transaction, TransactionRepo
     transaction.isPaid = false;
     const create = await this.repository.save(transaction);
     await this.bookingRepository.update({ transactionId: null }, { transactionId: create.id });
+  }
+
+  async extract(res, id: number) {
+    const query = await this.repository.findOne({ where: { id }, relations: ['bookings', 'bookings.user', 'bookings.room'] });
+    if (!query) throw new NotFoundException('Transaction not found');
+    const { bookings } = query;
+    const dataConvert = [];
+    bookings.forEach(booking => {
+      dataConvert.push({
+        id: booking.id,
+        username: booking.user.fullName,
+        phone: booking.user.phone,
+        email: booking.user.email,
+        roomName: booking.room.name,
+        createdAt: booking.createdAt.toUTCString()
+      });
+    });
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `${'attachment; filename=\"' + 'invoice-'}${Date.now()}.csv\"`);
+    return stringify(dataConvert, { header: true }).pipe(res);
+
   }
 }

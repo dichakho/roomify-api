@@ -45,6 +45,7 @@
     "class-validator": "^0.12.2",
     "cloudinary": "^1.23.0",
     "config": "^3.3.1",
+    "csv-stringify": "^5.5.3",
     "dotenv": "^8.2.0",
     "firebase-admin": "^9.2.0",
     "lodash": "^4.17.19",
