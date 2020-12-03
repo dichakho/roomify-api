@@ -14,6 +14,11 @@ export class CreateRoom {
   @IsNumber()
   price: number
 
+  @ApiProperty({ example: 'lorem ipsum ....' })
+  @IsString()
+  @IsNotEmpty()
+  description: string
+
   @ApiProperty({ example: 95.37 })
   @IsNotEmpty()
   @IsNumber()

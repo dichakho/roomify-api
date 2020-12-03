@@ -31,6 +31,7 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     room.status = 'OPEN';
     room.area = data.area;
     room.images = data.images;
+    room.description = data.description;
     room.amenities = amenities;
     room.property = property;
     const result = await this.repository.save(room);
@@ -51,6 +52,7 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     if(data.name) room.name = data.name;
     if(data.price) room.price = data.price;
     if(data.status) room.status = data.status;
+    if(data.description) room.description = data.description;
     const result = await this.repository.save(room);
     result.property = undefined;
     return result;

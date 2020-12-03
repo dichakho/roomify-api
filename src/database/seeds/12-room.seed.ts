@@ -15,6 +15,7 @@ export default class CreateRooms implements Seeder {
       temp.property = { id: i + 1 };
       temp.slug = Faker.lorem.slug();
       temp.area = 100.97;
+      temp.description = Faker.lorem.sentences(5);
       for (let j = 0; j < 6; j += 1) {
         amenities.push(Faker.random.number({ min: 1, max: amenities_data.length }));
       }

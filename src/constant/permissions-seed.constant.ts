@@ -297,7 +297,7 @@ export default class Permissions {
     },
     {
       module: 'ROOMMATE',
-      methods: []
+      methods: this.methods
     },
     {
       module: 'NOTIFICATION',

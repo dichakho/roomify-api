@@ -4,6 +4,7 @@ import { CrudValidationGroups } from '@nestjsx/crud';
 import { ApiProperty } from '@nestjs/swagger';
 import { Property } from './property.entity';
 import { TreeBase } from './treebase.entity';
+import { Roommate } from './roommate.entity';
 
 const { UPDATE, CREATE } = CrudValidationGroups;
 
@@ -34,12 +35,9 @@ export class Destination extends TreeBase {
   parentId: number
 
   @ApiProperty({ readOnly: true })
-  @IsOptional()
-  @IsNumber({}, { each: true })
-  propertyId: Array<number>;
-
-  @ApiProperty({ readOnly: true })
   @OneToMany(() => Property, (property: Property) => property.description)
-  @JoinColumn({ name: 'propertyId' })
   properties: Array<Property>
+
+  @OneToMany(() => Roommate, (roommate: Roommate) => roommate.destination)
+  roommate: Roommate[]
 }
