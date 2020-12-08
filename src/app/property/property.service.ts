@@ -23,6 +23,8 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
   }
 
   async create(data: CreatePropertyDTO, req: UserRequestDto) {
+    console.log('asdasdasdasdasdsadsadsadsadasdasdsadasdasd');
+
     const { user } = req;
     let temp = 0;
     for (let i = 0; i < user.roles.length; i += 1) {
@@ -68,19 +70,6 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
   }
 
   async getPropertyOfDestination(destinationId: number, query: GetMany) {
-    let { limit, page, offset } = query;
-    if (limit === undefined) limit = 15;
-    if (offset === undefined) offset = 0;
-    if (page === undefined && offset === undefined) {
-      offset = 0;
-      page = 1;
-    }
-    else if (offset === undefined) {
-      offset = limit * (page - 1);
-    }
-    else {
-      page = Math.trunc(offset / limit) + 1;
-    }
     const destination = this.treeRepository.create();
     destination.id = destinationId;
 
@@ -103,44 +92,30 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
     else {
       id.push(destinationId);
     }
-    const result = await this.repository.findAndCount({ where: { destinationId: In(id) }, take: limit, skip: offset });
-    const data = result[0];
+    const temp = await this.getManyData(query, [], { destinationId: In(id) });
+    const data = temp.result[0];
     const count = data.length;
-    const total = result[1];
-    const pageCount = Math.ceil(total / limit);
+    const total = temp.result[1];
+    const pageCount = Math.ceil(total / temp.limit);
     return {
       count,
       total,
-      page,
+      page: temp.page,
       pageCount,
       data
     };
   }
 
   async getPropertyOfCategory(categoryId: number, query: GetMany) {
-    let { limit, page, offset } = query;
-    if (limit === undefined) limit = 15;
-    if (offset === undefined) offset = 0;
-    if (page === undefined && offset === undefined) {
-      offset = 0;
-      page = 1;
-    }
-    else if (offset === undefined) {
-      offset = limit * (page - 1);
-    }
-    else {
-      page = Math.trunc(offset / limit) + 1;
-    }
-    const result = await this.repository.findAndCount({ where: { categoryId }, take: limit, skip: offset });
-    console.log(result);
-    const data = result[0];
+    const temp = await this.getManyData(query, [], { categoryId });
+    const data = temp.result[0];
     const count = data.length;
-    const total = result[1];
-    const pageCount = Math.ceil(total / limit);
+    const total = temp.result[1];
+    const pageCount = Math.ceil(total / temp.limit);
     return {
       count,
       total,
-      page,
+      page: temp.page,
       pageCount,
       data
     };

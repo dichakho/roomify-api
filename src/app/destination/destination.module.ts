@@ -6,7 +6,7 @@ import { DestinationController } from './destination.controller';
 import { DestinationRepository } from './destination.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DestinationRepository])],
+  imports: [TypeOrmModule.forFeature([DestinationRepository, Destination])],
   providers: [DestinationService],
   exports: [DestinationService],
   controllers: [DestinationController]

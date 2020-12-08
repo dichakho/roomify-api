@@ -26,6 +26,10 @@ export class Room extends BaseEntity {
   @Column({ nullable: true })
   slug: string
 
+  @ApiProperty({ example: 'lorem ipsum ....' })
+  @Column('text')
+  description: string
+
   @ApiProperty({ example: 95.37 })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })

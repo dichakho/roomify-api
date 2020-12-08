@@ -17,6 +17,7 @@ import { BaseController } from './base.controller';
 import { FavoritePropertyModule } from './app/favorite-property/favorite-property.module';
 import { BookingModule } from './app/booking/booking.module';
 import { TransactionModule } from './app/transaction/transaction.module';
+import { RoommateModule } from './app/roommate/roommate.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { TransactionModule } from './app/transaction/transaction.module';
     OwnerRegistrationModule,
     FavoritePropertyModule,
     BookingModule,
-    TransactionModule
+    TransactionModule,
+    RoommateModule
   ],
   controllers: [BaseController]
 })

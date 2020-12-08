@@ -4,6 +4,7 @@ import { RoomStatus } from '@src/common/enums/roomStatus.enum';
 import { Room } from '@src/entities/room.entity';
 import { CreateRoom } from '@src/models/room/create.dto';
 import { UpdateRoom } from '@src/models/room/update.dto';
+import admin from 'firebase-admin';
 import { AmenityRepository } from '../amenity/amenity.repository';
 import { PropertyRepository } from '../property/property.repository';
 import { RoomRepository } from './room.repository';
@@ -31,9 +32,11 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     room.status = 'OPEN';
     room.area = data.area;
     room.images = data.images;
+    room.description = data.description;
     room.amenities = amenities;
     room.property = property;
     const result = await this.repository.save(room);
+    admin.messaging().subscribeToTopic(data.registrationToken, room.id.toString()).then(() => console.log('success')).catch(error => console.log(error));
     const tempProperty = this.propertyRepository.create();
     tempProperty.id = property.id;
     result.property = tempProperty;
@@ -51,6 +54,7 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     if(data.name) room.name = data.name;
     if(data.price) room.price = data.price;
     if(data.status) room.status = data.status;
+    if(data.description) room.description = data.description;
     const result = await this.repository.save(room);
     result.property = undefined;
     return result;

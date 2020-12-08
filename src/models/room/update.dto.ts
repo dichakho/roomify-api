@@ -19,6 +19,11 @@ export class UpdateRoom {
   @IsNumber()
   area: number
 
+  @ApiProperty({ example: 'lorem ipsum ....' })
+  @IsOptional()
+  @IsString()
+  description: string
+
   @ApiProperty({ example: 'OPEN' })
   @IsOptional()
   @IsIn(enumToArray(RoomStatus))

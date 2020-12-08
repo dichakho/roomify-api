@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { BaseService } from '@src/base.service';
 import { Bookings } from '@src/entities/bookings.entity';
 import { IResponseFormat } from '@src/models/base/response.interface';
+import admin from 'firebase-admin';
 import { RoomRepository } from '../room/room.repository';
 import { BookingRepository } from './booking.respository';
 
@@ -11,7 +12,7 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     super(repository);
   }
 
-  async create(userId: number, roomId: number): Promise<IResponseFormat<Bookings>> {
+  async create(userId: number, roomId: number, phone: string): Promise<IResponseFormat<Bookings>> {
     const checkRoom = await this.roomRepository.findOne(roomId);
     if (!checkRoom) throw new NotFoundException('Room not found !!!');
     const query = await this.repository.findOne({ where: { roomId, userId, transactionId: null, isChecked: false }, order: { updatedAt: 'DESC' } });
@@ -28,6 +29,15 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     }
 
     const data = await this.repository.save({ user: { id: userId }, room: { id: roomId } });
+    admin.messaging().sendToTopic(roomId.toString(), { data: { content: `User with phone: ${phone} booked your room !!! Please contact with him/her` } })
+      .then((response) => {
+        // Response is a message ID string.
+        console.log('Successfully sent message:', response);
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+      });
+
     return { data };
 
   }

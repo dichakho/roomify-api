@@ -14,10 +14,20 @@ export class CreateRoom {
   @IsNumber()
   price: number
 
+  @ApiProperty({ example: 'lorem ipsum ....' })
+  @IsString()
+  @IsNotEmpty()
+  description: string
+
   @ApiProperty({ example: 95.37 })
   @IsNotEmpty()
   @IsNumber()
   area: number
+
+  @ApiProperty({ example: '' })
+  @IsNotEmpty()
+  @IsString()
+  registrationToken: string
 
   @ApiProperty({ example: ['https://lh3.googleusercontent.com/50RuktOOgpl8k61d_IEbYGUvewvlrD6kzhMCzPQ19dAU589lTUKV3OecQOfRnVO2PfMZyHC2FeXfDRWY=w1080-h608-p-no-v0'] })
   @IsNotEmpty()

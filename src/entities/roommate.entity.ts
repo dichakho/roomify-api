@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
+import { Destination } from './destinations.entity';
 
 const { UPDATE, CREATE } = CrudValidationGroups;
 
@@ -16,7 +17,25 @@ export class Roommate extends BaseEntity {
   @Column('decimal', { precision: 5, scale: 2 })
   price: number
 
-  @ApiProperty({ readOnly: true })
+  @ApiProperty({ readOnly: true, type: () => User })
   @ManyToOne(() => User, (user: User) => user.roommates)
+  @JoinColumn({ name: 'userId' })
   user: User
+
+  @ApiProperty({ example: 1, writeOnly: true })
+  @Column()
+  userId: number
+
+  @ApiProperty({ example: 'lorem ipsum ....' })
+  @Column('text')
+  description: string
+
+  @ApiProperty({ readOnly: true, type: () => Destination })
+  @ManyToOne(() => Destination, (destination: Destination) => destination.roommate)
+  @JoinColumn({ name: 'destinationId' })
+  destination: Destination
+
+  @ApiProperty({ example: 1, writeOnly: true })
+  @Column()
+  destinationId: number
 }
