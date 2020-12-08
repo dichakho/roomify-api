@@ -58,6 +58,6 @@ export class BookingController implements CrudController<Bookings> {
     }
   })
   create(@Req() req: UserRequestDto, @Body('roomId', new ValidationPipe) roomId: number) {
-    return this.service.create(req.user.id, roomId);
+    return this.service.create(req.user.id, roomId, req.user.phone);
   }
 }

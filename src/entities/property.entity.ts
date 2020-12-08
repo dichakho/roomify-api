@@ -58,22 +58,22 @@ export class Property extends BaseEntity {
 
   @ApiProperty({ readOnly: true })
   @IsEmpty()
-  @Column('decimal', { nullable: true, precision: 5, scale: 2, default: 0 })
+  @Column('decimal', { nullable: true, precision: 10, scale: 2, default: 0 })
   maxPrice: number
 
   @ApiProperty({ readOnly: true })
   @IsEmpty()
-  @Column('decimal', { nullable: true, precision: 5, scale: 2, default: 9999999 })
+  @Column('decimal', { nullable: true, precision: 10, scale: 2, default: 9999999 })
   minPrice: number
 
   @ApiProperty({ readOnly: true })
   @IsEmpty()
-  @Column('decimal', { nullable: true, precision: 5, scale: 2, default: 0 })
+  @Column('decimal', { nullable: true, precision: 10, scale: 2, default: 0 })
   averagePrice: number
 
   @ApiProperty({ readOnly: true })
   @IsEmpty()
-  @Column('decimal', { nullable: true, precision: 5, scale: 2, default: 0 })
+  @Column('decimal', { nullable: true, precision: 10, scale: 2, default: 0 })
   averageArea: number
 
   @ApiProperty({ readOnly: true })

@@ -31,6 +31,7 @@ export class TransactionService extends BaseService<Transaction, TransactionRepo
   async extract(res, id: number) {
     const query = await this.repository.findOne({ where: { id }, relations: ['bookings', 'bookings.user', 'bookings.room'] });
     if (!query) throw new NotFoundException('Transaction not found');
+    await this.repository.update(id, { isPaid: true });
     const { bookings } = query;
     const dataConvert = [];
     bookings.forEach(booking => {
