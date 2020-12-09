@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Policy } from '@src/entities/policy.entity';
 import { ExistedDestinationValidator } from '@src/validators/property/exist-destination.validator';
-import { IsString, IsNumber, IsNotEmpty, IsOptional, IsObject, Validate } from 'class-validator';
+import { PolicyValidator } from '@src/validators/property/policy.validation';
+import { IsString, IsNumber, IsNotEmpty, IsOptional, IsObject, Validate, IsNotEmptyObject, validate } from 'class-validator';
 import { DontExistedCategoryValidator } from '../../validators/property/exist-category.validation';
 
 export class CreatePropertyDTO {
@@ -44,19 +45,20 @@ export class CreatePropertyDTO {
   // @Validate(DontExistedCategoryValidator)
   // category: Category
 
-  @ApiProperty({ example: 100 } )
+  @ApiProperty({ example: 100 })
   @IsNotEmpty()
   @IsNumber()
   @Validate(ExistedDestinationValidator)
   destinationId: number
 
-  @ApiProperty({ example: 1 } )
+  @ApiProperty({ example: 1 })
   @IsNotEmpty()
   @IsNumber()
   @Validate(DontExistedCategoryValidator)
   categoryId: number
 
-  @IsNotEmpty()
+  @IsNotEmptyObject()
   @IsObject()
+  @Validate(PolicyValidator)
   policy: Policy
 }

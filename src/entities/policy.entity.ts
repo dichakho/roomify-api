@@ -10,39 +10,35 @@ const { UPDATE, CREATE } = CrudValidationGroups;
 @Entity('policies')
 export class Policy extends BaseEntity {
 
-  @ApiProperty()
   @IsNumber()
   @Max(999999)
   @Min(1000)
-  @IsOptional({ groups: [UPDATE] })
-  @IsNotEmpty({ groups: [CREATE] })
+  // @IsOptional({ groups: [UPDATE] })
+  // @IsNotEmpty({ groups: [CREATE] })
   @Column('decimal', { precision: 10, scale: 2 })
   electricity: number
 
-  @ApiProperty()
   @IsNumber()
   @Max(999999)
   @Min(1000)
-  @IsOptional({ groups: [UPDATE] })
-  @IsNotEmpty({ groups: [CREATE] })
+  // @IsOptional({ groups: [UPDATE] })
+  // @IsNotEmpty({ groups: [CREATE] })
   @Column('decimal', { precision: 10, scale: 2 })
   water: number
 
-  @ApiProperty()
   @IsNumber()
   @Max(999999)
   @Min(1000)
-  @IsOptional({ groups: [UPDATE] })
-  @IsNotEmpty({ groups: [CREATE] })
+  // @IsOptional({ groups: [UPDATE] })
+  // @IsNotEmpty({ groups: [CREATE] })
   @Column('decimal', { precision: 10, scale: 2 })
   parking: number
 
-  @ApiProperty()
   @IsNumber()
   @Max(999999)
   @Min(1000)
-  @IsOptional({ groups: [UPDATE] })
-  @IsNotEmpty({ groups: [CREATE] })
+  // @IsOptional({ groups: [UPDATE] })
+  // @IsNotEmpty({ groups: [CREATE] })
   @Column('decimal', { precision: 10, scale: 2 })
   internet: number
 

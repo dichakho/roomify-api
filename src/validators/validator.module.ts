@@ -8,6 +8,7 @@ import { ExistedDestinationValidator } from './property/exist-destination.valida
 import { ExistedPropertyValidator } from './favorite-property/existedProperty.validator';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DestinationRepository } from '@src/app/destination/destination.repository';
+import { PolicyValidator } from './property/policy.validation';
 
 @Global()
 @Module({
@@ -21,14 +22,16 @@ import { DestinationRepository } from '@src/app/destination/destination.reposito
     UniquePhoneValidator,
     TokenIDValidator,
     ExistedDestinationValidator,
-    ExistedPropertyValidator
+    ExistedPropertyValidator,
+    PolicyValidator
   ],
   exports: [
     UniqueUsernameValidator,
     UniquePhoneValidator,
     TokenIDValidator,
     ExistedDestinationValidator,
-    ExistedPropertyValidator
+    ExistedPropertyValidator,
+    PolicyValidator
   ]
 })
 export class ValidatorModule {
