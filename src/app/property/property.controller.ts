@@ -74,11 +74,14 @@ export class PropertyController implements CrudController<Property>{
     return this.service.restore(id);
   }
 
-  @ApiBearerAuth()
-  @Methods(MethodName.GET)
   @Get(':id/rooms')
   getRoom(@Param('id', ParseIntPipe) id: number) {
     return this.service.getRooms(id);
+  }
+
+  @Get('/:ownerId')
+  getPropertyOfUser(@Param('ownerId', ParseIntPipe) ownerId: number, @Query() query: GetMany) {
+    return this.service.getPropertyOfUser(ownerId, query);
   }
 
   @Get('/destination/:destinationId')
