@@ -104,13 +104,11 @@ export class Property extends BaseEntity {
   categoryId: number
 
   @ApiProperty({ readOnly: true })
-  @IsOptional()
-  @IsNumber()
-  @JoinColumn()
+  @Column()
   ownerId: number
 
   @ManyToOne(() => User, (owner: User) => owner.properties)
-  @JoinTable()
+  @JoinColumn({ name: 'ownerId' })
   owner: User
 
   @OneToOne(() => Policy, (policy: Policy) => policy.property, { eager: true, cascade: true, onDelete: 'CASCADE' })
