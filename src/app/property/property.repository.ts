@@ -14,4 +14,8 @@ export class PropertyRepository extends Repository<Property> {
       .leftJoinAndSelect('property.destination', 'destination')
       .where('destination.name= :name', { name }).take(limit).skip(offset).getManyAndCount();
   }
+
+  getPropertyNearMe() {
+    
+  }
 }
