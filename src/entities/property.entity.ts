@@ -42,8 +42,8 @@ export class Property extends BaseEntity {
   @Column('decimal', { precision: 9, scale: 6, nullable: true })
   latitude: number
 
-  @Column('point', { nullable: true })
-  geolocation: string
+  // @Column('point', { nullable: true })
+  // geolocation: string
 
   @ApiProperty({ example: '123 Nguyen Luong Bang' })
   @IsNotEmpty({ groups: [CREATE] })
