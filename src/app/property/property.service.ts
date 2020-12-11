@@ -23,8 +23,6 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
   }
 
   async create(data: CreatePropertyDTO, req: UserRequestDto) {
-    console.log('asdasdasdasdasdsadsadsadsadasdasdsadasdasd');
-
     const { user } = req;
     let temp = 0;
     for (let i = 0; i < user.roles.length; i += 1) {

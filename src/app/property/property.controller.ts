@@ -79,7 +79,7 @@ export class PropertyController implements CrudController<Property>{
     return this.service.getRooms(id);
   }
 
-  @Get('/:ownerId')
+  @Get('/owner/:ownerId')
   getPropertyOfUser(@Param('ownerId', ParseIntPipe) ownerId: number, @Query() query: GetMany) {
     return this.service.getPropertyOfUser(ownerId, query);
   }

@@ -33,7 +33,7 @@ export class Property extends BaseEntity {
   @IsNotEmpty({ groups: [CREATE] })
   @IsNumber()
   @Column('decimal', { precision: 9, scale: 6, nullable: true })
-  longtitude: number
+  longitude: number
 
   @ApiProperty({ example: 95.37 })
   @IsOptional({ groups: [UPDATE] })
@@ -41,6 +41,9 @@ export class Property extends BaseEntity {
   @IsNumber()
   @Column('decimal', { precision: 9, scale: 6, nullable: true })
   latitude: number
+
+  @Column('point', { nullable: true })
+  geolocation: string
 
   @ApiProperty({ example: '123 Nguyen Luong Bang' })
   @IsNotEmpty({ groups: [CREATE] })

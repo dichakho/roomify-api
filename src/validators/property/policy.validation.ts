@@ -10,7 +10,7 @@ export class PolicyValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage(validationArguments?: ValidationArguments): string {
-    return `Value must be less than 999999 and greater than 1000, please try another`;
+    return 'Value must be less than 999999 and greater than 1000, please try another';
   }
 
   async validate(value: Policy, validationArguments?: ValidationArguments): Promise<boolean> {
