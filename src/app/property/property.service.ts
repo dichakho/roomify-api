@@ -149,7 +149,7 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
   }
 
   async getPropertyOfUser(ownerId: number, query: GetMany): Promise<any> {
-    const temp = await this.getManyData(query, [], { ownerId });
+    const temp = await this.getManyData(query, ['destination', 'destination.parent', 'destination.parent.parent'], { ownerId });
     const data = temp.result[0];
     const count = data.length;
     const total = temp.result[1];
