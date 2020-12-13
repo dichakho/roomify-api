@@ -86,8 +86,12 @@ export class PropertyController implements CrudController<Property>{
 
   @Get('/destination/:destinationId')
   getPropertyOfDestination(@Param('destinationId', ParseIntPipe) destinationId: number, @Query() query: GetMany) {
-
     return this.service.getPropertyOfDestination(destinationId, query);
+  }
+
+  @Get('/destination')
+  getPropertyWithNameDestination(@Query('destinationName') name: string, @Query() query: GetMany){
+    return this.service.getPropertyWithDestinationName(name, query);
   }
 
   @Get('/near-me')

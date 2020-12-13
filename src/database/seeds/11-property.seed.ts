@@ -35,7 +35,7 @@ export default class CreateProperties implements Seeder {
       propertyData.averageArea = 100.97;
       if (id < 86) {
         propertyData.latitude = Faker.random.number({ min: 16, max: 17, precision: 0.000001 });
-        propertyData.longtitude = Faker.random.number({ min: 108, max: 109, precision: 0.000001 });
+        propertyData.longitude = Faker.random.number({ min: 108, max: 109, precision: 0.000001 });
       }
       else {
         if (id < 252) {
