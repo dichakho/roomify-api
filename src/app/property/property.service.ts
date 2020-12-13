@@ -10,13 +10,14 @@ import { GetMany } from '@src/models/base/getMany.dto';
 import { CreatePropertyDTO } from '@src/models/property/create.dto';
 import { UpdatePropertyDTO } from '@src/models/property/update.dto';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
-import { In, TreeRepository } from 'typeorm';
-import { DestinationService } from '../destination/destination.service';
+import { In, Like, TreeRepository } from 'typeorm';
+import { DestinationRepository } from '../destination/destination.repository';
 import { PropertyRepository } from './property.repository';
 
 @Injectable()
 export class PropertyService extends BaseService<Property, PropertyRepository> {
   constructor(protected repository: PropertyRepository,
+    protected destinationRepo: DestinationRepository,
     @InjectRepository(Destination)
     private readonly treeRepository: TreeRepository<Destination>) {
     super(repository);
@@ -89,6 +90,39 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
     }
     else {
       id.push(destinationId);
+    }
+    const temp = await this.getManyData(query, [], { destinationId: In(id) });
+    const data = temp.result[0];
+    const count = data.length;
+    const total = temp.result[1];
+    const pageCount = Math.ceil(total / temp.limit);
+    return {
+      count,
+      total,
+      page: temp.page,
+      pageCount,
+      data
+    };
+  }
+
+  async getPropertyWithDestinationName(name: string, query: GetMany) {
+    const destinations = await this.destinationRepo.findOne({where: {name: Like(`%${name}%`)}, relations:['child', 'child.child']});    
+    const id = [];
+    if (destinations.child.length > 0) {      
+      if (destinations.child[0].child.length > 0) {
+        destinations.child.forEach(child => {
+          child.child.forEach(subChild => {
+            id.push(subChild.id);
+          });
+        });
+      } else {
+        destinations.child.forEach(child => {
+          id.push(child.id);
+        });
+      }
+    }
+    else {
+      id.push(destinations.id);
     }
     const temp = await this.getManyData(query, [], { destinationId: In(id) });
     const data = temp.result[0];

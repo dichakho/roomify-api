@@ -54,14 +54,14 @@ export class User extends BaseEntity {
 
   @ApiProperty({
     example:
-      'https://microhealth.com/assets/images/illustrations/personal-user-illustration-@2x.png'
+      'https://icons-for-free.com/iconfiles/png/512/avatar+circle+male+profile+user+icon-1320196710301016992.png'
   })
   @IsOptional({ groups: [UPDATE] })
   // @IsNotEmpty({ groups: [CREATE] })
   @IsString()
   @Column({
     default:
-      'https://microhealth.com/assets/images/illustrations/personal-user-illustration-@2x.png',
+      'https://icons-for-free.com/iconfiles/png/512/avatar+circle+male+profile+user+icon-1320196710301016992.png',
     nullable: true
   })
   avatar: string;
