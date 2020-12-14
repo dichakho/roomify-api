@@ -5,7 +5,6 @@ import { CrudValidationGroups } from '@nestjsx/crud';
 import { Destination } from './destinations.entity';
 import { Room } from './room.entity';
 import { Category } from './category.entity';
-import { Amenity } from './amenity.entity';
 import { User } from './user.entity';
 import { BaseEntity } from './base.entity';
 import { Policy } from './policy.entity';

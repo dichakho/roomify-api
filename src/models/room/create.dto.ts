@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Amenity } from '@src/entities/amenity.entity';
 import { ExistedPropertyValidator } from '@src/validators/favorite-property/existedProperty.validator';
-import { IsNotEmpty, IsString, IsNumber, Validate, IsArray } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, Validate, IsArray, Min, Max } from 'class-validator';
 
 export class CreateRoom {
   @ApiProperty({ example: 'Chung cu' })
@@ -9,9 +9,11 @@ export class CreateRoom {
   @IsString()
   name: string
 
-  @ApiProperty({ example: 95.37 })
+  @ApiProperty({ example: 250000 })
   @IsNotEmpty()
   @IsNumber()
+  @Min(1000)
+  @Max(99999999)
   price: number
 
   @ApiProperty({ example: 'lorem ipsum ....' })

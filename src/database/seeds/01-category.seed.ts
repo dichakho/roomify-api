@@ -9,10 +9,6 @@ export default class CreateCategories implements Seeder {
     CategoryConstant.forEach(async (category) => {
       await factory(Category)({ payload: category }).create();
     });
-    // await factory(Category)({ payload: { name: 'Phòng cho thuê' } }).create();
-    // await factory(Category)({ payload: { name: 'Phòng ở ghép' } }).create();
-    // await factory(Category)({ payload: { name: 'Nhà nguyên căn' } }).create();
-    // await factory(Category)({ payload: { name: 'Căn hộ' } }).create();
 
   }
 }

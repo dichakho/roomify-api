@@ -30,16 +30,16 @@ export class Room extends BaseEntity {
   @Column('text')
   description: string
 
-  @ApiProperty({ example: 95.37 })
+  @ApiProperty({ example: 250000 })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
-  @Column('decimal', { precision: 5, scale: 2 })
+  @Column('decimal', { precision: 10, scale: 2 })
   price: number
 
   @ApiProperty({ example: 95.37 })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
-  @Column('decimal', { precision: 5, scale: 2, nullable: true })
+  @Column('decimal', { precision: 10, scale: 2, nullable: true })
   area: number
 
   @ApiProperty({ example: ['https://lh3.googleusercontent.com/50RuktOOgpl8k61d_IEbYGUvewvlrD6kzhMCzPQ19dAU589lTUKV3OecQOfRnVO2PfMZyHC2FeXfDRWY=w1080-h608-p-no-v0'] })

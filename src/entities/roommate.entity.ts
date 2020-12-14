@@ -10,11 +10,11 @@ const { UPDATE, CREATE } = CrudValidationGroups;
 
 @Entity('roommate')
 export class Roommate extends BaseEntity {
-  @ApiProperty({ example: 95.111 })
+  @ApiProperty({ example: 115000 })
   @IsNotEmpty({ groups: [CREATE] })
   @IsOptional({ groups: [UPDATE] })
   @IsNumber()
-  @Column('decimal', { precision: 5, scale: 2 })
+  @Column('decimal', { precision: 10, scale: 2 })
   price: number
 
   @ApiProperty({ readOnly: true, type: () => User })

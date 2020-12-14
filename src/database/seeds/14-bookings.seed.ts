@@ -1,8 +1,9 @@
 import { Seeder, Factory } from 'typeorm-seeding';
 import { Connection } from 'typeorm';
+import Faker from 'faker';
 import { User } from '../../entities/user.entity';
 
-export default class CreateOwnerRegistration implements Seeder {
+export default class CreateBookings implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const users = await connection
       .getRepository(User)
@@ -13,11 +14,11 @@ export default class CreateOwnerRegistration implements Seeder {
 
     for (let i = 0; i < users.length; i += 1) {
       await connection
-      .createQueryBuilder()
-      .insert()
-      .into('owner_registration')
-      .values({IDNumber: '123456789', nameOwner: users[i].fullName, householdRegistrationImgs: ['https://www.tienland.vn/media/ar/cach-xem-so-do.jpg'], user: users[i]})
-      .execute();
+        .createQueryBuilder()
+        .insert()
+        .into('bookings')
+        .values({ user: users[i], roomId: Faker.random.number({min: 1, max: 100}) })
+        .execute();
     }
   }
 }

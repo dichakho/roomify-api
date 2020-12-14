@@ -4,6 +4,7 @@ import { define } from 'typeorm-seeding';
 import { enumToArray } from '../../utils/helper';
 import { User } from '../../entities/user.entity';
 import { UserStatus } from '../../common/enums/userStatus.enum';
+import { Role } from '../../entities/roles.entity';
 
 define(User, (faker: typeof Faker, context: { roles: string[] }) => {
   const fullName = faker.name.findName();
@@ -13,8 +14,8 @@ define(User, (faker: typeof Faker, context: { roles: string[] }) => {
   const phoneNumber = faker.phone.phoneNumber();
   const avatar = faker.image.avatar();
   const status = faker.random.arrayElement(enumToArray(UserStatus));
-  const roleIds = faker.random.number({ min: 2, max: 4 });
-
+  const role = new Role();
+  role.id = faker.random.number({ min: 2, max: 4 });
   const user = new User();
   user.fullName = fullName;
   user.username = username;
@@ -23,7 +24,7 @@ define(User, (faker: typeof Faker, context: { roles: string[] }) => {
   user.phone = phoneNumber;
   user.avatar = avatar;
   user.status = status;
-  user.roleIds = [roleIds];
+  user.roles = [role];
 
   return user;
 });

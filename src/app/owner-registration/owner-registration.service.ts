@@ -4,6 +4,7 @@ import { OwnerRegistration } from '@src/entities/owner_registration.entity';
 import { CreateOwnerRegistrationDto } from '@src/models/owner-registration/create.dto';
 import { UpdateOwnerRegistrationDto } from '@src/models/owner-registration/update.dto';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
+import admin from 'firebase-admin';
 import { OwnerRegistrationRepository } from './owner-registration.repository';
 import { OwnerStatus } from '../../common/enums/ownerStatus.enum';
 import { UserRepository } from '../user/user.repository';
@@ -22,6 +23,7 @@ export class OwnerRegistrationService extends BaseService<OwnerRegistration, Own
     if(query) throw new BadRequestException('Your ID Number was registered. Please try again');
     try {
       const result = await this.repository.save({ ...data, user: { id: req.user.id } });
+      admin.messaging().subscribeToTopic(data.registrationToken, result.IDNumber.toString());
       return result;
     } catch (error) {
       console.log('CATCH ---->', error);
@@ -61,6 +63,7 @@ export class OwnerRegistrationService extends BaseService<OwnerRegistration, Own
       });
       const result = await this.repository.save(query);
       await this.userRepo.save({ ...userQuery, roles: roleId });
+      admin.messaging().sendToTopic(result.IDNumber.toString(), { data: { content: 'Congratulation !!! You was accepted to promote to OWNER by ADMIN' } });
       return result;
     }
     return query;
