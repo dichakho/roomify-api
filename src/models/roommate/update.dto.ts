@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ExistedDestinationValidator } from '@src/validators/property/exist-destination.validator';
-import { IsNumber, IsOptional, IsString, Validate } from 'class-validator';
+import { IsMobilePhone, IsNumber, IsOptional, IsString, Validate } from 'class-validator';
 
 export class UpdateRoommateDto {
   @IsOptional()
@@ -19,4 +19,9 @@ export class UpdateRoommateDto {
   @Validate(ExistedDestinationValidator)
   destinationId: number
 
+  @ApiProperty({ example: '0981234899' })
+  @IsOptional()
+  @IsString()
+  @IsMobilePhone('vi-VN')
+  phone: string;
 }

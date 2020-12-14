@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CrudValidationGroups } from '@nestjsx/crud';
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsMobilePhone, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
@@ -25,6 +25,12 @@ export class Roommate extends BaseEntity {
   @ApiProperty({ example: 1, writeOnly: true })
   @Column()
   userId: number
+
+  @ApiProperty({ example: '0981234899' })
+  @IsString()
+  @IsMobilePhone('vi-VN')
+  @Column({ nullable: true })
+  phone: string;
 
   @ApiProperty({ example: 'lorem ipsum ....' })
   @Column('text')
