@@ -10,7 +10,7 @@ export class HierarchyGuard implements CanActivate {
   async checkRank(id: number, roleId: number): Promise<boolean> {
     const userQuery = await createQueryBuilder().select('user').from(User, 'user').where('user.id =:id', { id }).leftJoinAndSelect('user.roles', 'roles').getOne();
     if (userQuery) {
-      if (roleId < userQuery.roles[0].id) return true;
+      if (roleId <= userQuery.roles[0].id) return true;
       return false;
     }
     return true;
