@@ -37,7 +37,7 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   email: string;
 
-  @ApiProperty({ example: 'admin', writeOnly: true })
+  @ApiProperty({ example: '123456', writeOnly: true })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsString()

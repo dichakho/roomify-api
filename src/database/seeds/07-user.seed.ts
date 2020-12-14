@@ -53,6 +53,6 @@ export default class CreateUsers implements Seeder {
       .values([admin, moderator, owner, user])
       .execute();
 
-    await factory(User)().createMany(10);
+    await factory(User)().createMany(100);
   }
 }

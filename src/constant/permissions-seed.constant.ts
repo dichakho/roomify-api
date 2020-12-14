@@ -7,7 +7,11 @@ export default class Permissions {
     { name: 'ROOM', description: 'CRUD room' },
     { name: 'CATEGORY', description: 'CRUD category' },
     { name: 'USER_PERMISSION', description: 'CRUD user permission' },
-    { name: 'OWNER_REGISTRATION', description: 'CRUD request of user that want to upgrade to owner' },
+    { name: 'PERMISSION', description: 'CRUD permission' },
+    {
+      name: 'OWNER_REGISTRATION',
+      description: 'CRUD request of user that want to upgrade to owner'
+    },
     { name: 'FAVORITE_PROPERTY', description: 'Favorite of property' },
     { name: 'BOOKING', description: 'Using booking the property' },
     { name: 'NOTIFICATION', description: 'CRUD notification' },
@@ -24,7 +28,10 @@ export default class Permissions {
     { name: 'GETLIST', description: 'Get list information' },
     { name: 'MANAGEROLE', description: 'Change role of user' },
     { name: 'RESTORE', description: 'Restore data was deleted' },
-    { name: 'MANAGEPERMISSION', description: 'Create, delete and see information about permission of users' }
+    {
+      name: 'MANAGEPERMISSION',
+      description: 'Create, delete and see information about permission of users'
+    }
   ];
 
   public roles = [
@@ -44,7 +51,7 @@ export default class Permissions {
       name: 'USER',
       description: 'user'
     }
-  ]
+  ];
 
   public admin_role_permission = [
     {
@@ -76,6 +83,10 @@ export default class Permissions {
       methods: this.methods
     },
     {
+      module: 'PERMISSION',
+      methods: [{ name: 'GETLIST', description: 'Get list information' }]
+    },
+    {
       module: 'OWNER_REGISTRATION',
       methods: this.methods
     },
@@ -99,7 +110,7 @@ export default class Permissions {
       module: 'NOTIFICATION',
       methods: this.methods
     }
-  ]
+  ];
 
   public moderator_role_permission = [
     {
@@ -156,7 +167,7 @@ export default class Permissions {
       module: 'NOTIFICATION',
       methods: this.methods
     }
-  ]
+  ];
 
   public owner_role_permission = [
     {
@@ -167,21 +178,20 @@ export default class Permissions {
         { name: 'GET', description: 'Retrieve object' },
         { name: 'RESTORE', description: 'Restore data was deleted' },
         { name: 'GETLIST', description: 'Get list information' }
-
       ]
     },
     {
       module: 'DESTINATION',
       methods: [
         { name: 'GET', description: 'Retrieve object' },
-        { name: 'GETLIST', description: 'Get list information' },
+        { name: 'GETLIST', description: 'Get list information' }
       ]
     },
     {
       module: 'AMENITY',
       methods: [
         { name: 'GET', description: 'Retrieve object' },
-        { name: 'GETLIST', description: 'Get list information' },
+        { name: 'GETLIST', description: 'Get list information' }
       ]
     },
     {
@@ -217,7 +227,7 @@ export default class Permissions {
       module: 'TRANSACTION',
       methods: [
         { name: 'GET', description: 'Retrieve object' },
-        { name: 'GETLIST', description: 'Get list information' },
+        { name: 'GETLIST', description: 'Get list information' }
       ]
     },
     {
@@ -228,7 +238,7 @@ export default class Permissions {
       module: 'NOTIFICATION',
       methods: []
     }
-  ]
+  ];
 
   public user_role_permission = [
     {
@@ -239,14 +249,14 @@ export default class Permissions {
       module: 'DESTINATION',
       methods: [
         { name: 'GET', description: 'Retrieve object' },
-        { name: 'GETLIST', description: 'Get list information' },
+        { name: 'GETLIST', description: 'Get list information' }
       ]
     },
     {
       module: 'AMENITY',
       methods: [
         { name: 'GET', description: 'Retrieve object' },
-        { name: 'GETLIST', description: 'Get list information' },
+        { name: 'GETLIST', description: 'Get list information' }
       ]
     },
     {
@@ -272,9 +282,7 @@ export default class Permissions {
     },
     {
       module: 'OWNER_REGISTRATION',
-      methods: [
-        { name: 'POST', description: 'Create object' }
-      ]
+      methods: [{ name: 'POST', description: 'Create object' }]
     },
     {
       module: 'FAVORITE_PROPERTY',
@@ -288,7 +296,7 @@ export default class Permissions {
       methods: [
         { name: 'GET', description: 'Retrieve object' },
         { name: 'POST', description: 'Create object' },
-        { name: 'GETLIST', description: 'Get list information' },
+        { name: 'GETLIST', description: 'Get list information' }
       ]
     },
     {
@@ -303,7 +311,7 @@ export default class Permissions {
       module: 'NOTIFICATION',
       methods: []
     }
-  ]
+  ];
 
   public role_permissions = [
     {
@@ -322,5 +330,5 @@ export default class Permissions {
       role: 'USER',
       permissions: this.user_role_permission
     }
-  ]
+  ];
 }

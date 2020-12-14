@@ -18,6 +18,7 @@ import { FavoritePropertyModule } from './app/favorite-property/favorite-propert
 import { BookingModule } from './app/booking/booking.module';
 import { TransactionModule } from './app/transaction/transaction.module';
 import { RoommateModule } from './app/roommate/roommate.module';
+import { PermissionsModule } from './app/permissions/permissions.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { RoommateModule } from './app/roommate/roommate.module';
     FavoritePropertyModule,
     BookingModule,
     TransactionModule,
-    RoommateModule
+    RoommateModule,
+    PermissionsModule
   ],
   controllers: [BaseController]
 })
