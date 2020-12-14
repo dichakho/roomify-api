@@ -43,4 +43,4 @@ import { RoommateModule } from './app/roommate/roommate.module';
   ],
   controllers: [BaseController]
 })
-export class AppModule { }
+export class AppModule {}

@@ -36,7 +36,7 @@ import { PropertyService } from './property.service';
       },
       destination: {
         eager: true,
-        allow: ['name']
+        allow: ['name'],
       },
       'destination.parent': {
         eager: true,
@@ -45,7 +45,8 @@ import { PropertyService } from './property.service';
       },
       'destination.parent.parent': {
         eager: true,
-        allow: ['name']
+        allow: ['name'],
+        alias: 'city'
       },
       policy: {
         eager: true
