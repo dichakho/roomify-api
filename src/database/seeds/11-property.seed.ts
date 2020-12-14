@@ -29,24 +29,27 @@ export default class CreateProperties implements Seeder {
       propertyData.category = { id: Faker.random.number({ min: 1, max: 4 }) };
       propertyData.owner = { id: 3 };
       rooms.push(propertyData.rooms);
-      propertyData.averagePrice = properties[i].rooms.price;
+      propertyData.averagePrice = properties[i].rooms.price * 20000;
       propertyData.rooms = undefined;
       propertyData.description = Faker.lorem.sentences(4);
       propertyData.averageArea = 100.97;
       if (id < 86) {
         propertyData.latitude = Faker.random.number({ min: 16, max: 17, precision: 0.000001 });
         propertyData.longitude = Faker.random.number({ min: 108, max: 109, precision: 0.000001 });
-      }
-      else {
-        if (id < 252) {
-          propertyData.latitude = Faker.random.number({ min: 21, max: 22, precision: 0.000001 });
-          propertyData.longtitude = Faker.random.number({ min: 105, max: 106, precision: 0.000001 });
-        }
-        else {
-          propertyData.latitude = Faker.random.number({ min: 10, max: 11, precision: 0.000001 });
-          propertyData.longtitude = Faker.random.number({ min: 105, max: 106, precision: 0.000001 });
-        }
-
+      } else if (id < 252) {
+        propertyData.latitude = Faker.random.number({ min: 21, max: 22, precision: 0.000001 });
+        propertyData.longtitude = Faker.random.number({
+          min: 105,
+          max: 106,
+          precision: 0.000001
+        });
+      } else {
+        propertyData.latitude = Faker.random.number({ min: 10, max: 11, precision: 0.000001 });
+        propertyData.longtitude = Faker.random.number({
+          min: 105,
+          max: 106,
+          precision: 0.000001
+        });
       }
 
       policy = await connection
@@ -70,6 +73,5 @@ export default class CreateProperties implements Seeder {
         .values(propertyData)
         .execute();
     }
-
   }
 }
