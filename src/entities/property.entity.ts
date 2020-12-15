@@ -31,14 +31,14 @@ export class Property extends BaseEntity {
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsNumber()
-  @Column('decimal', { precision: 9, scale: 6, nullable: true })
+  @Column('float', { nullable: true })
   longitude: number
 
   @ApiProperty({ example: 95.37 })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsNumber()
-  @Column('decimal', { precision: 9, scale: 6, nullable: true })
+  @Column('float', { nullable: true })
   latitude: number
 
   // @Column('point', { nullable: true })
@@ -60,22 +60,22 @@ export class Property extends BaseEntity {
 
   @ApiProperty({ readOnly: true })
   @IsEmpty()
-  @Column('decimal', { nullable: true, precision: 10, default: 0 })
+  @Column('float', { nullable: true, default: 0 })
   maxPrice: number
 
   @ApiProperty({ readOnly: true })
   @IsEmpty()
-  @Column('decimal', { nullable: true, precision: 10, default: 9999999 })
+  @Column('float', { nullable: true, default: 9999999 })
   minPrice: number
 
   @ApiProperty({ readOnly: true })
   @IsEmpty()
-  @Column('decimal', { nullable: true, precision: 10, default: 0 })
+  @Column('float', { nullable: true, default: 0 })
   averagePrice: number
 
   @ApiProperty({ readOnly: true })
   @IsEmpty()
-  @Column('decimal', { nullable: true, precision: 10, scale: 2, default: 0 })
+  @Column('float', { nullable: true, default: 0 })
   averageArea: number
 
   @ApiProperty({ readOnly: true })

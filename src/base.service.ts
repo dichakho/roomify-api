@@ -34,17 +34,23 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     await this.repository.delete(id);
   }
 
-  async deleteOne(req: CrudRequest): Promise<void> {
+  async deleteOne(req: CrudRequest): Promise<any> {
     const { returnDeleted } = req.options.routes.deleteOneBase;
     const found = await this.getOneOrFail(req, returnDeleted);
     const data: any = found;
     await this.repository.softRemove(data);
+    return {
+      statusCode: 200
+    };
   }
 
-  async restore(id: number): Promise<void> {
+  async restore(id: number): Promise<any> {
     const checkData = await this.repository.findOne({ where: { id }, withDeleted: true });
     if (!checkData) throw new NotFoundException();
     await this.repository.restore(id);
+    return {
+      statusCode: 200
+    };
   }
 
   async createBulkData(dto: DeepPartial<T>[]): Promise<T[]> {
@@ -53,7 +59,7 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     return result;
   }
 
-  async getManyData(metadata: GetMany, relation?: string[], findOption?: any): Promise<any> {
+  async getManyData(metadata: GetMany, relation?: string[], findOption?: any, option?: any): Promise<any> {
     let { limit, page, offset } = metadata;
     if (limit === undefined) limit = 15;
     if (offset === undefined) offset = 0;
@@ -67,7 +73,7 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     else {
       page = Math.trunc(offset / limit) + 1;
     }
-    const result = await this.repository.findAndCount({ where: findOption, relations: relation, skip: offset, take: limit });
+    const result = await this.repository.findAndCount({ where: findOption, relations: relation, skip: offset, take: limit, ...option });
     return { result, limit, offset, page };
   }
 }

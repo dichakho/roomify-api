@@ -36,7 +36,7 @@ import { PropertyService } from './property.service';
       },
       destination: {
         eager: true,
-        allow: ['name'],
+        allow: ['name']
       },
       'destination.parent': {
         eager: true,

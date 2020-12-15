@@ -16,10 +16,12 @@ import { PropertyRepository } from './property.repository';
 
 @Injectable()
 export class PropertyService extends BaseService<Property, PropertyRepository> {
-  constructor(protected repository: PropertyRepository,
+  constructor(
+    protected repository: PropertyRepository,
     protected destinationRepo: DestinationRepository,
     @InjectRepository(Destination)
-    private readonly treeRepository: TreeRepository<Destination>) {
+    private readonly treeRepository: TreeRepository<Destination>
+  ) {
     super(repository);
   }
 
@@ -42,7 +44,6 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
     this.checkPossession(propertyQuery, req.user);
     const result = await this.repository.save({ ...data, id });
     return result;
-
   }
 
   async delete(id: number, req: UserRequestDto): Promise<void> {
@@ -56,7 +57,8 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
 
   checkPossession(propertyQuery: any, user: User): void {
     if (!propertyQuery) throw new NotFoundException('Not found property !!!');
-    if (user.id !== propertyQuery.owner.id) throw new ForbiddenException('Can not action with property of other users');
+    if (user.id !== propertyQuery.owner.id)
+      throw new ForbiddenException('Can not action with property of other users');
   }
 
   async getRooms(id: number): Promise<any> {
@@ -65,7 +67,6 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
     const data = property.rooms;
 
     return { data };
-
   }
 
   async getPropertyOfDestination(destinationId: number, query: GetMany) {
@@ -87,8 +88,7 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
           id.push(child.id);
         });
       }
-    }
-    else {
+    } else {
       id.push(destinationId);
     }
     const temp = await this.getManyData(query, [], { destinationId: In(id) });
@@ -106,9 +106,12 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
   }
 
   async getPropertyWithDestinationName(name: string, query: GetMany) {
-    const destinations = await this.destinationRepo.findOne({where: {name: Like(`%${name}%`)}, relations:['child', 'child.child']});    
+    const destinations = await this.destinationRepo.findOne({
+      where: { name: Like(`%${name}%`) },
+      relations: ['child', 'child.child']
+    });
     const id = [];
-    if (destinations.child.length > 0) {      
+    if (destinations.child.length > 0) {
       if (destinations.child[0].child.length > 0) {
         destinations.child.forEach(child => {
           child.child.forEach(subChild => {
@@ -120,8 +123,7 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
           id.push(child.id);
         });
       }
-    }
-    else {
+    } else {
       id.push(destinations.id);
     }
     const temp = await this.getManyData(query, [], { destinationId: In(id) });
@@ -153,18 +155,21 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
     };
   }
 
-  async getPropertyNearMe(latitude: number, longtitude: number, subDistrict: string, query: GetMany) {
+  async getPropertyNearMe(
+    latitude: number,
+    longtitude: number,
+    subDistrict: string,
+    query: GetMany
+  ) {
     let { limit, page, offset } = query;
     if (limit === undefined) limit = 15;
     if (offset === undefined) offset = 0;
     if (page === undefined && offset === undefined) {
       offset = 0;
       page = 1;
-    }
-    else if (offset === undefined) {
+    } else if (offset === undefined) {
       offset = limit * (page - 1);
-    }
-    else {
+    } else {
       page = Math.trunc(offset / limit) + 1;
     }
     const result = await this.repository.getPropertyWithSubDistrict(subDistrict, limit, offset);
@@ -183,7 +188,11 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
   }
 
   async getPropertyOfUser(ownerId: number, query: GetMany): Promise<any> {
-    const temp = await this.getManyData(query, ['destination', 'destination.parent', 'destination.parent.parent'], { ownerId });
+    const temp = await this.getManyData(
+      query,
+      ['destination', 'destination.parent', 'destination.parent.parent'],
+      { ownerId }
+    );
     const data = temp.result[0];
     const count = data.length;
     const total = temp.result[1];

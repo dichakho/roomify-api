@@ -13,7 +13,7 @@ export default class CreateUsers implements Seeder {
       password: hashPwd,
       phone: '0981234899',
       avatar:
-        'https://microhealth.com/assets/images/illustrations/personal-user-illustration-@2x.png',
+        'https://icons-for-free.com/iconfiles/png/512/avatar+circle+male+profile+user+icon-1320196710301016992.png',
       status: 'ACTIVE'
     };
     const moderator = {
@@ -23,7 +23,7 @@ export default class CreateUsers implements Seeder {
       password: hashPwd,
       phone: '0981234888',
       avatar:
-        'https://microhealth.com/assets/images/illustrations/personal-user-illustration-@2x.png',
+        'https://icons-for-free.com/iconfiles/png/512/avatar+circle+male+profile+user+icon-1320196710301016992.png',
       status: 'ACTIVE'
     };
     const owner = {
@@ -33,7 +33,7 @@ export default class CreateUsers implements Seeder {
       password: hashPwd,
       phone: '0981234777',
       avatar:
-        'https://microhealth.com/assets/images/illustrations/personal-user-illustration-@2x.png',
+        'https://icons-for-free.com/iconfiles/png/512/avatar+circle+male+profile+user+icon-1320196710301016992.png',
       status: 'ACTIVE'
     };
     const user = {
@@ -43,7 +43,7 @@ export default class CreateUsers implements Seeder {
       password: hashPwd,
       phone: '0981234789',
       avatar:
-        'https://microhealth.com/assets/images/illustrations/personal-user-illustration-@2x.png',
+        'https://icons-for-free.com/iconfiles/png/512/avatar+circle+male+profile+user+icon-1320196710301016992.png',
       status: 'ACTIVE'
     };
     await connection

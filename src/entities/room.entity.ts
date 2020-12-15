@@ -33,7 +33,7 @@ export class Room extends BaseEntity {
   @ApiProperty({ example: 250000 })
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
-  @Column('decimal', { precision: 10})
+  @Column('float')
   price: number
 
   @ApiProperty({ example: 95.37 })

@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { Methods } from '@src/common/decorators/methods.decorator';
@@ -7,6 +7,7 @@ import { MethodName } from '@src/common/enums/methods.enum';
 import { ModulesName } from '@src/common/enums/modules.enum';
 import { ValidationPipe } from '@src/common/pipes/validation.pipe';
 import { Bookings } from '@src/entities/bookings.entity';
+import { GetMany } from '@src/models/base/getMany.dto';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
 import { BookingService } from './booking.service';
 
@@ -41,6 +42,11 @@ import { BookingService } from './booking.service';
 @Modules(ModulesName.BOOKING)
 export class BookingController implements CrudController<Bookings> {
   constructor(public readonly service: BookingService) { }
+
+  @Get('/owner/:ownerId')
+  listBookingWithOwner(@Param('ownerId', ParseIntPipe) ownerId: number, @Query() query: GetMany) {
+    return this.service.getBookingWithOwner(ownerId, query);
+  }
 
   get base(): CrudController<Bookings> {
     return this;

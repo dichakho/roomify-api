@@ -1,6 +1,16 @@
 import { ManyToMany, JoinTable, Entity, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNotEmpty, IsString, IsEmail, IsIn, IsNumber, IsMobilePhone, IsObject, Validate } from 'class-validator';
+import {
+  IsOptional,
+  IsNotEmpty,
+  IsString,
+  IsEmail,
+  IsIn,
+  IsNumber,
+  IsMobilePhone,
+  IsObject,
+  Validate
+} from 'class-validator';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { BaseEntity } from './base.entity';
 import { Role } from './roles.entity';
@@ -83,33 +93,51 @@ export class User extends BaseEntity {
 
   @ApiProperty({ example: { id: 1 } })
   @IsObject()
-  @ManyToMany(() => Role, (role: Role) => role.users, { cascade: true })
+  @ManyToMany(
+    () => Role,
+    (role: Role) => role.users,
+    { cascade: true }
+  )
   @JoinTable({ name: 'user_role' })
   roles: Role[];
 
   @ApiProperty({ readOnly: true })
-  @OneToMany(() => Property, (property: Property) => property.owner)
+  @OneToMany(
+    () => Property,
+    (property: Property) => property.owner
+  )
   properties: Array<Property>;
 
   @ApiProperty({ readOnly: true })
-  @OneToMany(() => UserPermission, (userpermission: UserPermission) => userpermission.user)
-  userPermissions: Array<UserPermission>
+  @OneToMany(
+    () => UserPermission,
+    (userpermission: UserPermission) => userpermission.user
+  )
+  userPermissions: Array<UserPermission>;
 
   @ApiProperty({ readOnly: true })
-  @OneToMany(() => Bookings, (booking: Bookings) => booking.user)
-  bookings: Array<Bookings>
+  @OneToMany(
+    () => Bookings,
+    (booking: Bookings) => booking.user
+  )
+  bookings: Array<Bookings>;
 
   @ApiProperty({ readOnly: true })
-  @OneToMany(() => Roommate, (roommate: Roommate) => roommate.user)
-  roommates: Roommate[]
+  @OneToMany(
+    () => Roommate,
+    (roommate: Roommate) => roommate.user
+  )
+  roommates: Roommate[];
 
   @ApiProperty({ readOnly: true })
-  @OneToMany(() => FavoriteProperty, (favoriteProperty: FavoriteProperty) => favoriteProperty.user)
-  favorteProperty: FavoriteProperty[]
+  @OneToMany(
+    () => FavoriteProperty,
+    (favoriteProperty: FavoriteProperty) => favoriteProperty.user
+  )
+  favorteProperty: FavoriteProperty[];
 
   @ApiProperty({ readOnly: true })
   @OneToOne(() => OwnerRegistration)
   @JoinColumn()
-  ownerRegistration: OwnerRegistration
-
+  ownerRegistration: OwnerRegistration;
 }
