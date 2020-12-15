@@ -9,16 +9,20 @@ export interface Response<T> {
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<Response<T>> {
-    return next.handle().pipe(map(data => {
-      const transferData = data;
-      if (data) {
-        if (data.data) {
-          transferData.result = transferData.data;
-          transferData.data = undefined;
+    // const req = context.switchToHttp().getRequest();
+    // let user;
+    // if (req.user) user = req.user;
+    return next.handle().pipe(
+      map(data => {
+        const transferData = data;
+        if (data) {
+          if (data.data) {
+            transferData.result = transferData.data;
+            transferData.data = undefined;
+          }
         }
-      }
-      return transferData;
-    }));
-
+        return transferData;
+      })
+    );
   }
 }

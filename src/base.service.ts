@@ -34,17 +34,23 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     await this.repository.delete(id);
   }
 
-  async deleteOne(req: CrudRequest): Promise<void> {
+  async deleteOne(req: CrudRequest): Promise<any> {
     const { returnDeleted } = req.options.routes.deleteOneBase;
     const found = await this.getOneOrFail(req, returnDeleted);
     const data: any = found;
     await this.repository.softRemove(data);
+    return {
+      statusCode: 200
+    };
   }
 
-  async restore(id: number): Promise<void> {
+  async restore(id: number): Promise<any> {
     const checkData = await this.repository.findOne({ where: { id }, withDeleted: true });
     if (!checkData) throw new NotFoundException();
     await this.repository.restore(id);
+    return {
+      statusCode: 200
+    };
   }
 
   async createBulkData(dto: DeepPartial<T>[]): Promise<T[]> {
