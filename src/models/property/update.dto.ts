@@ -18,7 +18,7 @@ export class UpdatePropertyDTO {
   @ApiProperty({ example: 95.37 })
   @IsOptional()
   @IsNumber()
-  logtitude: number
+  longitude: number
 
   @ApiProperty({ example: 95.37 })
   @IsOptional()

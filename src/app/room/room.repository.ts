@@ -6,4 +6,11 @@ export class RoomRepository extends Repository<Room> {
     return this.findOne(id);
   }
 
+  findRoomWithOwner(ownerId: number): Promise<any> {
+    return this.createQueryBuilder('room')
+      .leftJoin('room.property', 'property')
+      .leftJoin('property.owner', 'owner')
+      .where('owner.id= :id', { id: ownerId })
+      .getMany();
+  }
 }

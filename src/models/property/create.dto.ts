@@ -17,7 +17,7 @@ export class CreatePropertyDTO {
 
   @ApiProperty({ example: 95.37 })
   @IsNumber()
-  logtitude: number
+  longitude: number
 
   @ApiProperty({ example: 95.37 })
   @IsNumber()

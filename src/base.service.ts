@@ -53,7 +53,7 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     return result;
   }
 
-  async getManyData(metadata: GetMany, relation?: string[], findOption?: any): Promise<any> {
+  async getManyData(metadata: GetMany, relation?: string[], findOption?: any, option?: any): Promise<any> {
     let { limit, page, offset } = metadata;
     if (limit === undefined) limit = 15;
     if (offset === undefined) offset = 0;
@@ -67,7 +67,7 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     else {
       page = Math.trunc(offset / limit) + 1;
     }
-    const result = await this.repository.findAndCount({ where: findOption, relations: relation, skip: offset, take: limit });
+    const result = await this.repository.findAndCount({ where: findOption, relations: relation, skip: offset, take: limit, ...option });
     return { result, limit, offset, page };
   }
 }
