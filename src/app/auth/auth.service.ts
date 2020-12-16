@@ -21,7 +21,6 @@ export class AuthService extends TypeOrmCrudService<User>{
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.userService.findOneByUsername(username);
-    console.log('user --->', user);
 
     if (!user) throw new NotFoundException('Username or password is wrong');
     const isPasswordMatching = await Bcrypt.compare(password, user.password);

@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Query, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { Methods } from '@src/common/decorators/methods.decorator';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
 import { ModulesName } from '@src/common/enums/modules.enum';
+import { JwtAuthGuard } from '@src/common/guards/jwt-auth.guard';
 import { Roommate } from '@src/entities/roommate.entity';
 import { GetMany } from '@src/models/base/getMany.dto';
 import { CreateRoomateDto } from '@src/models/roommate/create.dto';
@@ -40,7 +41,7 @@ export class RoommateController implements CrudController<Roommate> {
   constructor(public service: RoommateService) {}
 
   @ApiBearerAuth()
-  @Methods(MethodName.GET_LIST)
+  @UseGuards(JwtAuthGuard)
   @Get('/mine')
   getMyRoommate(@Req() req: UserRequestDto, @Query() query: GetMany) {
     return this.service.getMyRoommate(req.user.id, query);
