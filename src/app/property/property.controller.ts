@@ -1,11 +1,14 @@
 import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, Patch, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { Methods } from '@src/common/decorators/methods.decorator';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
 import { ModulesName } from '@src/common/enums/modules.enum';
+import { JwtAuthGuardProperty } from '@src/common/guards/jwt-auth-property.guard';
+import { PropertyRequestGuard } from '@src/common/guards/property-request.guard';
+import { LoggingInterceptor } from '@src/common/interceptors/logging.interceptor';
 import { method } from '@src/constant/config-crud.constant';
 import { Property } from '@src/entities/property.entity';
 import { GetMany } from '@src/models/base/getMany.dto';
@@ -50,15 +53,20 @@ import { PropertyService } from './property.service';
       },
       policy: {
         eager: true
+      },
+      favoriteProperty: {
+        eager: true
       }
     }
   },
   routes: {
     getManyBase: {
-      decorators: []
+      decorators: [UseGuards(JwtAuthGuardProperty), ApiBearerAuth()],
+      interceptors: [LoggingInterceptor]
     },
     getOneBase: {
-      decorators: []
+      decorators: [UseGuards(JwtAuthGuardProperty), ApiBearerAuth()],
+      interceptors: [LoggingInterceptor]
     }
   }
 })

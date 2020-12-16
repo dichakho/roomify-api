@@ -14,6 +14,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
     // if (req.user) user = req.user;
     return next.handle().pipe(
       map(data => {
+        
         const transferData = data;
         if (data) {
           if (data.data) {

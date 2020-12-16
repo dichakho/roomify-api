@@ -99,7 +99,6 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     else {
       page = Math.trunc(offset / limit) + 1;
     }
-    // const temp = await this.getManyData(query, ['room'], { userId });
     const temp = await this.repository.getBookingWithUser(userId, limit, offset);
     const data = temp[0];
     const count = data.length;
