@@ -51,7 +51,7 @@ export class User extends BaseEntity {
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
   @IsString()
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @ApiProperty({ example: '0981234899' })

@@ -71,7 +71,7 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     for (let i = 0; i < rooms.length; i += 1) {
       roomIds.push(rooms[i].id);
     };
-    const temp = await this.getManyData(query, ['user'], { roomId: In((roomIds.length > 0 ? roomIds : [0])) });
+    const temp = await this.getManyData(query, ['user', 'room'], { roomId: In((roomIds.length > 0 ? roomIds : [0])) });
     const data = temp.result[0];
     const count = data.length;
     const total = temp.result[1];
@@ -80,6 +80,35 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
       count,
       total,
       page: temp.page,
+      pageCount,
+      data
+    };
+  }
+
+  async getBookingWithUser(userId: number, query: GetMany) {
+    let { limit, page, offset } = query;
+    if (limit === undefined) limit = 15;
+    if (offset === undefined) offset = 0;
+    if (page === undefined && offset === undefined) {
+      offset = 0;
+      page = 1;
+    }
+    else if (offset === undefined) {
+      offset = limit * (page - 1);
+    }
+    else {
+      page = Math.trunc(offset / limit) + 1;
+    }
+    // const temp = await this.getManyData(query, ['room'], { userId });
+    const temp = await this.repository.getBookingWithUser(userId, limit, offset);
+    const data = temp[0];
+    const count = data.length;
+    const total = temp[1];
+    const pageCount = Math.ceil(total / limit);
+    return {
+      count,
+      total,
+      page,
       pageCount,
       data
     };

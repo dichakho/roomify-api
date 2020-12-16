@@ -4,10 +4,24 @@ import { Repository, EntityRepository, In } from 'typeorm';
 export class BookingRepository extends Repository<Bookings> {
   getBookingWithRoom(roomIds: any, limit: number, offset: number) {
     return this.createQueryBuilder('booking')
-      .leftJoin('booking.user', 'user')
+      .leftJoinAndSelect('booking.user', 'user')
       .leftJoin('booking.room', 'room')
-      .where('room.id= :id', { id: In((roomIds.length > 0 ? roomIds : [0])) })
+      .where('room.id= :id', { id: In([]) })
       .take(limit)
-      .skip(offset).getMany();
+      .skip(offset)
+      .getMany();
+  }
+
+  getBookingWithUser(userId: any, limit: number, offset: number) {
+    return this.createQueryBuilder('booking')
+      .where('booking.userId= :userId', { userId })
+      .leftJoinAndSelect('booking.room', 'room')
+      .leftJoin('room.property', 'property')
+      .addSelect('property.title')
+      .leftJoin('property.owner', 'owner')
+      .addSelect(['owner.fullName', 'owner.username', 'owner.email', 'owner.phone', 'owner.avatar'])
+      .take(limit)
+      .skip(offset)
+      .getManyAndCount();
   }
 }
