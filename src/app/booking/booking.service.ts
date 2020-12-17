@@ -1,11 +1,13 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { BaseService } from '@src/base.service';
+import { NotificationMessageEnum } from '@src/common/enums/notification.enum';
 import { Bookings } from '@src/entities/bookings.entity';
 import { Property } from '@src/entities/property.entity';
 import { GetMany } from '@src/models/base/getMany.dto';
 import { IResponseFormat } from '@src/models/base/response.interface';
 import admin from 'firebase-admin';
 import { In } from 'typeorm';
+import { NotificationRepository } from '../notification/notification.repository';
 import { RoomRepository } from '../room/room.repository';
 import { BookingRepository } from './booking.respository';
 
@@ -13,13 +15,17 @@ import { BookingRepository } from './booking.respository';
 export class BookingService extends BaseService<Bookings, BookingRepository> {
   constructor(
     protected readonly repository: BookingRepository,
-    private readonly roomRepository: RoomRepository
+    private readonly roomRepository: RoomRepository,
+    private readonly notificationRepo: NotificationRepository
   ) {
     super(repository);
   }
 
   async create(userId: number, roomId: number, phone: string): Promise<IResponseFormat<Bookings>> {
-    const checkRoom = await this.roomRepository.findOne(roomId);
+    const checkRoom = await this.roomRepository.findOne({
+      where: { roomId },
+      relations: ['property', 'property.owner']
+    });
     if (!checkRoom) throw new NotFoundException('Room not found !!!');
     const query = await this.repository.findOne({
       where: { roomId, userId, transactionId: null, isChecked: false },
@@ -47,21 +53,21 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     }
 
     const data = await this.repository.save({ user: { id: userId }, room: { id: roomId } });
+    this.notificationRepo.save({
+      title: NotificationMessageEnum.Title_Booking,
+      description: `User with phone: ${phone} booked your room !!! Please contact with him/her`,
+      userId: query.user.id
+    });
     admin
       .messaging()
-      .sendToTopic(roomId.toString(), {
+      .sendToDevice(checkRoom.property.owner.registrationToken, {
         data: {
           content: `User with phone: ${phone} booked your room !!! Please contact with him/her`
         }
       })
-      .then(response => {
-        // Response is a message ID string.
-        console.log('Successfully sent message:', response);
-      })
       .catch(error => {
         console.log('Error sending message:', error);
       });
-
     return { data };
   }
 
@@ -70,8 +76,10 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     const roomIds = [];
     for (let i = 0; i < rooms.length; i += 1) {
       roomIds.push(rooms[i].id);
-    };
-    const temp = await this.getManyData(query, ['user', 'room'], { roomId: In((roomIds.length > 0 ? roomIds : [0])) });
+    }
+    const temp = await this.getManyData(query, ['user', 'room'], {
+      roomId: In(roomIds.length > 0 ? roomIds : [0])
+    });
     const data = temp.result[0];
     const count = data.length;
     const total = temp.result[1];
@@ -92,11 +100,9 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     if (page === undefined && offset === undefined) {
       offset = 0;
       page = 1;
-    }
-    else if (offset === undefined) {
+    } else if (offset === undefined) {
       offset = limit * (page - 1);
-    }
-    else {
+    } else {
       page = Math.trunc(offset / limit) + 1;
     }
     const temp = await this.repository.getBookingWithUser(userId, limit, offset);

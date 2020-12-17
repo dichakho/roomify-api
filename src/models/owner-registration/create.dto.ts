@@ -24,8 +24,4 @@ export class CreateOwnerRegistrationDto {
   @Length(3, 50, { message: 'Name of Owner must be greater than 3 and less than 50' })
   nameOwner: string
 
-  @ApiProperty({ example: '' })
-  @IsNotEmpty()
-  @IsString()
-  registrationToken: string
 }

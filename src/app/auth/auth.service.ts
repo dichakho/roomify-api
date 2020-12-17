@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  ForbiddenException,
+  NotFoundException
+} from '@nestjs/common';
 import { UserService } from '@src/app/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import Bcrypt from '@src/plugins/bcrypt.plugin';
@@ -8,9 +13,10 @@ import { User } from '@src/entities/user.entity';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { LoginDTO } from '@src/models/auth/auth-login.dto';
 import { UpdateMyUserDto } from '@src/models/users/update-my-user.dto';
+import admin from 'firebase-admin';
 
 @Injectable()
-export class AuthService extends TypeOrmCrudService<User>{
+export class AuthService extends TypeOrmCrudService<User> {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
@@ -19,7 +25,7 @@ export class AuthService extends TypeOrmCrudService<User>{
     super(repository);
   }
 
-  async validateUser(username: string, password: string): Promise<any> {
+  async validateUser(username: string, password: string): Promise<User> {
     const user = await this.userService.findOneByUsername(username);
 
     if (!user) throw new NotFoundException('Username or password is wrong');
@@ -27,14 +33,19 @@ export class AuthService extends TypeOrmCrudService<User>{
     if (!isPasswordMatching) {
       throw new NotFoundException('Username or password is wrong');
     }
-    if(user.status === 'BANNED') throw new ForbiddenException('Your account was banned !!!');
+    if (user.status === 'BANNED') throw new ForbiddenException('Your account was banned !!!');
     return user;
   }
 
   async login(user: LoginDTO) {
-    const result = await this.validateUser(user.username, user.password);
+    const result: User = await this.validateUser(user.username, user.password);
     const payload = { username: result.username, id: result.id };
     const token = this.jwtService.sign(payload);
+    if (!result.registrationToken) result.registrationToken = [user.registrationToken];
+    else if (!result.registrationToken.includes(user.registrationToken)) {
+      result.registrationToken.push(user.registrationToken);
+    }
+    this.repo.update(result.id, { registrationToken: result.registrationToken });
     return {
       token,
       id: result.id,
@@ -55,9 +66,7 @@ export class AuthService extends TypeOrmCrudService<User>{
       phone: userRegister.phone,
       username: userRegister.username
     };
-    const result = await this.repo.save({ ...user, roles: [{ id: 4 }] });
-    console.log('RESULT', result);
-
+    this.repo.save({ ...user, roles: [{ id: 4 }] });
   }
 
   async updateMyInformation(user: User, userUpdate: UpdateMyUserDto): Promise<User> {
@@ -88,5 +97,4 @@ export class AuthService extends TypeOrmCrudService<User>{
   //   const result = await this.repo.save({ ...user, roles: [{ id: 4 }] });
   //   console.log('RESULT', result);
   // }
-
 }

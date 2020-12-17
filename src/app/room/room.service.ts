@@ -36,7 +36,6 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     room.amenities = amenities;
     room.property = property;
     const result = await this.repository.save(room);
-    admin.messaging().subscribeToTopic(data.registrationToken, room.id.toString()).then(() => console.log('success')).catch(error => console.log(error));
     const tempProperty = this.propertyRepository.create();
     tempProperty.id = property.id;
     result.property = tempProperty;
