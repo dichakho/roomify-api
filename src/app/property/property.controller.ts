@@ -7,8 +7,7 @@ import { Modules } from '@src/common/decorators/modules.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
 import { ModulesName } from '@src/common/enums/modules.enum';
 import { JwtAuthGuardProperty } from '@src/common/guards/jwt-auth-property.guard';
-import { PropertyRequestGuard } from '@src/common/guards/property-request.guard';
-import { LoggingInterceptor } from '@src/common/interceptors/logging.interceptor';
+import { LoggingInterceptor } from '@src/common/interceptors/property-response.interceptor';
 import { method } from '@src/constant/config-crud.constant';
 import { Property } from '@src/entities/property.entity';
 import { GetMany } from '@src/models/base/getMany.dto';
@@ -52,9 +51,6 @@ import { PropertyService } from './property.service';
         alias: 'city'
       },
       policy: {
-        eager: true
-      },
-      favoriteProperty: {
         eager: true
       }
     }
