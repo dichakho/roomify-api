@@ -19,6 +19,7 @@ import { BookingModule } from './app/booking/booking.module';
 import { TransactionModule } from './app/transaction/transaction.module';
 import { RoommateModule } from './app/roommate/roommate.module';
 import { PermissionsModule } from './app/permissions/permissions.module';
+import { NotificationModule } from './app/notification/notification.module';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { PermissionsModule } from './app/permissions/permissions.module';
     BookingModule,
     TransactionModule,
     RoommateModule,
-    PermissionsModule
+    PermissionsModule,
+    NotificationModule
   ],
   controllers: [BaseController]
 })

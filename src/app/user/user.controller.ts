@@ -22,7 +22,7 @@ import { ModulesName } from '../../common/enums/modules.enum';
     type: User
   },
   query: {
-    exclude: ['password'],
+    exclude: ['password', 'registrationToken'],
     join: {
       roles: {
         allow: ['name'],

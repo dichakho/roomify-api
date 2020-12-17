@@ -22,6 +22,7 @@ import { Bookings } from './bookings.entity';
 import { Roommate } from './roommate.entity';
 import { OwnerRegistration } from './owner_registration.entity';
 import { FavoriteProperty } from './favorite_property.entity';
+import { Notification } from './notification.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('users')
@@ -86,6 +87,9 @@ export class User extends BaseEntity {
   })
   status: string;
 
+  @Column('text', { array: true, nullable: true })
+  registrationToken: Array<string>
+
   @ApiProperty({ readOnly: true })
   @IsOptional()
   @IsNumber({}, { each: true })
@@ -140,4 +144,7 @@ export class User extends BaseEntity {
   @OneToOne(() => OwnerRegistration)
   @JoinColumn()
   ownerRegistration: OwnerRegistration;
+
+  @OneToMany(() => Notification, (notification: Notification) => notification.user)
+  notification: Notification[]
 }
