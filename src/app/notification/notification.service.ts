@@ -17,6 +17,6 @@ export class NotificationService extends BaseService<Notification, NotificationR
     query: GetMany
   ): Promise<IResponseFormat<Notification>> {
     const temp = await this.getManyData(query, [], { userId });
-    return format(temp);
+    return temp;
   }
 }

@@ -17,7 +17,11 @@ export class RoommateService extends BaseService<Roommate, RoommateRepository> {
     return { data };
   }
 
-  async update(userId: number, body: CreateRoomateDto, id: number): Promise<IResponseFormat<Roommate>> {
+  async update(
+    userId: number,
+    body: CreateRoomateDto,
+    id: number
+  ): Promise<IResponseFormat<Roommate>> {
     const query = await this.repository.findOne(id);
     if (!query) throw new NotFoundException('Roomate not found !!!');
     if (query.userId !== userId) throw new ForbiddenException("This post isn't your own !!!");
@@ -30,16 +34,6 @@ export class RoommateService extends BaseService<Roommate, RoommateRepository> {
 
   async getMyRoommate(userId: number, query: GetMany): Promise<any> {
     const temp = await this.getManyData(query, [], { userId });
-    const data = temp.result[0];
-    const count = data.length;
-    const total = temp.result[1];
-    const pageCount = Math.ceil(total / temp.limit);
-    return {
-      count,
-      total,
-      page: temp.page,
-      pageCount,
-      data
-    };
+    return temp;
   }
 }

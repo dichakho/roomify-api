@@ -12,7 +12,7 @@ export class PropertyRepository extends Repository<Property> {
   getPropertyWithSubDistrict(name: string, limit: number, offset: number): any {
     return getManager().createQueryBuilder(Property, 'property')
       .leftJoinAndSelect('property.destination', 'destination')
-      .where('destination.name= :name', { name }).take(limit).skip(offset).getManyAndCount();
+      .where('destination.name= :name', { name }).take(limit).skip(offset).orderBy('property.id', 'DESC').getManyAndCount();
   }
 
   getPropertyNearMe() {

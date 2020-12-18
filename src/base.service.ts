@@ -8,8 +8,9 @@ import { uploads } from './plugins/cloudinary.plugin';
 import { GetMany } from './models/base/getMany.dto';
 
 @Injectable()
-export abstract class BaseService<T extends BaseEntity, R extends Repository<T>> extends TypeOrmCrudService<T> implements IBaseService<T> {
-
+export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
+  extends TypeOrmCrudService<T>
+  implements IBaseService<T> {
   constructor(protected repository: R) {
     super(repository);
   }
@@ -59,21 +60,52 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     return result;
   }
 
-  async getManyData(metadata: GetMany, relation?: string[], findOption?: any, option?: any): Promise<any> {
+  async getManyData(
+    metadata: GetMany,
+    relation?: string[],
+    findOption?: any,
+    isReturn = true,
+    option?: any
+  ): Promise<any> {
     let { limit, page, offset } = metadata;
     if (limit === undefined) limit = 15;
     if (offset === undefined) offset = 0;
     if (page === undefined && offset === undefined) {
       offset = 0;
       page = 1;
-    }
-    else if (offset === undefined) {
+    } else if (offset === undefined) {
       offset = limit * (page - 1);
-    }
-    else {
+    } else {
       page = Math.trunc(offset / limit) + 1;
     }
-    const result = await this.repository.findAndCount({ where: findOption, relations: relation, skip: offset, take: limit, ...option });
-    return { result, limit, offset, page };
+    let result;
+    if (isReturn === false) {
+      result = await this.repository.findAndCount({
+        where: findOption,
+        relations: relation,
+        skip: offset,
+        take: limit,
+        ...option
+      });
+      return { result, limit, offset, page };
+    }
+    result = await this.repository.findAndCount({
+      where: findOption,
+      relations: relation,
+      skip: offset,
+      take: limit,
+      ...option
+    });
+    const data = result[0];
+    const count = data.length;
+    const total = result[1];
+    const pageCount = Math.ceil(total / limit);
+    return {
+      count,
+      total,
+      page,
+      pageCount,
+      data
+    };
   }
 }

@@ -10,6 +10,7 @@ import { GetMany } from '@src/models/base/getMany.dto';
 import { CreatePropertyDTO } from '@src/models/property/create.dto';
 import { UpdatePropertyDTO } from '@src/models/property/update.dto';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
+import { format } from '@src/utils/format-response-get-many';
 import { In, Like, TreeRepository } from 'typeorm';
 import { DestinationRepository } from '../destination/destination.repository';
 import { PropertyRepository } from './property.repository';
@@ -91,18 +92,10 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
     } else {
       id.push(destinationId);
     }
-    const temp = await this.getManyData(query, [], { destinationId: In(id) });
-    const data = temp.result[0];
-    const count = data.length;
-    const total = temp.result[1];
-    const pageCount = Math.ceil(total / temp.limit);
-    return {
-      count,
-      total,
-      page: temp.page,
-      pageCount,
-      data
-    };
+    const temp = await this.getManyData(query, [], { destinationId: In(id) }, true, {
+      order: { id: 'DESC' }
+    });
+    return temp;
   }
 
   async getPropertyWithDestinationName(name: string, query: GetMany) {
@@ -126,33 +119,15 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
     } else {
       id.push(destinations.id);
     }
-    const temp = await this.getManyData(query, [], { destinationId: In(id) });
-    const data = temp.result[0];
-    const count = data.length;
-    const total = temp.result[1];
-    const pageCount = Math.ceil(total / temp.limit);
-    return {
-      count,
-      total,
-      page: temp.page,
-      pageCount,
-      data
-    };
+    const temp = await this.getManyData(query, [], { destinationId: In(id) }, true, {
+      order: { id: 'DESC' }
+    });
+    return temp;
   }
 
   async getPropertyOfCategory(categoryId: number, query: GetMany) {
-    const temp = await this.getManyData(query, [], { categoryId });
-    const data = temp.result[0];
-    const count = data.length;
-    const total = temp.result[1];
-    const pageCount = Math.ceil(total / temp.limit);
-    return {
-      count,
-      total,
-      page: temp.page,
-      pageCount,
-      data
-    };
+    const temp = await this.getManyData(query, [], { categoryId }, true, { order: { id: 'DESC' } });
+    return temp;
   }
 
   async getPropertyNearMe(
@@ -173,7 +148,6 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
       page = Math.trunc(offset / limit) + 1;
     }
     const result = await this.repository.getPropertyWithSubDistrict(subDistrict, limit, offset);
-    console.log(result);
     const data = result[0];
     const count = data.length;
     const total = result[1];
@@ -191,18 +165,10 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
     const temp = await this.getManyData(
       query,
       ['destination', 'destination.parent', 'destination.parent.parent'],
-      { ownerId }
+      { ownerId },
+      true,
+      { order: { id: 'DESC' } }
     );
-    const data = temp.result[0];
-    const count = data.length;
-    const total = temp.result[1];
-    const pageCount = Math.ceil(total / temp.limit);
-    return {
-      count,
-      total,
-      page: temp.page,
-      pageCount,
-      data
-    };
+    return temp;
   }
 }
