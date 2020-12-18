@@ -80,17 +80,7 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     const temp = await this.getManyData(query, ['user', 'room'], {
       roomId: In(roomIds.length > 0 ? roomIds : [0])
     });
-    const data = temp.result[0];
-    const count = data.length;
-    const total = temp.result[1];
-    const pageCount = Math.ceil(total / temp.limit);
-    return {
-      count,
-      total,
-      page: temp.page,
-      pageCount,
-      data
-    };
+    return temp;
   }
 
   async getBookingWithUser(userId: number, query: GetMany) {

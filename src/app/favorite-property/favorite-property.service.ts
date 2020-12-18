@@ -32,16 +32,6 @@ export class FavoritePropertyService extends BaseService<
   async getFavoriteProperty(userId: number, query: GetMany): Promise<any> {
     // const data = await this.repository.find({ where: { user: { id: userId } }, relations: ['property'] });
     const temp = await this.getManyData(query, ['property'], { user: { id: userId } });
-    const data = temp.result[0];
-    const count = data.length;
-    const total = temp.result[1];
-    const pageCount = Math.ceil(total / temp.limit);
-    return {
-      count,
-      total,
-      page: temp.page,
-      pageCount,
-      data
-    };
+    return temp;
   }
 }
