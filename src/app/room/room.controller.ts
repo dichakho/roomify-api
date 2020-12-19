@@ -5,6 +5,7 @@ import { Methods } from '@src/common/decorators/methods.decorator';
 import { Modules } from '@src/common/decorators/modules.decorator';
 import { MethodName } from '@src/common/enums/methods.enum';
 import { ModulesName } from '@src/common/enums/modules.enum';
+import { RoomStatus } from '@src/common/enums/roomStatus.enum';
 import { method } from '@src/constant/config-crud.constant';
 import { Room } from '@src/entities/room.entity';
 import { CreateRoom } from '@src/models/room/create.dto';
@@ -22,7 +23,10 @@ import { RoomService } from './room.service';
         field: 'id',
         order: 'DESC'
       }
-    ]
+    ],
+    filter: {
+      status: RoomStatus.OPEN
+    }
   },
   routes: {
     getManyBase: {
