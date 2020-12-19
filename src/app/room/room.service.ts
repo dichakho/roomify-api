@@ -44,6 +44,7 @@ export class RoomService extends BaseService<Room, RoomRepository> {
 
   async updateRoom(data: UpdateRoom, id: number): Promise<Room> {
     const room = await this.repository.findOne({ where: { id }, relations: ['property', 'property.rooms'] });
+    if(!room) throw new NotFoundException('Room not found');
     if(data.amenityIds) {
       const amenities = await this.amenityRepository.findByIds(data.amenityIds);
       room.amenities = amenities;
