@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { BaseEntity, DeepPartial, Repository } from 'typeorm';
+import { BaseEntity, DeepPartial, IsNull, Not, Repository } from 'typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { unlinkSync } from 'fs';
 import { CrudRequest } from '@nestjsx/crud';
@@ -58,6 +58,13 @@ export abstract class BaseService<T extends BaseEntity, R extends Repository<T>>
     if (dto.length === 0) throw new BadRequestException('Nothing to change. Data is empty !!!');
     const result = await this.repository.save(dto, { chunk: 50 });
     return result;
+  }
+
+  async getDataWasDeleted(query: GetMany, relation?: []) {
+    const data = await this.getManyData(query, relation, { deletedAt: Not(IsNull()) }, true, {
+      withDeleted: true
+    });
+    return data;
   }
 
   async getManyData(

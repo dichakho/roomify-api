@@ -24,7 +24,6 @@ export class FavoritePropertyController {
     return this.service.create(user.id, body.propertyId);
   }
 
-
   @ApiBearerAuth()
   @Get()
   @Methods(MethodName.GET_LIST)

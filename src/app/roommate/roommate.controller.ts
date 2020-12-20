@@ -47,6 +47,13 @@ export class RoommateController implements CrudController<Roommate> {
     return this.service.getMyRoommate(req.user.id, query);
   }
 
+  @ApiBearerAuth()
+  @Methods(MethodName.GET_LIST)
+  @Get('/deleted')
+  getListWasDeleted(@Query() query: GetMany) {
+    return this.service.getDataWasDeleted(query);
+  }
+
   get base(): CrudController<Roommate> {
     return this;
   }

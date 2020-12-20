@@ -1,4 +1,4 @@
-import { Body, Controller, Param, ParseIntPipe, Patch, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Query, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { Methods } from '@src/common/decorators/methods.decorator';
@@ -8,6 +8,7 @@ import { ModulesName } from '@src/common/enums/modules.enum';
 import { RoomStatus } from '@src/common/enums/roomStatus.enum';
 import { method } from '@src/constant/config-crud.constant';
 import { Room } from '@src/entities/room.entity';
+import { GetMany } from '@src/models/base/getMany.dto';
 import { CreateRoom } from '@src/models/room/create.dto';
 import { UpdateRoom } from '@src/models/room/update.dto';
 import { UserRequestDto } from '@src/models/users/user-request.dto';
@@ -48,6 +49,13 @@ export class RoomController implements CrudController<Room> {
   @Methods(MethodName.PATCH)
   restore(@Param('id', ParseIntPipe) id: number) {
     return this.service.restore(id);
+  }
+
+  @ApiBearerAuth()
+  @Methods(MethodName.GET_LIST)
+  @Get('/deleted')
+  getListWasDeleted(@Query() query: GetMany) {
+    return this.service.getDataWasDeleted(query);
   }
 
   get base():CrudController<Room> {
