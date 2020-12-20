@@ -79,6 +79,13 @@ export class PropertyController implements CrudController<Property>{
     return this.service.restore(id);
   }
 
+  @ApiBearerAuth()
+  @Methods(MethodName.GET_LIST)
+  @Get('/deleted')
+  getListWasDeleted(@Query() query: GetMany) {
+    return this.service.getDataWasDeleted(query);
+  }
+
   @Get(':id/rooms')
   getRoom(@Param('id', ParseIntPipe) id: number) {
     return this.service.getRooms(id);

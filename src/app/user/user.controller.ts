@@ -60,6 +60,13 @@ export class UserController implements CrudController<User> {
   // }
 
   @ApiBearerAuth()
+  @Methods(MethodName.GET_LIST)
+  @Get('/deleted')
+  getListWasDeleted(@Query() query: GetMany) {
+    return this.service.getDataWasDeleted(query);
+  }
+
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Patch('password')
   async updateMyPassword(@Request() req: UserRequestDto, @Body() body: UpdateMyPasswordDto) {
