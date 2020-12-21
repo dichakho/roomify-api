@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BaseService } from '@src/base.service';
 import { FavoriteProperty } from '@src/entities/favorite_property.entity';
 import { GetMany } from '@src/models/base/getMany.dto';
+import { PropertyRepository } from '../property/property.repository';
 import { FavoritePropertyRepository } from './favorite-property.repository';
 
 @Injectable()
@@ -9,7 +10,10 @@ export class FavoritePropertyService extends BaseService<
   FavoriteProperty,
   FavoritePropertyRepository
 > {
-  constructor(protected readonly repository: FavoritePropertyRepository) {
+  constructor(
+    protected readonly repository: FavoritePropertyRepository,
+    private readonly propertyRepo: PropertyRepository
+  ) {
     super(repository);
   }
 
@@ -30,8 +34,28 @@ export class FavoritePropertyService extends BaseService<
   }
 
   async getFavoriteProperty(userId: number, query: GetMany): Promise<any> {
-    // const data = await this.repository.find({ where: { user: { id: userId } }, relations: ['property'] });
-    const temp = await this.getManyData(query, ['property'], { user: { id: userId } });
-    return temp;
+    let { limit, page, offset } = query;
+    if (limit === undefined) limit = 15;
+    if (offset === undefined) offset = 0;
+    if (page === undefined && offset === undefined) {
+      offset = 0;
+      page = 1;
+    } else if (offset === undefined) {
+      offset = limit * (page - 1);
+    } else {
+      page = Math.trunc(offset / limit) + 1;
+    }
+    const result = await this.propertyRepo.getPropertyFavorite(userId, limit, offset);
+    const data = result[0];
+    const count = data.length;
+    const total = result[1];
+    const pageCount = Math.ceil(total / limit);
+    return {
+      count,
+      total,
+      page,
+      pageCount,
+      data
+    };
   }
 }
