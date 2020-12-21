@@ -21,16 +21,18 @@ export class FavoritePropertyService extends BaseService<
     const query = await this.repository.findOne({
       where: { user: { id: userId }, property: { id: propertyId } }
     });
-    console.log(query);
     if (query) {
       await this.repository.delete(query.id);
-    } else {
-      const result = await this.repository.save({
-        property: { id: propertyId },
-        user: { id: userId }
-      });
-      return result;
+      return {
+        status: 200,
+        message: 'Success !!!'
+      };
     }
+    const result = await this.repository.save({
+      property: { id: propertyId },
+      user: { id: userId }
+    });
+    return result;
   }
 
   async getFavoriteProperty(userId: number, query: GetMany): Promise<any> {
@@ -45,8 +47,24 @@ export class FavoritePropertyService extends BaseService<
     } else {
       page = Math.trunc(offset / limit) + 1;
     }
-    const result = await this.propertyRepo.getPropertyFavorite(userId, limit, offset);
-    const data = result[0];
+    // const result = await this.propertyRepo.getPropertyFavorite(userId, limit, offset);
+    const result = await this.repository.findAndCount({
+      where: { userId },
+      relations: [
+        'property',
+        'property.category',
+        'property.owner',
+        'property.destination',
+        'property.destination.parent',
+        'property.destination.parent.parent'
+      ],
+      order: {
+        id: 'DESC'
+      }
+    });
+    const data = result[0].map(t => {
+      return t.property;
+    });
     const count = data.length;
     const total = result[1];
     const pageCount = Math.ceil(total / limit);
