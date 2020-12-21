@@ -48,7 +48,6 @@ export class RoomController implements CrudController<Room> {
   @Patch('restore/:id')
   @Methods(MethodName.PATCH)
   restore(@Param('id', ParseIntPipe) id: number) {
-    
     return this.service.restore(id);
   }
 
