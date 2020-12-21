@@ -35,6 +35,7 @@ export class PropertyRepository extends Repository<Property> {
           .select('favorite.propertyId')
           .from(FavoriteProperty, 'favorite')
           .where('favorite.user= :userId')
+          .orderBy('favorite.id', 'DESC')
           .getQuery();
         return `properties.id IN ${subQuery}`;
       })
@@ -58,7 +59,7 @@ export class PropertyRepository extends Repository<Property> {
       ])
       .take(limit)
       .skip(offset)
-      .orderBy('properties.id', 'DESC')
+      // .orderBy('properties.id', 'DESC')
       .getManyAndCount();
   }
 }

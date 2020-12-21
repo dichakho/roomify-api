@@ -8,6 +8,18 @@ import { Property } from '../../entities/property.entity';
 import { Policy } from '../../entities/policy.entity';
 
 export default class CreateProperties implements Seeder {
+  private latDaNang = 16;
+
+  private longDaNang = 108;
+
+  private latHaNoi = 21;
+
+  private longHaNoi = 105;
+
+  private latHCM = 10;
+
+  private longHCM = 105;
+
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const destination = await connection
       .getRepository(Destination)
@@ -34,22 +46,20 @@ export default class CreateProperties implements Seeder {
       propertyData.description = Faker.lorem.sentences(4);
       propertyData.averageArea = 100.97;
       if (id < 86) {
-        propertyData.latitude = Faker.random.number({ min: 16, max: 17, precision: 0.000001 });
-        propertyData.longitude = Faker.random.number({ min: 108, max: 109, precision: 0.000001 });
+        this.latDaNang += 0.003123;
+        this.longDaNang += 0.003321;
+        propertyData.latitude = this.latDaNang;
+        propertyData.longitude = this.longDaNang;
       } else if (id < 252) {
-        propertyData.latitude = Faker.random.number({ min: 21, max: 22, precision: 0.000001 });
-        propertyData.longitude = Faker.random.number({
-          min: 105,
-          max: 106,
-          precision: 0.000001
-        });
+        this.latHaNoi += 0.003456;
+        this.longHaNoi += 0.003654;
+        propertyData.latitude = this.latHaNoi;
+        propertyData.longitude = this.longHaNoi;
       } else {
-        propertyData.latitude = Faker.random.number({ min: 10, max: 11, precision: 0.000001 });
-        propertyData.longitude = Faker.random.number({
-          min: 105,
-          max: 106,
-          precision: 0.000001
-        });
+        this.latHCM += 0.003789;
+        this.longHCM += 0.003987;
+        propertyData.latitude = this.latHCM;
+        propertyData.longitude = this.longHCM;
       }
 
       policy = await connection
@@ -57,10 +67,10 @@ export default class CreateProperties implements Seeder {
         .insert()
         .into(Policy)
         .values({
-          electricity: Faker.random.number({ min: 10, max: 100 }),
-          water: Faker.random.number({ min: 10, max: 100 }),
-          parking: Faker.random.number({ min: 1, max: 10 }),
-          internet: Faker.random.number({ min: 10, max: 100 })
+          electricity: Faker.random.number({ min: 1000, max: 20000 }),
+          water: Faker.random.number({ min: 1000, max: 20000 }),
+          parking: Faker.random.number({ min: 1000, max: 10000 }),
+          internet: Faker.random.number({ min: 100000, max: 500000 })
         })
         .execute();
 
