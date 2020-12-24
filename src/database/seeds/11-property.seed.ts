@@ -46,18 +46,18 @@ export default class CreateProperties implements Seeder {
       propertyData.description = Faker.lorem.sentences(4);
       propertyData.averageArea = 100.97;
       if (id < 86) {
-        this.latDaNang += 0.003123;
-        this.longDaNang += 0.003321;
+        this.latDaNang -= 0.000223;
+        this.longDaNang -= 0.000221;
         propertyData.latitude = this.latDaNang;
         propertyData.longitude = this.longDaNang;
       } else if (id < 252) {
-        this.latHaNoi += 0.003456;
-        this.longHaNoi += 0.003654;
+        this.latHaNoi += 0.000256;
+        this.longHaNoi += 0.000254;
         propertyData.latitude = this.latHaNoi;
         propertyData.longitude = this.longHaNoi;
       } else {
-        this.latHCM += 0.003789;
-        this.longHCM += 0.003987;
+        this.latHCM -= 0.000289;
+        this.longHCM -= 0.000287;
         propertyData.latitude = this.latHCM;
         propertyData.longitude = this.longHCM;
       }

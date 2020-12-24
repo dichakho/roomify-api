@@ -11,13 +11,14 @@ export default class CreateBookings implements Seeder {
       .leftJoin('user.roles', 'roles')
       .where('roles.id = :id', { id: 4 })
       .getMany();
-
+    let roomId;
     for (let i = 0; i < users.length; i += 1) {
+      roomId = Faker.random.number({ min: 1, max: 100 });
       await connection
         .createQueryBuilder()
         .insert()
         .into('bookings')
-        .values({ user: users[i], roomId: Faker.random.number({min: 1, max: 100}) })
+        .values({ user: users[i], roomId, ownerId: roomId })
         .execute();
     }
   }
