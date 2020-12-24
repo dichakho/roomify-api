@@ -52,7 +52,7 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
       return { data };
     }
 
-    const data = await this.repository.save({ user: { id: userId }, room: { id: roomId } });
+    const data = await this.repository.save({ user: { id: userId }, room: { id: roomId }, ownerId: checkRoom.property.ownerId });
     if (checkRoom.property.owner.registrationToken) {
       this.notificationRepo.save({
         title: NotificationMessageEnum.Title_Booking,

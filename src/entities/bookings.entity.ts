@@ -26,6 +26,10 @@ export class Bookings extends BaseEntity {
   roomId: number
 
   @ApiProperty({ readOnly: true })
+  @Column()
+  ownerId: number
+
+  @ApiProperty({ readOnly: true })
   @ManyToOne(() => Transaction, (transaction: Transaction) => transaction.bookings)
   @JoinColumn({ name: 'transactionId' })
   transaction: Transaction

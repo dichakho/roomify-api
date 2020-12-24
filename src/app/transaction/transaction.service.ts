@@ -3,10 +3,10 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { BaseService } from '@src/base.service';
 import { Transaction } from '@src/entities/transaction.entity';
 import { IResponseFormat } from '@src/models/base/response.interface';
-import { BookingRepository } from '../booking/booking.respository';
-import { TransactionRepository } from './transaction.repository';
 import stringify from 'csv-stringify';
 import fs from 'fs';
+import { BookingRepository } from '../booking/booking.respository';
+import { TransactionRepository } from './transaction.repository';
 
 @Injectable()
 export class TransactionService extends BaseService<Transaction, TransactionRepository> {
@@ -22,10 +22,15 @@ export class TransactionService extends BaseService<Transaction, TransactionRepo
 
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_NOON)
   async createTransactionEveryMonth() {
-    const transaction = this.repository.create();
-    transaction.isPaid = false;
-    const create = await this.repository.save(transaction);
-    await this.bookingRepository.update({ transactionId: null }, { transactionId: create.id });
+    const bookings = await this.bookingRepository.getDistinctOwner();
+    console.log('ownerId ---------> ', bookings);
+    for(let i = 0; i < bookings.length; i += 1) {
+      const transaction = this.repository.create();
+      transaction.isPaid = false;
+      const create = await this.repository.save(transaction);
+      await this.bookingRepository.update({ transactionId: null, ownerId: bookings[i].ownerId }, { transactionId: create.id });
+    }
+
   }
 
   async extract(res, id: number) {
