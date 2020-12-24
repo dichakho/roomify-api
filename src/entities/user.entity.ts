@@ -96,6 +96,7 @@ export class User extends BaseEntity {
   roleIds: Array<number>;
 
   @ApiProperty({ example: { id: 1 } })
+  @IsOptional({ groups: [UPDATE] })
   @IsObject()
   @ManyToMany(
     () => Role,
