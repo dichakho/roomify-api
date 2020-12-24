@@ -51,8 +51,8 @@ export default class CreateProperties implements Seeder {
         propertyData.latitude = this.latDaNang;
         propertyData.longitude = this.longDaNang;
       } else if (id < 252) {
-        this.latHaNoi -= 0.000256;
-        this.longHaNoi -= 0.000254;
+        this.latHaNoi += 0.000256;
+        this.longHaNoi += 0.000254;
         propertyData.latitude = this.latHaNoi;
         propertyData.longitude = this.longHaNoi;
       } else {
