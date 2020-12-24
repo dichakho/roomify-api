@@ -66,6 +66,9 @@ export class AuthService extends TypeOrmCrudService<User> {
       phone: userRegister.phone,
       username: userRegister.username
     };
+    const temp = await admin.auth().generateEmailVerificationLink('tuankha1749@gmail.com');
+    console.log(temp);
+    
     this.repo.save({ ...user, roles: [{ id: 4 }] });
   }
 
