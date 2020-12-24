@@ -94,16 +94,17 @@ export class OwnerRegistrationService extends BaseService<
       });
       const result = await this.repository.save(query);
       this.userRepo.save({ ...userQuery, roles: roleId });
-      admin
-        .messaging()
-        .sendToDevice(query.user.registrationToken, {
+      if (query.user.registrationToken) {
+        admin.messaging().sendToDevice(query.user.registrationToken, {
           data: { content: NotificationMessageEnum.Description_Owner_Upgrade }
         });
-      this.notificationRepo.save({
-        title: NotificationMessageEnum.Title_Owner_Upgrade,
-        description: NotificationMessageEnum.Description_Owner_Upgrade,
-        userId: query.user.id
-      });
+        this.notificationRepo.save({
+          title: NotificationMessageEnum.Title_Owner_Upgrade,
+          description: NotificationMessageEnum.Description_Owner_Upgrade,
+          userId: query.user.id
+        });
+      }
+
       return result;
     }
     return query;

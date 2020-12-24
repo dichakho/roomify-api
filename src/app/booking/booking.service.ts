@@ -53,21 +53,24 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     }
 
     const data = await this.repository.save({ user: { id: userId }, room: { id: roomId } });
-    this.notificationRepo.save({
-      title: NotificationMessageEnum.Title_Booking,
-      description: `User with phone: ${phone} booked your room !!! Please contact with him/her`,
-      userId: query.user.id
-    });
-    admin
-      .messaging()
-      .sendToDevice(checkRoom.property.owner.registrationToken, {
-        data: {
-          content: `User with phone: ${phone} booked your room !!! Please contact with him/her`
-        }
-      })
-      .catch(error => {
-        console.log('Error sending message:', error);
+    if (checkRoom.property.owner.registrationToken) {
+      this.notificationRepo.save({
+        title: NotificationMessageEnum.Title_Booking,
+        description: `User with phone: ${phone} booked your room !!! Please contact with him/her`,
+        userId: query.user.id
       });
+      admin
+        .messaging()
+        .sendToDevice(checkRoom.property.owner.registrationToken, {
+          data: {
+            content: `User with phone: ${phone} booked your room !!! Please contact with him/her`
+          }
+        })
+        .catch(error => {
+          console.log('Error sending message:', error);
+        });
+    }
+
     return { data };
   }
 
