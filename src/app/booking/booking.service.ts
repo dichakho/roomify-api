@@ -26,7 +26,6 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
       where: { id: roomId },
       relations: ['property', 'property.owner']
     });
-
     if (!checkRoom) throw new NotFoundException('Room not found !!!');
     const query = await this.repository.findOne({
       where: { roomId, userId, transactionId: null, isChecked: false },
