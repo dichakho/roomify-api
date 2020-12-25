@@ -248,11 +248,11 @@ export default class Permissions {
     },
     {
       module: 'ROOMMATE',
-      methods: [this.methods]
+      methods: this.methods
     },
     {
       module: 'NOTIFICATION',
-      methods: [this.methods]
+      methods: this.methods
     }
   ];
 

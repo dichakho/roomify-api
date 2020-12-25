@@ -21,7 +21,13 @@ import { CreateOwnerRegistrationDto } from '../../models/owner-registration/crea
         eager: true,
         exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt']
       }
-    }
+    },
+    sort: [
+      {
+        field: 'updatedAt',
+        order: 'DESC'
+      }
+    ]
   }
 })
 @Modules(ModulesName.OWNER_REGISTRATION)

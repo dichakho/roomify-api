@@ -6,25 +6,38 @@ import { CreateRoom } from '@src/models/room/create.dto';
 import { UpdateRoom } from '@src/models/room/update.dto';
 import admin from 'firebase-admin';
 import { AmenityRepository } from '../amenity/amenity.repository';
+import { NotificationRepository } from '../notification/notification.repository';
 import { PropertyRepository } from '../property/property.repository';
 import { RoomRepository } from './room.repository';
 
 @Injectable()
 export class RoomService extends BaseService<Room, RoomRepository> {
-  constructor(protected repository: RoomRepository, private readonly amenityRepository: AmenityRepository, private readonly propertyRepository: PropertyRepository) {
+  constructor(
+    protected repository: RoomRepository,
+    private readonly amenityRepository: AmenityRepository,
+    private readonly propertyRepository: PropertyRepository,
+    private readonly notiRepo: NotificationRepository
+  ) {
     super(repository);
   }
 
   async getOneRoom(id: number): Promise<Room> {
-    const room = await this.repository.findOne({ where: { id, status: RoomStatus.OPEN }, relations: ['amenities'] });
+    const room = await this.repository.findOne({
+      where: { id, status: RoomStatus.OPEN },
+      relations: ['amenities']
+    });
     if (!room) throw new NotFoundException('Room not found !!!');
     return room;
   }
 
   async createRoom(data: CreateRoom, userId: number): Promise<Room> {
-    const property = await this.propertyRepository.findOne({ where: { id: data.propertyId }, relations: ['rooms', 'owner'] });
+    const property = await this.propertyRepository.findOne({
+      where: { id: data.propertyId },
+      relations: ['rooms', 'owner', 'favoriteProperty', 'favoriteProperty.user']
+    });
     if (!property) throw new NotFoundException('Property not found');
-    if (userId !== property.owner.id) throw new ForbiddenException("Can't create room of property's others");
+    if (userId !== property.owner.id)
+      throw new ForbiddenException("Can't create room of property's others");
     const amenities = await this.amenityRepository.findByIds(data.amenityIds);
     const room = this.repository.create();
     room.name = data.name;
@@ -36,6 +49,23 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     room.amenities = amenities;
     room.property = property;
     const result = await this.repository.save(room);
+    const registrations = [];
+    for (let i = 0; i < property.favoriteProperty.length; i += 1) {
+      if (property.favoriteProperty[i].user.registrationToken) {
+        registrations.concat(property.favoriteProperty[i].user.registrationToken);
+        this.notiRepo.save({
+          title: 'Nơi bạn thích có thay đổi',
+          description: `Nơi có tên ${property.title} đã được tạo thêm phòng mới`,
+          userId: property.favoriteProperty[i].user.id
+        });
+      }
+    }
+    admin.messaging().sendToDevice(registrations, {
+      notification: {
+        title: 'Nơi bạn thích có thay đổi',
+        body: `Nơi có tên ${property.title} đã được tạo thêm phòng mới`
+      }
+    });
     const tempProperty = this.propertyRepository.create();
     tempProperty.id = property.id;
     result.property = tempProperty;
@@ -43,18 +73,21 @@ export class RoomService extends BaseService<Room, RoomRepository> {
   }
 
   async updateRoom(data: UpdateRoom, id: number): Promise<Room> {
-    const room = await this.repository.findOne({ where: { id }, relations: ['property', 'property.rooms'] });
-    if(!room) throw new NotFoundException('Room not found');
-    if(data.amenityIds) {
+    const room = await this.repository.findOne({
+      where: { id },
+      relations: ['property', 'property.rooms']
+    });
+    if (!room) throw new NotFoundException('Room not found');
+    if (data.amenityIds) {
       const amenities = await this.amenityRepository.findByIds(data.amenityIds);
       room.amenities = amenities;
     }
-    if(data.area) room.area = data.area;
-    if(data.images) room.images = data.images;
-    if(data.name) room.name = data.name;
-    if(data.price) room.price = data.price;
-    if(data.status) room.status = data.status;
-    if(data.description) room.description = data.description;
+    if (data.area) room.area = data.area;
+    if (data.images) room.images = data.images;
+    if (data.name) room.name = data.name;
+    if (data.price) room.price = data.price;
+    if (data.status) room.status = data.status;
+    if (data.description) room.description = data.description;
     const result = await this.repository.save(room);
     result.property = undefined;
     return result;
