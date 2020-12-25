@@ -8,9 +8,9 @@ import { Property } from '../../entities/property.entity';
 import { Policy } from '../../entities/policy.entity';
 
 export default class CreateProperties implements Seeder {
-  private latDaNang = 16.054407;
+  private latDaNang = 16.069445;
 
-  private longDaNang = 108.202164;
+  private longDaNang = 108.214396;
 
   private latHaNoi = 21.027763;
 
@@ -58,7 +58,6 @@ export default class CreateProperties implements Seeder {
           this.latDaNang += t;
           this.longDaNang -= t;
         }
-      
         propertyData.latitude = this.latDaNang;
         propertyData.longitude = this.longDaNang;
       } else if (id < 252) {
