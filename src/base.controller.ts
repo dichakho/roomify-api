@@ -33,10 +33,10 @@ export class BaseController {
   @Post('/test')
   async test() {
     const registrationTokens = [
-      'eTyVhzVwRuyPRBMNPKAU5w:APA91bG2yYlDraGp7a60s4C_ZdoFM8WGYdYEAN8vMy0Fx9G1iGdOnVeM1GFRCxMXB5W1cKQaHg4wwRqjIRxGMcL-R0ldqTTRQTuYlDDXm_K1fK-IOrcNcuvx4hTy2jgkN4UUuNg4J-z0'
+      'd9Awn7_ORlmJy5Kx2RcYO7:APA91bGc1bAmo9K7q2-43oYPJTwLVb0VAOygX3bI8tNx-37SF0sQ9ssPSpnmUWsXFVN2wfPHmiZn56LHQ2lxREpRXuJGjXBB8kOKrY-1RC89JrUGNj18-AnJ7kotfOp8cJA2C3uNE7_3'
     ];
-    
-    await admin
+
+    admin
       .messaging()
       .sendToDevice(
         registrationTokens,
@@ -51,9 +51,9 @@ export class BaseController {
         }
       )
       .then(res => {
-        console.log(res);
+        console.log(res.results);
         return res;
-      });
-      
+      }).catch(error => console.log(error));
+
   }
 }
