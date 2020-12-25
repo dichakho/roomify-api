@@ -50,16 +50,17 @@ export default class CreateProperties implements Seeder {
         t = Faker.random.number({ min: 0, max: 1, precision: 0.0000001 });
       } while (t > 0.0005);
       if (id < 86) {
-        this.latDaNang -= t;
-        this.longDaNang -= t;
+        if (id % 2 === 0) {
+          this.latHaNoi -= t;
+        } else {
+          this.longHaNoi -= t;
+        }
         propertyData.latitude = this.latDaNang;
         propertyData.longitude = this.longDaNang;
       } else if (id < 252) {
         if (id % 2 === 0) {
           this.latHaNoi -= t;
-          this.longHaNoi += t;
         } else {
-          this.latHaNoi += t;
           this.longHaNoi -= t;
         }
         propertyData.latitude = this.latHaNoi;
@@ -67,9 +68,7 @@ export default class CreateProperties implements Seeder {
       } else {
         if (id % 2 === 0) {
           this.latHCM -= t;
-          this.longHCM += t;
         } else {
-          this.latHCM += t;
           this.longHCM -= t;
         }
         propertyData.latitude = this.latHCM;

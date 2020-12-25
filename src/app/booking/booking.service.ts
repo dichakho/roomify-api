@@ -59,6 +59,7 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
         description: `Người dùng với số điện thoại: ${phone} đã đặt phòng của bạn !!! Hãy liên hệ với họ`,
         userId: checkRoom.property.ownerId
       });
+
       admin
         .messaging()
         .sendToDevice(checkRoom.property.owner.registrationToken, {
@@ -66,9 +67,8 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
             title: NotificationMessageEnum.Title_Booking,
             body: `Người dùng với số điện thoại: ${phone} đã đặt phòng của bạn !!! Hãy liên hệ với họ`
           }
-        })
-        .catch(error => {
-          console.log('Error sending message:', error);
+        }).then(res => {
+          console.log(res.results);
         });
     }
 
