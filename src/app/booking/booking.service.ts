@@ -21,7 +21,7 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     super(repository);
   }
 
-  async create(userId: number, roomId: number, phone: string): Promise<IResponseFormat<Bookings>> {    
+  async create(userId: number, roomId: number, phone: string): Promise<IResponseFormat<Bookings>> {
     const checkRoom = await this.roomRepository.findOne({
       where: { id: roomId },
       relations: ['property', 'property.owner']
