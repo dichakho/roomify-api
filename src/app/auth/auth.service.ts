@@ -59,14 +59,18 @@ export class AuthService extends TypeOrmCrudService<User> {
     };
   }
 
-  async register(userRegister: RegisterDto): Promise<void> {
+  async register(userRegister: RegisterDto): Promise<any> {
     const user = {
       fullName: userRegister.fullName,
       password: userRegister.password,
       phone: userRegister.phone,
       username: userRegister.username
     };
-    this.repo.save({ ...user, roles: [{ id: 4 }] });
+    await this.repo.save({ ...user, roles: [{ id: 4 }] });
+    return {
+      status: 200,
+      message: 'Success !!!'
+    };
   }
 
   async updateMyInformation(user: User, userUpdate: UpdateMyUserDto): Promise<User> {
