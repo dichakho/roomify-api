@@ -116,10 +116,7 @@ export default class Permissions {
     {
       module: 'USER',
       methods: [
-        { name: 'DELETE', description: 'Delete object' },
-        { name: 'PATCH', description: 'Update object' },
         { name: 'GET', description: 'Retrieve object' },
-        { name: 'RESTORE', description: 'Restore data was deleted' },
         { name: 'GETLIST', description: 'Get list information' }
       ]
     },
@@ -133,19 +130,35 @@ export default class Permissions {
     },
     {
       module: 'PROPERTY',
-      methods: this.methods
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'PUT', description: 'Replace object' },
+        { name: 'DELETE', description: 'Delete object' },
+        { name: 'PATCH', description: 'Update object' },
+        { name: 'GETLIST', description: 'Get list information' },
+        { name: 'MANAGEROLE', description: 'Change role of user' },
+        { name: 'RESTORE', description: 'Restore data was deleted' },
+      ]
     },
     {
       module: 'ROOM',
-      methods: this.methods
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'PUT', description: 'Replace object' },
+        { name: 'DELETE', description: 'Delete object' },
+        { name: 'PATCH', description: 'Update object' },
+        { name: 'GETLIST', description: 'Get list information' },
+        { name: 'MANAGEROLE', description: 'Change role of user' },
+        { name: 'RESTORE', description: 'Restore data was deleted' },
+      ]
     },
     {
       module: 'CATEGORY',
-      methods: this.methods
+      methods: []
     },
     {
       module: 'USER_PERMISSION',
-      methods: this.methods
+      methods: []
     },
     {
       module: 'FAVORITE_PROPERTY',
@@ -153,11 +166,17 @@ export default class Permissions {
     },
     {
       module: 'BOOKING',
-      methods: this.methods
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'GETLIST', description: 'Get list information' },
+      ]
     },
     {
       module: 'TRANSACTION',
-      methods: this.methods
+      methods: [
+        { name: 'GET', description: 'Retrieve object' },
+        { name: 'GETLIST', description: 'Get list information' },
+      ]
     },
     {
       module: 'ROOMMATE',
@@ -173,10 +192,7 @@ export default class Permissions {
     {
       module: 'USER',
       methods: [
-        { name: 'DELETE', description: 'Delete object' },
-        { name: 'PATCH', description: 'Update object' },
         { name: 'GET', description: 'Retrieve object' },
-        { name: 'RESTORE', description: 'Restore data was deleted' },
         { name: 'GETLIST', description: 'Get list information' }
       ]
     },
@@ -232,11 +248,11 @@ export default class Permissions {
     },
     {
       module: 'ROOMMATE',
-      methods: []
+      methods: [this.methods]
     },
     {
       module: 'NOTIFICATION',
-      methods: []
+      methods: [this.methods]
     }
   ];
 
@@ -309,7 +325,7 @@ export default class Permissions {
     },
     {
       module: 'NOTIFICATION',
-      methods: []
+      methods: [this.methods]
     }
   ];
 
