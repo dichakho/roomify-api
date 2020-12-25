@@ -10,7 +10,8 @@ import { ResponseFormatInterceptor } from './common/interceptors/response-format
 import { HttpExceptionFilter } from './common/exception-filter/http-exception.filter';
 import { ValidationPipe } from './common/pipes/validation.pipe';
 import { adminConfig } from './constant/config-firebase.constant';
-// import serviceAccount from '../serviceAccountKey.json';
+import serviceAccount from '../config/serviceAccountKey.json';
+import {ServiceAccount} from 'firebase-admin'
 
 CrudConfigService.load(configCRUD);
 import { AppModule } from './app.module';
@@ -32,9 +33,8 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
-  // const temp = JSON.stringify(serviceAccount);
   admin.initializeApp({
-    credential: admin.credential.cert(adminConfig),
+    credential: admin.credential.cert(serviceAccount as ServiceAccount),
     databaseURL: process.env.FIREBASE_DATABASE_URL
   });
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerOptions);
