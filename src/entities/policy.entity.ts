@@ -26,6 +26,7 @@ export class Policy extends BaseEntity {
   @Column('decimal', { precision: 10, scale: 2 })
   water: number
 
+  @IsOptional()
   @IsNumber()
   @Max(999999)
   @Min(1000)
