@@ -119,7 +119,7 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
     } else {
       id.push(destinations.id);
     }
-    const temp = await this.getManyData(query, [], { destinationId: In(id) }, true, {
+    const temp = await this.getManyData(query, ['category', 'destination', 'destination.parent', 'destination.parent.parent', 'owner'], { destinationId: In(id) }, true, {
       order: { id: 'DESC' }
     });
     return temp;
@@ -136,29 +136,30 @@ export class PropertyService extends BaseService<Property, PropertyRepository> {
     subDistrict: string,
     query: GetMany
   ) {
-    let { limit, page, offset } = query;
-    if (limit === undefined) limit = 15;
-    if (offset === undefined) offset = 0;
-    if (page === undefined && offset === undefined) {
-      offset = 0;
-      page = 1;
-    } else if (offset === undefined) {
-      offset = limit * (page - 1);
-    } else {
-      page = Math.trunc(offset / limit) + 1;
-    }
-    const result = await this.repository.getPropertyWithSubDistrict(subDistrict, limit, offset);
-    const data = result[0];
-    const count = data.length;
-    const total = result[1];
-    const pageCount = Math.ceil(total / limit);
-    return {
-      count,
-      total,
-      page,
-      pageCount,
-      data
-    };
+    // let { limit, page, offset } = query;
+    // if (limit === undefined) limit = 15;
+    // if (offset === undefined) offset = 0;
+    // if (page === undefined && offset === undefined) {
+    //   offset = 0;
+    //   page = 1;
+    // } else if (offset === undefined) {
+    //   offset = limit * (page - 1);
+    // } else {
+    //   page = Math.trunc(offset / limit) + 1;
+    // }
+    const result = await this.getPropertyWithDestinationName(subDistrict, query);
+    return result;
+    // const data = result[0];
+    // const count = data.length;
+    // const total = result[1];
+    // const pageCount = Math.ceil(total / limit);
+    // return {
+    //   count,
+    //   total,
+    //   page,
+    //   pageCount,
+    //   data
+    // };
   }
 
   async getPropertyOfUser(ownerId: number, query: GetMany): Promise<any> {
