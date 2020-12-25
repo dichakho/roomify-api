@@ -62,8 +62,9 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
       admin
         .messaging()
         .sendToDevice(checkRoom.property.owner.registrationToken, {
-          data: {
-            content: `User with phone: ${phone} booked your room !!! Please contact with him/her`
+          notification: {
+            title: NotificationMessageEnum.Title_Booking,
+            body: `User with phone: ${phone} booked your room !!! Please contact with him/her`,
           }
         })
         .catch(error => {
