@@ -8,13 +8,13 @@ import { Property } from '../../entities/property.entity';
 import { Policy } from '../../entities/policy.entity';
 
 export default class CreateProperties implements Seeder {
-  private latDaNang = 16.069445;
+  private latDaNang = 16.0544068;
 
-  private longDaNang = 108.214396;
+  private longDaNang = 108.2021667;
 
   private latHaNoi = 21.027763;
 
-  private longHaNoi = 105.834160;
+  private longHaNoi = 105.83416;
 
   private latHCM = 10.823099;
 
@@ -47,36 +47,28 @@ export default class CreateProperties implements Seeder {
       propertyData.description = Faker.lorem.sentences(4);
       propertyData.averageArea = 100.97;
       do {
-        t = Faker.random.number({min: 0, max: 1, precision: 0.0000001});
-      }while(t > 0.005);
+        t = Faker.random.number({ min: 0, max: 1, precision: 0.0000001 });
+      } while (t > 0.0005);
       if (id < 86) {
-        if(id % 2 === 0) {
-          this.latDaNang += t;
-          this.longDaNang -= t;
-        }
-        else {
-          this.latDaNang += t;
-          this.longDaNang -= t;
-        }
+        this.latDaNang -= t;
+        this.longDaNang -= t;
         propertyData.latitude = this.latDaNang;
         propertyData.longitude = this.longDaNang;
       } else if (id < 252) {
-        if(id % 2 === 0) {
+        if (id % 2 === 0) {
           this.latHaNoi -= t;
           this.longHaNoi += t;
-        }
-        else {
+        } else {
           this.latHaNoi += t;
           this.longHaNoi -= t;
         }
         propertyData.latitude = this.latHaNoi;
         propertyData.longitude = this.longHaNoi;
       } else {
-        if(id % 2 === 0) {
+        if (id % 2 === 0) {
           this.latHCM -= t;
           this.longHCM += t;
-        }
-        else {
+        } else {
           this.latHCM += t;
           this.longHCM -= t;
         }

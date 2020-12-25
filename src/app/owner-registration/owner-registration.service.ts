@@ -96,7 +96,10 @@ export class OwnerRegistrationService extends BaseService<
       this.userRepo.save({ ...userQuery, roles: roleId });
       if (query.user.registrationToken) {
         admin.messaging().sendToDevice(query.user.registrationToken, {
-          data: { content: NotificationMessageEnum.Description_Owner_Upgrade }
+          notification: {
+            title: NotificationMessageEnum.Title_Owner_Upgrade,
+            body: NotificationMessageEnum.Description_Owner_Upgrade
+          }
         });
         this.notificationRepo.save({
           title: NotificationMessageEnum.Title_Owner_Upgrade,

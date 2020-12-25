@@ -30,25 +30,4 @@ export class BaseController {
     return image;
   }
 
-  @Post('/test')
-  async test() {
-    const registrationTokens = [
-      'fEXaehDDRXyB6RVdWI_vVP:APA91bE6Hc_e6P1rk4jeDluSU0S4eOOIMI3HF3qRTKxQRn9p6H1EQ_JVOup7Cu4-V6T95krYAfEXpcdvChmcxIN_RThZuZCwy46JmV1ORswLKqgh22DWFtE7xrrYiMiGr0F7yg4K0bnP'
-    ];
-
-    const a = admin
-      .messaging()
-      .sendToDevice(
-        registrationTokens,
-        {
-          data: {
-            content: NotificationMessageEnum.Description_Owner_Upgrade
-          }
-        }
-      )
-      .then(res => {
-        console.log(res);
-      }).catch(error => console.log(error));
-    return a;
-  }
 }
