@@ -15,7 +15,7 @@ export class TransactionService extends BaseService<Transaction, TransactionRepo
   }
 
   async getOneTransaction(id: number): Promise<IResponseFormat<Transaction>> {
-    const data = await this.repository.findOne({ where: { id }, relations: ['bookings'] });
+    const data = await this.repository.findOne({ where: { id }, relations: ['bookings', 'owner'] });
     if (!data) throw new NotFoundException('Transaction not found !!!');
     return { data };
   }
@@ -27,6 +27,7 @@ export class TransactionService extends BaseService<Transaction, TransactionRepo
     for(let i = 0; i < bookings.length; i += 1) {
       const transaction = this.repository.create();
       transaction.isPaid = false;
+      transaction.ownerId = bookings[i].ownerId;
       const create = await this.repository.save(transaction);
       await this.bookingRepository.update({ transactionId: null, ownerId: bookings[i].ownerId }, { transactionId: create.id });
     }

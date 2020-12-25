@@ -14,6 +14,12 @@ import { TransactionService } from './transaction.service';
     type: Transaction
   },
   query: {
+    join: {
+      owner: {
+        eager: true,
+        exclude: ['password']
+      }
+    }
   },
   routes: {
     exclude: ['replaceOneBase', 'createManyBase', 'createOneBase']

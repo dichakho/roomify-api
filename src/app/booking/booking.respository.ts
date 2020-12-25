@@ -27,8 +27,12 @@ export class BookingRepository extends Repository<Bookings> {
 
   getDistinctOwner() {
     return this.createQueryBuilder('bookings')
-      .select('bookings.ownerId')
+      .select('bookings')
       .distinctOn(['bookings.ownerId'])
+      .leftJoinAndSelect('bookings.room', 'room')
+      .leftJoinAndSelect('room.property', 'property')
+      .leftJoin('property.owner', 'owner')
+      .addSelect(['owner.fullName', 'owner.username', 'owner.email', 'owner.phone', 'owner.avatar'])
       .getMany();
   }
 }

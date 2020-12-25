@@ -8,17 +8,17 @@ import { Property } from '../../entities/property.entity';
 import { Policy } from '../../entities/policy.entity';
 
 export default class CreateProperties implements Seeder {
-  private latDaNang = 16;
+  private latDaNang = 16.054407;
 
-  private longDaNang = 108;
+  private longDaNang = 108.202164;
 
-  private latHaNoi = 21;
+  private latHaNoi = 21.027763;
 
-  private longHaNoi = 105;
+  private longHaNoi = 105.834160;
 
-  private latHCM = 10;
+  private latHCM = 10.823099;
 
-  private longHCM = 105;
+  private longHCM = 106.629662;
 
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const destination = await connection
@@ -30,6 +30,7 @@ export default class CreateProperties implements Seeder {
     let temp = 'Hòa Phát';
     let propertyData;
     let policy;
+    let t;
     for (let i = 0; i < properties.length; i += 1) {
       if (temp !== properties[i].destination.name) {
         id += 1;
@@ -45,19 +46,41 @@ export default class CreateProperties implements Seeder {
       propertyData.rooms = undefined;
       propertyData.description = Faker.lorem.sentences(4);
       propertyData.averageArea = 100.97;
+      do {
+        t = Faker.random.number({min: 0, max: 1, precision: 0.0000001});
+      }while(t > 0.005);
       if (id < 86) {
-        this.latDaNang -= 0.000223;
-        this.longDaNang -= 0.000221;
+        if(id % 2 === 0) {
+          this.latDaNang += t;
+          this.longDaNang -= t;
+        }
+        else {
+          this.latDaNang += t;
+          this.longDaNang -= t;
+        }
+      
         propertyData.latitude = this.latDaNang;
         propertyData.longitude = this.longDaNang;
       } else if (id < 252) {
-        this.latHaNoi += 0.000256;
-        this.longHaNoi += 0.000254;
+        if(id % 2 === 0) {
+          this.latHaNoi -= t;
+          this.longHaNoi += t;
+        }
+        else {
+          this.latHaNoi += t;
+          this.longHaNoi -= t;
+        }
         propertyData.latitude = this.latHaNoi;
         propertyData.longitude = this.longHaNoi;
       } else {
-        this.latHCM -= 0.000289;
-        this.longHCM -= 0.000287;
+        if(id % 2 === 0) {
+          this.latHCM -= t;
+          this.longHCM += t;
+        }
+        else {
+          this.latHCM += t;
+          this.longHCM -= t;
+        }
         propertyData.latitude = this.latHCM;
         propertyData.longitude = this.longHCM;
       }

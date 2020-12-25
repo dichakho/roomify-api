@@ -1,4 +1,4 @@
-import { ManyToMany, JoinTable, Entity, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { ManyToMany, JoinTable, Entity, Column, OneToMany, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsOptional,
@@ -23,6 +23,7 @@ import { Roommate } from './roommate.entity';
 import { OwnerRegistration } from './owner_registration.entity';
 import { FavoriteProperty } from './favorite_property.entity';
 import { Notification } from './notification.entity';
+import { Transaction } from './transaction.entity';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 @Entity('users')
@@ -148,4 +149,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Notification, (notification: Notification) => notification.user)
   notification: Notification[]
+
+  @OneToMany(() => Transaction, (transaction: Transaction) => transaction.owner)
+  transaction: Transaction[]
 }
