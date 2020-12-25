@@ -66,14 +66,14 @@ export class User extends BaseEntity {
 
   @ApiProperty({
     example:
-      'https://icons-for-free.com/iconfiles/png/512/avatar+circle+male+profile+user+icon-1320196710301016992.png'
+      'https://cdn1.iconfinder.com/data/icons/ui-icon-part-2/128/user-512.png'
   })
   @IsOptional({ groups: [UPDATE] })
   // @IsNotEmpty({ groups: [CREATE] })
   @IsString()
   @Column({
     default:
-      'https://icons-for-free.com/iconfiles/png/512/avatar+circle+male+profile+user+icon-1320196710301016992.png',
+      'https://cdn1.iconfinder.com/data/icons/ui-icon-part-2/128/user-512.png',
     nullable: true
   })
   avatar: string;

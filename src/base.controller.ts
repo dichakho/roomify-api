@@ -36,24 +36,38 @@ export class BaseController {
       'd9Awn7_ORlmJy5Kx2RcYO7:APA91bGc1bAmo9K7q2-43oYPJTwLVb0VAOygX3bI8tNx-37SF0sQ9ssPSpnmUWsXFVN2wfPHmiZn56LHQ2lxREpRXuJGjXBB8kOKrY-1RC89JrUGNj18-AnJ7kotfOp8cJA2C3uNE7_3'
     ];
 
+    // admin
+    //   .messaging()
+    //   .sendToDevice(
+    //     registrationTokens,
+    //     {
+    //       data: { content: NotificationMessageEnum.Description_Owner_Upgrade }
+    //     }
+    //   )
+    //   .then(res => {
+    //     console.log(res);
+    //     return res;
+    //   }).catch(error => console.log(error));
+    const message = {
+      data: { score: '850', time: '2:45' },
+      tokens: registrationTokens
+    };
+
     admin
       .messaging()
-      .sendToDevice(
-        registrationTokens,
-        {
-          data: { content: NotificationMessageEnum.Description_Owner_Upgrade }
-        },
-        {
-          // Required for background/quit data-only messages on iOS
-          contentAvailable: true,
-          // Required for background/quit data-only messages on Android
-          priority: 'high'
+      .sendMulticast(message)
+      .then(response => {
+        console.log(response);
+        
+        if (response.failureCount > 0) {
+          const failedTokens = [];
+          response.responses.forEach((resp, idx) => {
+            if (!resp.success) {
+              failedTokens.push(registrationTokens[idx]);
+            }
+          });
+          console.log('List of tokens that caused failures: ' + failedTokens);
         }
-      )
-      .then(res => {
-        console.log(res.results);
-        return res;
-      }).catch(error => console.log(error));
-
+      });
   }
 }
