@@ -44,7 +44,7 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
           (date.getDay() - query.updatedAt.getDay()) * 24;
         if (time < 24)
           throw new ForbiddenException(
-            `You was booked this property. Please wait for ${24 - time}h to book again`
+            `Bạn đã đặt cọc phòng này. Vui long đợi ${24 - time}h để thực hiện lại`
           );
       }
 
@@ -56,15 +56,15 @@ export class BookingService extends BaseService<Bookings, BookingRepository> {
     if (checkRoom.property.owner.registrationToken) {
       this.notificationRepo.save({
         title: NotificationMessageEnum.Title_Booking,
-        description: `User with phone: ${phone} booked your room !!! Please contact with him/her`,
-        userId: query.user.id
+        description: `Người dùng với số điện thoại: ${phone} đã đặt phòng của bạn !!! Hãy liên hệ với họ`,
+        userId: checkRoom.property.ownerId
       });
       admin
         .messaging()
         .sendToDevice(checkRoom.property.owner.registrationToken, {
           notification: {
             title: NotificationMessageEnum.Title_Booking,
-            body: `User with phone: ${phone} booked your room !!! Please contact with him/her`,
+            body: `Người dùng với số điện thoại: ${phone} đã đặt phòng của bạn !!! Hãy liên hệ với họ`
           }
         })
         .catch(error => {
