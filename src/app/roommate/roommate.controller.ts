@@ -27,6 +27,16 @@ import { RoommateService } from './roommate.service';
       user: {
         eager: true,
         exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt']
+      },
+      'destination.parent': {
+        eager: true,
+        allow: ['name'],
+        alias: 'district'
+      },
+      'destination.parent.parent': {
+        eager: true,
+        allow: ['name'],
+        alias: 'city'
       }
     }
   },
