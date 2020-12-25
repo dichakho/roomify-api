@@ -1,5 +1,5 @@
 export enum NotificationMessageEnum {
-    Title_Owner_Upgrade = 'Upgrade Owner Successfully',
-    Description_Owner_Upgrade = 'Congratulation !!! You was accepted to promote to OWNER by ADMIN',
-    Title_Booking = 'Your Room Was Booked'
+    Title_Owner_Upgrade = 'Thăng lên làm Owner thành công',
+    Description_Owner_Upgrade = 'Bạn đã được chấp nhận thành OWNER, làm ơn đăng nhập lại để sử dụng tính năng mới',
+    Title_Booking = 'Phòng của bạn đã được đặt'
 }
