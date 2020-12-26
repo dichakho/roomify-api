@@ -75,10 +75,9 @@ export class RoomService extends BaseService<Room, RoomRepository> {
   async updateRoom(data: UpdateRoom, id: number): Promise<Room> {
     const room = await this.repository.findOne({
       where: { id },
-      relations: ['property', 'property.favoriteProperty', 'property.favoriteProperty.user']
+      relations: ['property', 'property.favoriteProperty', 'property.favoriteProperty.user', 'property.rooms']
     });
     if (!room) throw new NotFoundException('Room not found');
-    console.log(room);
     const { property } = room;
     if (data.amenityIds) {
       const amenities = await this.amenityRepository.findByIds(data.amenityIds);
@@ -89,8 +88,7 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     if (data.name) room.name = data.name;
     if (data.price) room.price = data.price;
     if (data.status) {
-      room.status = data.status;
-      if (data.status === 'CLOSE') {
+      if (data.status === 'CLOSE' && room.status === 'OPEN') {
         // const registrations = [];
         for (let i = 0; i < property.favoriteProperty.length; i += 1) {
           if (property.favoriteProperty[i].user.registrationToken) {
@@ -109,6 +107,7 @@ export class RoomService extends BaseService<Room, RoomRepository> {
           }
         }
       }
+      room.status = data.status;
     }
     if (data.description) room.description = data.description;
     const result = await this.repository.save(room);
