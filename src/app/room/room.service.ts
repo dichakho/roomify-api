@@ -49,23 +49,23 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     room.amenities = amenities;
     room.property = property;
     const result = await this.repository.save(room);
-    const registrations = [];
+    // const registrations = [];    
     for (let i = 0; i < property.favoriteProperty.length; i += 1) {
       if (property.favoriteProperty[i].user.registrationToken) {
-        registrations.concat(property.favoriteProperty[i].user.registrationToken);
+        // registrations.concat(property.favoriteProperty[i].user.registrationToken);
         this.notiRepo.save({
           title: 'Nơi bạn thích có thay đổi',
           description: `Nơi có tên ${property.title} đã được tạo thêm phòng mới`,
           userId: property.favoriteProperty[i].user.id
         });
+        admin.messaging().sendToDevice(property.favoriteProperty[i].user.registrationToken, {
+          notification: {
+            title: 'Nơi bạn thích có thay đổi',
+            body: `Nơi có tên ${property.title} đã được tạo thêm phòng mới`
+          }
+        });
       }
     }
-    admin.messaging().sendToDevice(registrations, {
-      notification: {
-        title: 'Nơi bạn thích có thay đổi',
-        body: `Nơi có tên ${property.title} đã được tạo thêm phòng mới`
-      }
-    });
     const tempProperty = this.propertyRepository.create();
     tempProperty.id = property.id;
     result.property = tempProperty;
@@ -75,9 +75,11 @@ export class RoomService extends BaseService<Room, RoomRepository> {
   async updateRoom(data: UpdateRoom, id: number): Promise<Room> {
     const room = await this.repository.findOne({
       where: { id },
-      relations: ['property', 'property.rooms']
+      relations: ['property', 'property.favoriteProperty', 'property.favoriteProperty.user']
     });
     if (!room) throw new NotFoundException('Room not found');
+    console.log(room);
+    const { property } = room;
     if (data.amenityIds) {
       const amenities = await this.amenityRepository.findByIds(data.amenityIds);
       room.amenities = amenities;
@@ -86,7 +88,28 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     if (data.images) room.images = data.images;
     if (data.name) room.name = data.name;
     if (data.price) room.price = data.price;
-    if (data.status) room.status = data.status;
+    if (data.status) {
+      room.status = data.status;
+      if (data.status === 'CLOSE') {
+        // const registrations = [];
+        for (let i = 0; i < property.favoriteProperty.length; i += 1) {
+          if (property.favoriteProperty[i].user.registrationToken) {
+            // registrations.concat(property.favoriteProperty[i].user.registrationToken);
+            this.notiRepo.save({
+              title: 'Nơi bạn thích có thay đổi',
+              description: `Phòng có tên ${room.name} thuộc căn hộ ${property.title} đã có người thuê`,
+              userId: property.favoriteProperty[i].user.id
+            });
+            admin.messaging().sendToDevice(property.favoriteProperty[i].user.registrationToken, {
+              notification: {
+                title: 'Nơi bạn thích có thay đổi',
+                body: `Phòng có tên ${room.name} thuộc căn hộ ${property.title} đã có người thuê`
+              }
+            });
+          }
+        }
+      }
+    }
     if (data.description) room.description = data.description;
     const result = await this.repository.save(room);
     result.property = undefined;

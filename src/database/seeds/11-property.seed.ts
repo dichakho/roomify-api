@@ -46,9 +46,10 @@ export default class CreateProperties implements Seeder {
       propertyData.rooms = undefined;
       propertyData.description = Faker.lorem.sentences(4);
       propertyData.averageArea = 100.97;
-      do {
+      while(true) {
         t = Faker.random.number({ min: 0, max: 1, precision: 0.0000001 });
-      } while (t > 0.0005);
+        if(t < 0.005 && t > 0.001) break;
+      }
       if (id < 86) {
         if (id % 2 === 0) {
           this.latHaNoi -= t;
@@ -59,9 +60,9 @@ export default class CreateProperties implements Seeder {
         propertyData.longitude = this.longDaNang;
       } else if (id < 252) {
         if (id % 2 === 0) {
-          this.latHaNoi -= t;
+          this.latHaNoi += t;
         } else {
-          this.longHaNoi -= t;
+          this.longHaNoi += t;
         }
         propertyData.latitude = this.latHaNoi;
         propertyData.longitude = this.longHaNoi;

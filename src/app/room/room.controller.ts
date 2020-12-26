@@ -75,8 +75,8 @@ export class RoomController implements CrudController<Room> {
   }
 
   @ApiBearerAuth()
-  @Methods(MethodName.POST)
-  @Override('updateOneBase')
+  @Methods(MethodName.PUT)
+  @Override('replaceOneBase')
   updateOne(@Body() body: UpdateRoom, @Param('id', ParseIntPipe) id: number) {
     return this.service.updateRoom(body, id);
   }
