@@ -185,6 +185,10 @@ export default class Permissions {
     {
       module: 'NOTIFICATION',
       methods: this.methods
+    },
+    {
+      module: 'OWNER_REGISTRATION',
+      methods: this.methods
     }
   ];
 
@@ -253,7 +257,11 @@ export default class Permissions {
     {
       module: 'NOTIFICATION',
       methods: this.methods
-    }
+    },
+    {
+      module: 'OWNER_REGISTRATION',
+      methods: []
+    },
   ];
 
   public user_role_permission = [
@@ -325,7 +333,7 @@ export default class Permissions {
     },
     {
       module: 'NOTIFICATION',
-      methods: [this.methods]
+      methods: this.methods
     }
   ];
 

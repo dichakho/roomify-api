@@ -26,13 +26,10 @@ import { RoomService } from './room.service';
       }
     ],
     filter: {
-      status: RoomStatus.OPEN
+      // status: RoomStatus.OPEN
     }
   },
   routes: {
-    getManyBase: {
-      decorators: []
-    },
     getOneBase: {
       decorators: []
     }
@@ -62,9 +59,11 @@ export class RoomController implements CrudController<Room> {
     return this;
   }
 
+  @ApiBearerAuth()
+  @Methods(MethodName.GET)
   @Override('getOneBase')
-  getOne(@Param('id', ParseIntPipe) id: number) {
-    return this.service.getOneRoom(id);
+  getOne(@Param('id', ParseIntPipe) id: number, @Req() req: UserRequestDto) {
+    return this.service.getOneRoom(id, req.user.roles);
   }
 
   @ApiBearerAuth()
