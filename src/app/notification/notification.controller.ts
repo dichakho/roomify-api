@@ -13,7 +13,8 @@ import { NotificationService } from './notification.service';
   model: {
     type: Notification
   },
-  query: {},
+  query: {
+  },
   routes: {
     exclude: ['createManyBase', 'createOneBase', 'replaceOneBase']
   }
