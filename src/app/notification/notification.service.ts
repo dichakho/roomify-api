@@ -16,7 +16,11 @@ export class NotificationService extends BaseService<Notification, NotificationR
     userId: number,
     query: GetMany
   ): Promise<IResponseFormat<Notification>> {
-    const temp = await this.getManyData(query, [], { userId });
+    const temp = await this.getManyData(query, [], { userId }, true, {
+      order: {
+        createdAt: 'DESC'
+      }
+    });
     return temp;
   }
 }
