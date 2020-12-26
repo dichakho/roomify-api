@@ -1,6 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { BaseService } from '@src/base.service';
 import { RoomStatus } from '@src/common/enums/roomStatus.enum';
+import { Role } from '@src/entities/roles.entity';
 import { Room } from '@src/entities/room.entity';
 import { CreateRoom } from '@src/models/room/create.dto';
 import { UpdateRoom } from '@src/models/room/update.dto';
@@ -21,11 +22,26 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     super(repository);
   }
 
-  async getOneRoom(id: number): Promise<Room> {
-    const room = await this.repository.findOne({
-      where: { id, status: RoomStatus.OPEN },
-      relations: ['amenities']
-    });
+  async getOneRoom(id: number, roles: Role[]): Promise<Room> {
+    console.log(roles);
+    let query;
+    const hashTable = {};
+    for(let i = 0; i < roles.length; i += 1) {
+      hashTable[roles[i].name] = 1;
+    }
+    if(hashTable['OWNER'] === 1 || hashTable['ADMIN'] === 1 || hashTable['MODERATOR'] === 1) {
+      query = this.repository.findOne({
+        where: { id },
+        relations: ['amenities']
+      });
+    }
+    else {
+      query = this.repository.findOne({
+        where: { id, status: RoomStatus.OPEN },
+        relations: ['amenities']
+      });
+    }
+    const room = await query;
     if (!room) throw new NotFoundException('Room not found !!!');
     return room;
   }
@@ -49,7 +65,7 @@ export class RoomService extends BaseService<Room, RoomRepository> {
     room.amenities = amenities;
     room.property = property;
     const result = await this.repository.save(room);
-    // const registrations = [];    
+    // const registrations = [];
     for (let i = 0; i < property.favoriteProperty.length; i += 1) {
       if (property.favoriteProperty[i].user.registrationToken) {
         // registrations.concat(property.favoriteProperty[i].user.registrationToken);
