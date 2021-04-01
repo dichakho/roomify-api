@@ -43,6 +43,12 @@ $ npm run start
 # watch mode
 $ npm run start:dev
 
+# connect DB
+Tạo DB có tên DATABASE_DB trong file .env, cập nhật username& password
+
+# seed DB
+$ npm run refresh:db
+
 ```
 
 <!-- ## Test
